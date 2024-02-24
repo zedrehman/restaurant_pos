@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -36,5 +39,22 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function adminLogin(Request $request)
+    {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'user_type' => ADMIN_ROLE])) {
+            return redirect('/home');
+        }
+        return redirect()->back()->with("error", "User Name and password incorrect");
+    }
+
+    public function register()
+    {
+        if (isset(Auth::user()->id)) {
+            return redirect('/home');
+        } else {
+            return view('auth.login');
+        }
     }
 }
