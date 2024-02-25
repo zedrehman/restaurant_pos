@@ -25,6 +25,7 @@ class Tablesetup extends Migration
             $table->string('website')->nullable();
             $table->text('address')->nullable();
             $table->boolean('active')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -51,12 +52,14 @@ class Tablesetup extends Migration
             $table->boolean('is_logout_pos')->default(0)->comment('0 in active, 1 Active');
             $table->boolean('is_passcode_protection')->default(0)->comment('0 in active, 1 Active');
             $table->string('GST_no')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
         Schema::create('outlets_designation', function (Blueprint $table) {
             $table->id();
             $table->string('designation_name');
             $table->boolean('active')->default(0)->comment('0 in active, 1 Active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
