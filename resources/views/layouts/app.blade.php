@@ -1,83 +1,86 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{{ config('app.name', '') }}</title>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="stylesheet" href="{{ asset('justdo/vendors/ti-icons/css/themify-icons.css') }}?version={{config('constant.script_version')}}">
+    <link rel="stylesheet" href="{{ asset('justdo/vendors/css/vendor.bundle.base.css') }}?version={{config('constant.script_version')}}">
+    <link rel="stylesheet" href="{{ asset('justdo/vendors/font-awesome/css/font-awesome.min.css') }}?version={{config('constant.script_version')}}" />
+    <link rel="stylesheet" href="{{ asset('justdo/css/style.css') }}?version={{config('constant.script_version')}}">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('Css')
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+
+<body class="sidebar-fixed">
+    <div class="container-scroller">
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo me-5" href="{{url('/home')}}">
+                    <img src="{{ asset('assets/images') }}/mominagrologo.png" alt="" style="width: 50px;"> <span class="display1 lead"> {{ config('app.name', 'Laravel') }}</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+                <a class="navbar-brand brand-logo-mini" href="{{url('/home')}}">
+                    <img src="{{ asset('assets/images') }}/mominagrologo.png" alt="" style="width: 100%;">
+                </a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="ti-layout-grid2"></span>
                 </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
+                <ul class="navbar-nav mr-lg-2">
+                    <li class="nav-item nav-search d-none d-lg-block">
+                        <div class="input-group"></div>
+                    </li>
+                </ul>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item nav-profile">
+                        <a class="nav-link" href="#">
+                            {{ Auth::user()->name }}
+                        </a>
+                    </li>
+                    <li class="nav-item nav-profile">
+                        |
+                    </li>
+                    <li class="nav-item nav-settings d-none d-lg-flex">
+                        <a class="nav-link" href="{{ url('/logout') }}">
+                            <i class="ti-power-off text-primary"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="ti-layout-grid2"></span>
+                </button>
             </div>
         </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <div class="container-fluid page-body-wrapper">
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                @include('admin.side_menu')
+            </nav>
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    @yield('content')
+                </div>
+                <footer class="footer">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    </div>
+                </footer>
+            </div>
+        </div>
     </div>
+    
+    <script src="{{ asset('justdo/vendors/js/vendor.bundle.base.js') }}?version={{config('constant.script_version')}}"></script>
+    <script src="{{ asset('justdo/js/off-canvas.js') }}?version={{config('constant.script_version')}}"></script>
+    <script src="{{ asset('justdo/js/hoverable-collapse.js') }}?version={{config('constant.script_version')}}"></script>
+    <script src="{{ asset('justdo/js/template.js') }}?version={{config('constant.script_version')}}"></script>
+    <script src="{{ asset('justdo/js/todolist.js') }}?version={{config('constant.script_version')}}"></script>
+    <script src="{{ asset('justdo/js/dashboard.js') }}?version={{config('constant.script_version')}}"></script>
+    @yield('JsScript')
 </body>
+
 </html>
