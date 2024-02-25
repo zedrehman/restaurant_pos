@@ -31,10 +31,15 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/add-brand', 'Admin\BrandController@postAddBrand');
             Route::get('/edit-brand/{id}', 'Admin\BrandController@getEditBrand');
 
-            Route::get('/outlet-designation', 'Admin\OutletController@OutletDesignationList');
+            Route::get('/outlet-designation', 'Admin\OutletController@designationList');
             Route::get('/add-designation', 'Admin\OutletController@getAddDesignation');
             Route::post('/add-designation', 'Admin\OutletController@postAddDesignation');
             Route::get('/edit-designation/{id}', 'Admin\OutletController@getEditDesignation');
+
+            Route::get('/outlet-list', 'Admin\OutletController@outletList');
+            Route::get('/add-outlet', 'Admin\OutletController@getAddOutlet');
+            Route::post('/add-outlet', 'Admin\OutletController@postAddOutlet');
+            Route::get('/edit-outlet/{id}', 'Admin\OutletController@getEditOutlet');
         });
     });
 });

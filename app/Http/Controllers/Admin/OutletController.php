@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\OutletDesignation;
+use App\Models\Outlet;
 
 class OutletController extends Controller
 {
-    public function OutletdesignationList()
+    public function designationList()
     {
         $designation = Outletdesignation::all();
         return view('admin.outlet.designation_list', compact('designation'));
@@ -30,5 +31,29 @@ class OutletController extends Controller
     {
         $designation = Outletdesignation::where('id', $id)->first();
         return view('admin.outlet.addDesignation', compact('designation'));
+    }
+
+    public function outletList()
+    {
+        $outlets = Outlet::all();
+        return view('admin.outlet.outlet_list', compact('outlets'));
+    }
+
+    public function getAddOutlet(Request $request)
+    {
+        return view('admin.outlet.addoutlet');
+    }
+
+    public function postAddOutlet(Request $request)
+    {
+        $outletsInfoArr = $request->except(['_token', 'outletId']);
+        $outletInfo = Outlet::updateOrCreate(['id' => $request->outletId], $outletsInfoArr);
+        return redirect()->to('/admin/outlet');
+    }
+
+    public function getEditOutlet(Request $request, $id)
+    {
+        $outlet = Outlet::where('id', $id)->first();
+        return view('admin.outlet.addoutlet', compact('outlet'));
     }
 }
