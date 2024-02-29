@@ -25,7 +25,7 @@
                             <tr>
                                 <th>Action</th>
                                 <th>Designation</th>
-                                <th>Active</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>

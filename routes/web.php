@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//start POS 
+Route::get('/pos/dashboard', 'PosController@Dashboard');
+Route::get('/pos/order-table', 'PosController@OrderTable');
+//end POS 
 Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 
 Auth::routes();

@@ -24,27 +24,27 @@
                     <table class="table table-striped" id="dataTable">
                         <thead>
                             <tr>
-                                <th>Action</th>
-                                <th>Logo</th>
                                 <th>Brand Name</th>
                                 <th>Short Name</th>
-                                <th>Active</th>
+                                <th>Logo</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($brands as $br)
                             <tr>
-                                <td>
-                                    <a class="btn-sm btn-warning" href="{{ url('/admin/edit-brand/'.$br->id) }}">Edit</a>
-                                </td>
-                                <td> <img src="{{ asset('brand/'.$br->id.'/'.$br->logo) }}" width="100"> </td>
                                 <td> {{ $br->brand_name }} </td>
                                 <td> {{ $br->brand_short_name }} </td>
+                                <td> <img src="{{ asset('brand/'.$br->id.'/'.$br->logo) }}" width="100"> </td>
                                 <td> @if($br->active==1)
                                     <div class="badge badge-success badge-pill">Active</div>
                                     @else
-                                    <div class="badge badge-warning badge-pill">Inactive</div>
+                                    <div class="badge badge-warning badge-pill">InActive</div>
                                     @endif
+                                </td>
+                                <td>
+                                    <a class="btn-sm btn-warning" href="{{ url('/admin/edit-brand/'.$br->id) }}">Edit</a>
                                 </td>
                             </tr>
                             @endforeach
