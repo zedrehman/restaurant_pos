@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\OutletDesignation;
 use App\Models\Outlet;
+use App\Models\Brand;
 
 class OutletController extends Controller
 {
@@ -41,7 +42,8 @@ class OutletController extends Controller
 
     public function getAddOutlet(Request $request)
     {
-        return view('admin.outlet.addoutlet');
+        $brands = Brand::all();
+        return view('admin.outlet.addoutlet', compact('brands'));
     }
 
     public function postAddOutlet(Request $request)

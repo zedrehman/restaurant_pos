@@ -14,21 +14,29 @@
     <link rel="stylesheet" href="{{ asset('justdo/css/style.css') }}?version={{config('constant.script_version')}}">
 
     @yield('Css')
-    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+
 </head>
 
-<body class="sidebar-fixed sidebar-icon-only">
+<body class="sidebar-fixed">
     <div class="container-scroller">
-        <!--<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center" style="height: 40px !important;">
-                <a class="navbar-brand brand-logo-mini">
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo me-5" href="{{url('/home')}}">
+                    <img src="{{ asset('assets/images') }}/mominagrologo.png" alt="" style="width: 50px;"> <span class="display1 lead"> {{ config('app.name', 'Laravel') }}</span>
+                </a>
+                <a class="navbar-brand brand-logo-mini" href="{{url('/home')}}">
                     <img src="{{ asset('assets/images') }}/mominagrologo.png" alt="" style="width: 100%;">
                 </a>
             </div>
-            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end" style="height: 40px !important;">
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="ti-layout-grid2"></span>
+                </button>
                 <ul class="navbar-nav mr-lg-2">
                     <li class="nav-item nav-search d-none d-lg-block">
-                        <span class="display1 lead"> {{ config('app.name', 'Laravel') }}</span>
+                        <div class="input-group"></div>
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-nav-right">
@@ -51,21 +59,28 @@
                     <span class="ti-layout-grid2"></span>
                 </button>
             </div>
-        </nav>-->
-        <div class="container-fluid page-body-wrapper" style="padding-top: 0px;">
+        </nav>
+        <div class="container-fluid page-body-wrapper">
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                @include('pos.left_menu')
+                @include('admin.side_menu')
             </nav>
             <div class="main-panel">
-                <div class="content-wrapper" style="padding-top: 0px;padding-bottom: 3px;">
+                <div class="content-wrapper">
                     @yield('content')
                 </div>
+                <footer class="footer">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
+    
     <script src="{{ asset('justdo/vendors/js/vendor.bundle.base.js') }}?version={{config('constant.script_version')}}"></script>
     <script src="{{ asset('justdo/js/off-canvas.js') }}?version={{config('constant.script_version')}}"></script>
+    <script src="{{ asset('justdo/js/hoverable-collapse.js') }}?version={{config('constant.script_version')}}"></script>
     <script src="{{ asset('justdo/js/template.js') }}?version={{config('constant.script_version')}}"></script>
+    <script src="{{ asset('justdo/js/todolist.js') }}?version={{config('constant.script_version')}}"></script>
     <script src="{{ asset('justdo/js/dashboard.js') }}?version={{config('constant.script_version')}}"></script>
     @yield('JsScript')
 </body>

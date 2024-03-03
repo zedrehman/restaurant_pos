@@ -15,6 +15,7 @@
             <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="{{url('/admin/brand')}}" id="lnkBrands">Brands</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{url('/admin/outlet-designation')}}" id="lnkVedioGallery">Outlet Designation</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{url('/admin/outlet-list')}}" id="lnkVedioGallery">Outlet</a></li>
             </ul>
         </div>
     </li>
