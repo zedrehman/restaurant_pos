@@ -95,7 +95,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Logo</label>
-                                        <input type="file" name="logoImage" class="form-control" placeholder="logo" value="@if(isset($brand)){{ $brand->id }}@endif">
+                                        <input type="file" name="logoImage" class="form-control" placeholder="logo" value="@if(isset($brand)){{ $brand->id }}@endif" accept="image/png, image/gif, image/jpeg, image/jpg">
                                         @if (isset($brand->logo) )
                                         <img src="{{ asset('brand/'.$brand->id.'/'.$brand->logo) }}" width="100">
                                         @else
