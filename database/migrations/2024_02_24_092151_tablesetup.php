@@ -62,6 +62,14 @@ class Tablesetup extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+        Schema::create('cities', function (Blueprint $table) {
+            $table->id();
+            $table->string('city_name');
+            $table->timestamps();
+        });
+
+        Artisan::call('db:seed --class=CityList');
     }
 
     /**
@@ -74,5 +82,6 @@ class Tablesetup extends Migration
         Schema::dropIfExists('brands');
         Schema::dropIfExists('outlets');
         Schema::dropIfExists('outlets_designation');
+        Schema::dropIfExists('cities');
     }
 }

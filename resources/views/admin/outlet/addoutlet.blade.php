@@ -25,7 +25,7 @@
                                 <select class="form-control" name="brand_id">
                                     <option value="">Select Brand</option>
                                     @foreach ($brands as $brand)
-                                        <option value="{{$brand->id}}"> {{ $brand->brand_name}}</option>
+                                        <option value="{{$brand->id}}" @if(isset($outlet) && $outlet->brand_id == $brand->id) selected @endif> {{ $brand->brand_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -89,7 +89,10 @@
                                 <label>City </label>
                                 <select class="form-control" name="city_id">
                                     <option value="">Select City</option>
-                                    <option value="1"> Mumbai </option>
+                                    
+                                    @foreach ($cities as $city)
+                                        <option value="{{$city->id}}" @if(isset($outlet) && $outlet->city_id == $city->id) selected @endif> {{ $city->city_name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -115,19 +118,22 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>Address </label>
-                                <textarea name="address" class="form-control"></textarea>
+                                <textarea name="address" class="form-control">@if(isset($outlet)){{ $outlet->address }}@endif</textarea>
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>description </label>
-                                <textarea name="description" class="form-control"></textarea>
+                                <textarea name="description" class="form-control">@if(isset($outlet)){{ $outlet->description }}@endif</textarea>
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>logo </label>
-                                <input type="file" name="logo" class="form-control" placeholder="">
+                                <input type="file" name="logo" class="form-control" placeholder="" accept="image/png, image/gif, image/jpeg, image/jpg">
+                                @if (isset($outlet->logo) )
+                                    <img src="{{ asset('outlet/'.$outlet->logo) }}" width="100">
+                                @endif
                             </div>
                         </div>
 
@@ -196,7 +202,7 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <label>outlet_code </label>
+                                <label>GST no. </label>
                                 <input type="text" name="GST_no" class="form-control" placeholder="" value="@if(isset($outlet)){{ $outlet->GST_no }}@endif">
                             </div>
                         </div>

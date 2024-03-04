@@ -38,13 +38,13 @@
                             @foreach ($outlets as $out)
                             <tr>
                                 <td>
-                                    <a class="btn-sm btn-warning" href="{{ url('/admin/edit-designation/'.$out->id) }}">Edit</a>
+                                    <a class="btn-sm btn-warning" href="{{ url('/admin/edit-outlet/'.$out->id) }}">Edit</a>
                                 </td>
-                                <td> {{ $out->logo }} </td>
+                                <td> <img src="{{ asset('outlet/'.$out->logo) }}" width="100"> </td>
                                 <td> {{ $out->id }} </td>
                                 <td> {{ $out->outlet_name }} </td>
                                 <td> {{ $out->contact_phone }} </td>
-                                <td> {{ $out->brand_id }} </td>
+                                <td> {{ $out->getBrand->brand_name }} </td>
                                 <td> @if($out->active==1)
                                     <div class="badge badge-success badge-pill">Active</div>
                                     @else

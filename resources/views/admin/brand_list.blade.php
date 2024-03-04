@@ -36,7 +36,7 @@
                             <tr>
                                 <td> {{ $br->brand_name }} </td>
                                 <td> {{ $br->brand_short_name }} </td>
-                                <td> <img src="{{ asset('brand/'.$br->id.'/'.$br->logo) }}" width="100"> </td>
+                                <td> <img src="{{ asset('brand/'.$br->logo) }}" width="100"> </td>
                                 <td> @if($br->active==1)
                                     <div class="badge badge-success badge-pill">Active</div>
                                     @else

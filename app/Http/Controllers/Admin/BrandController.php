@@ -26,14 +26,14 @@ class BrandController extends Controller
         $brandInfo = Brand::updateOrCreate(['id' => $request->brandId], $brandInfoArr);
         if ($request->file('logoImage')) {
             $file = $request->file('logoImage');
-            $filename = preg_replace('/[^a-zA-Z0-9_.]/', '-', $file->getClientOriginalName());
-            $filePath = public_path('brand/' . $brandInfo->id . '/');
+            $filename = $brandInfo->id.'_'.preg_replace('/[^a-zA-Z0-9_.]/', '-', $file->getClientOriginalName());
+            $filePath = public_path('brand/');
             if (!File::isDirectory($filePath)) {
                 File::makeDirectory($filePath, 0777, true, true);
             }
             $file->move($filePath, $filename);
             // delete File
-            $filePath = public_path('brand/' . $brandInfo->id . '/' . $brandInfo->logo);
+            $filePath = public_path('brand/'.$brandInfo->logo);
             if (File::exists($filePath)) {
                 File::delete($filePath);
             }
