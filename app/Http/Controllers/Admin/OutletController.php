@@ -12,6 +12,47 @@ use File;
 
 class OutletController extends Controller
 {
+    public function getBrandList()
+    {
+        $brands = Brand::all();
+        return view('admin.outlet.brand_list', compact('brands'));
+    }
+
+    public function getAddBrand(Request $request)
+    {
+        return view('admin.outlet.brand_add');
+    }
+
+    public function postAddBrand(Request $request)
+    {
+        $brandInfoArr = $request->except(['_token', 'brandId']);
+        $brandInfo = Brand::updateOrCreate(['id' => $request->brandId], $brandInfoArr);
+        if ($request->file('logoImage')) {
+            $file = $request->file('logoImage');
+            $filename = $brandInfo->id.'_'.preg_replace('/[^a-zA-Z0-9_.]/', '-', $file->getClientOriginalName());
+            $filePath = public_path('brand/');
+            if (!File::isDirectory($filePath)) {
+                File::makeDirectory($filePath, 0777, true, true);
+            }
+            $file->move($filePath, $filename);
+            // delete File
+            $filePath = public_path('brand/'.$brandInfo->logo);
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
+
+            $brandInfo->logo = $filename;
+        }
+        $brandInfo->save();
+        return redirect()->to('/admin/brand');
+    }
+
+    public function getEditBrand(Request $request, $id)
+    {
+        $brand = Brand::where('id', $id)->first();
+        return view('admin.outlet.brand_add', compact('brand'));
+    }
+
     public function designationList()
     {
         $designation = Outletdesignation::all();
@@ -20,7 +61,7 @@ class OutletController extends Controller
 
     public function getAddDesignation(Request $request)
     {
-        return view('admin.outlet.addDesignation');
+        return view('admin.outlet.designation_add');
     }
 
     public function postAddDesignation(Request $request)
@@ -33,7 +74,7 @@ class OutletController extends Controller
     public function getEditDesignation(Request $request, $id)
     {
         $designation = Outletdesignation::where('id', $id)->first();
-        return view('admin.outlet.addDesignation', compact('designation'));
+        return view('admin.outlet.designation_add', compact('designation'));
     }
 
     public function outletList()
@@ -46,7 +87,7 @@ class OutletController extends Controller
     {
         $brands = Brand::all();
         $cities = City::all();
-        return view('admin.outlet.addoutlet', compact('brands', 'cities'));
+        return view('admin.outlet.outlet_add', compact('brands', 'cities'));
     }
 
     public function postAddOutlet(Request $request)
@@ -78,6 +119,6 @@ class OutletController extends Controller
         $outlet = Outlet::where('id', $id)->first();
         $brands = Brand::all();
         $cities = City::all();
-        return view('admin.outlet.addoutlet', compact('outlet', 'brands', 'cities'));
+        return view('admin.outlet.outlet_add', compact('outlet', 'brands', 'cities'));
     }
 }

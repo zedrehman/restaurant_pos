@@ -32,10 +32,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'admin'], function () {
         Route::group(['middleware' => ['admin']], function () {
             Route::get('/dashboard', 'Admin\DashboardController@Index');
-            Route::get('/brand', 'Admin\BrandController@index');
-            Route::get('/add-brand', 'Admin\BrandController@getAddBrand');
-            Route::post('/add-brand', 'Admin\BrandController@postAddBrand');
-            Route::get('/edit-brand/{id}', 'Admin\BrandController@getEditBrand');
+
+            Route::get('/brand', 'Admin\OutletController@getBrandList');
+            Route::get('/add-brand', 'Admin\OutletController@getAddBrand');
+            Route::post('/add-brand', 'Admin\OutletController@postAddBrand');
+            Route::get('/edit-brand/{id}', 'Admin\OutletController@getEditBrand');
 
             Route::get('/outlet-designation', 'Admin\OutletController@designationList');
             Route::get('/add-designation', 'Admin\OutletController@getAddDesignation');
