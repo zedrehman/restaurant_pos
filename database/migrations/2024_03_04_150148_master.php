@@ -26,13 +26,33 @@ class Master extends Migration
             $table->string('tax_value');
             $table->string('tax_name');
             $table->integer('product_group_id');
-            $table->integer('tax_display_name');
+            $table->string('tax_display_name');
             $table->boolean('include_in_rate')->default(0);
             $table->boolean('is_dividable')->default(0);
             $table->boolean('active')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
+
+        Schema::create('kitchen_department', function (Blueprint $table) {
+            $table->id();
+            $table->integer('outlet_id');
+            $table->string('kitchen_department_name');
+            $table->boolean('active')->default(0);
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
+        Schema::create('outlet_department', function (Blueprint $table) {
+            $table->id();
+            $table->integer('outlet_id');
+            $table->string('outlet_department_name');
+            $table->integer('product_group_id');
+            $table->boolean('active')->default(0);
+            $table->softDeletes();
+            $table->timestamps();
+        });
+        
     }
 
     /**
@@ -44,5 +64,7 @@ class Master extends Migration
     {
         Schema::dropIfExists('product_groups');
         Schema::dropIfExists('tax_configuration');
+        Schema::dropIfExists('kitchen_department');
+        Schema::dropIfExists('outlet_department');
     }
 }

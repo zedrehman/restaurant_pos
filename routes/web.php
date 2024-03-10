@@ -57,6 +57,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/add-tax-configuration', 'Admin\MasterController@getAddTaxConfiguration');
             Route::post('/add-tax-configuration', 'Admin\MasterController@postAddTaxConfiguration');
             Route::get('/edit-tax-configuration/{id}', 'Admin\MasterController@getEditTaxConfiguration');
+
+            Route::get('/kitchen-department-list', 'Admin\MasterController@KitchenDepartmentList');
+            Route::get('/add-kitchen-department', 'Admin\MasterController@getKitchenDepartment');
+            Route::post('/add-kitchen-department', 'Admin\MasterController@postKitchenDepartment');
+            Route::get('/edit-kitchen-department/{id}', 'Admin\MasterController@getEditKitchenDepartment');
             
         });
     });

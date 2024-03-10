@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TaxConfiguration extends Model
+class OutletDepartment extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'product_groups';
+    protected $table = 'outlet_department';
 
     protected $dates = ['deleted_at'];
     
