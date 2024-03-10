@@ -5,7 +5,7 @@
     <ol class="breadcrumb bg-dark">
         <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
         <li class="breadcrumb-item">Master Configuration</li>
-        <li class="breadcrumb-item active">Kitchen Department  List</li>
+        <li class="breadcrumb-item active">Outlet Department List</li>
         <li class="breadcrumb-item active" aria-current="page">Add</li>
     </ol>
 </nav>
@@ -13,10 +13,17 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form action="{{url('/admin/add-kitchen-department')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{url('/admin/add-outlet-department')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="tableId" value="@if(isset($dataArray)){{ $dataArray->id }}@endif">
                     <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Department Name<span style="color:red;">*</span> </label>
+                                <input type="text" name="outlet_department_name" class="form-control" placeholder="Tax Value" value="@if(isset($dataArray)){{ $dataArray->outlet_department_name }}@endif" required>
+                            </div>
+                        </div>
+
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>Outlets <span style="color:red;">*</span> </label>
@@ -30,8 +37,13 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <label>Kitchen Department Name <span style="color:red;">*</span> </label>
-                                <input type="text" name="kitchen_department_name" class="form-control" placeholder="Tax Name" value="@if(isset($dataArray)){{ $dataArray->kitchen_department_name }}@endif" required>
+                                <label>Product Group <span style="color:red;">*</span> </label>
+                                <select class="form-control" name="product_group_id" required>
+                                    <option value="">Select Outlet</option>
+                                    @foreach ($productGroup as $group)
+                                        <option value="{{$group->id}}" @if(isset($dataArray) && $group->id == $dataArray->product_group_id) selected @endif> {{ $group->product_group_name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

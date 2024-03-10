@@ -30,7 +30,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{url('/admin/product-group-list')}}">Product Group</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{url('/admin/tax-configuration-list')}}">Tax Configuration</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{url('/admin/kitchen-department-list')}}">Kitchen Department</a></li>
-                <li class="nav-item"><a class="nav-link" href="">Outlet Department</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{url('/admin/outlet-department-list')}}">Outlet Department</a></li>
             </ul>
         </div>
     </li>

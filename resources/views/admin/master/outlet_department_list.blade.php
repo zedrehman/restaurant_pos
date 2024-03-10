@@ -5,7 +5,7 @@
     <ol class="breadcrumb bg-dark">
         <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
         <li class="breadcrumb-item">Master Configuration</li>
-        <li class="breadcrumb-item active" aria-current="page">Kitchen Department List</li>
+        <li class="breadcrumb-item active" aria-current="page">Outlet Department List</li>
     </ol>
 </nav>
 <div class="row">
@@ -14,7 +14,7 @@
             <div class="card-body">
                 <div class="row grid-margin">
                     <div class="col-12" style="text-align: right;">
-                        <a class="btn-sm btn-primary" href="{{url('/admin/add-kitchen-department')}}">
+                        <a class="btn-sm btn-primary" href="{{url('/admin/add-outlet-department')}}">
                             <i class="fa fa-plus"></i>
                             Add Kitchen Department
                         </a>
@@ -33,7 +33,7 @@
                         <tbody>
                             @foreach ($dataArray as $array)
                             <tr>
-                                <td> {{ $array->kitchen_department_name }} </td>
+                                <td> {{ $array->outlet_department_name }} </td>
                                 <td> {{ $array->outlet_name }} </td>
                                 <td> 
                                     @if($array->active==1)
@@ -42,7 +42,7 @@
                                     <div class="badge badge-warning badge-pill">InActive</div>
                                     @endif</td>
                                 <td>
-                                    <a class="btn-sm btn-warning" href="{{ url('/admin/edit-kitchen-department/'.$array->id) }}">Edit</a>
+                                    <a class="btn-sm btn-warning" href="{{ url('/admin/edit-outlet-department/'.$array->id) }}">Edit</a>
                                 </td>
                             </tr>
                             @endforeach

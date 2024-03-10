@@ -92,7 +92,37 @@ class MasterController extends Controller
     {
         $dataArray = KitchenDepartment::where('id', $id)->first();
         $outlets = Outlet::all();
-        return view('admin.master.kitchen_department_add', compact('dataArray', 'outlets'));
+        return view('admin.master.kitchen_department_add', compact('dataArray', 'outlets','productGroup'));
+    }
+
+    // Outlet Department
+    public function OutletDepartmentList(Request $request)
+    {
+        $dataArray = OutletDepartment::select('outlet_department.*','outlets.outlet_name')->join('outlets','outlets.id','Outlet_department.outlet_id')->get();
+        return view('admin.master.outlet_department_list', compact('dataArray'));
+    }
+
+    public function getOutletDepartment(Request $request)
+    {
+        $outlets = Outlet::where('active', 1)->get();
+        $productGroup = ProductGroup::all();
+        return view('admin.master.outlet_department_add', compact('outlets','productGroup'));
+    }
+
+    public function postOutletDepartment(Request $request)
+    {
+        $insertDataArr = $request->except(['_token', 'tableId']);
+        $insertDataArr['active'] = $request->active ? 1 : 0;
+        $dataInfo = OutletDepartment::updateOrCreate(['id' => $request->tableId], $insertDataArr);
+        return redirect()->to('/admin/outlet-department-list');
+    }
+
+    public function getEditOutletDepartment(Request $request, $id)
+    {
+        $dataArray = OutletDepartment::where('id', $id)->first();
+        $outlets = Outlet::all();
+        $productGroup = ProductGroup::all();
+        return view('admin.master.outlet_department_add', compact('dataArray', 'outlets','productGroup'));
     }
 
 }
