@@ -13,8 +13,17 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form action="" method="POST" enctype="multipart/form-data">
+                <form action="{{url('/admin/add-product-group')}}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="productGroupId" value="@if(isset($productGroup)){{ $productGroup->id }}@endif">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>product group name <span style="color:red;">*</span> </label>
+                                <input type="text" name="product_group_name" class="form-control" placeholder="product group name" value="@if(isset($productGroup)){{ $productGroup->product_group_name }}@endif" required>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="row">
                         <div class="col-sm-12">

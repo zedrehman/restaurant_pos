@@ -47,6 +47,17 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/add-outlet', 'Admin\OutletController@getAddOutlet');
             Route::post('/add-outlet', 'Admin\OutletController@postAddOutlet');
             Route::get('/edit-outlet/{id}', 'Admin\OutletController@getEditOutlet');
+
+            Route::get('/product-group-list', 'Admin\MasterController@productGroupList');
+            Route::get('/add-product-group', 'Admin\MasterController@getAddProductGroup');
+            Route::post('/add-product-group', 'Admin\MasterController@postAddProductGroup');
+            Route::get('/edit-product-group/{id}', 'Admin\MasterController@getEditProductGroup');
+
+            Route::get('/tax-configuration-list', 'Admin\MasterController@taxConfigurationList');
+            Route::get('/add-tax-configuration', 'Admin\MasterController@getAddTaxConfiguration');
+            Route::post('/add-tax-configuration', 'Admin\MasterController@postAddTaxConfiguration');
+            Route::get('/edit-tax-configuration/{id}', 'Admin\MasterController@getEditTaxConfiguration');
+            
         });
     });
 });

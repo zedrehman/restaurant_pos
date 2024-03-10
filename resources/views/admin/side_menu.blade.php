@@ -20,15 +20,15 @@
         </div>
     </li>
     <li class="nav-item" id="lnkMasterConfiguration">
-        <a class="nav-link" data-bs-toggle="collapse" href="MasterConfiguration" aria-expanded="false" aria-controls="MasterConfiguration">
+        <a class="nav-link" data-bs-toggle="collapse" href="#MasterConfiguration" aria-expanded="false" aria-controls="MasterConfiguration">
             <i class="ti-gallery menu-icon"></i>
             <span class="menu-title">Master Configuration</span>
             <i class="menu-arrow"></i>
         </a>
         <div class="collapse" id="MasterConfiguration">
             <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="">Product Group</a></li>
-                <li class="nav-item"><a class="nav-link" href="">Tax Configuration</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{url('/admin/product-group-list')}}">Product Group</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{url('/admin/tax-configuration-list')}}">Tax Configuration</a></li>
                 <li class="nav-item"><a class="nav-link" href="">Kitchen Department</a></li>
                 <li class="nav-item"><a class="nav-link" href="">Outlet Department</a></li>
             </ul>
