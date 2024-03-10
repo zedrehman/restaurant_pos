@@ -8,6 +8,7 @@ use App\Models\Master\ProductGroup;
 use App\Models\Master\TaxConfiguration;
 use App\Models\Master\KitchenDepartment;
 use App\Models\Master\OutletDepartment;
+use App\Models\Master\TableManagement;
 use App\Models\Outlet;
 
 class MasterController extends Controller
@@ -123,6 +124,44 @@ class MasterController extends Controller
         $outlets = Outlet::all();
         $productGroup = ProductGroup::all();
         return view('admin.master.outlet_department_add', compact('dataArray', 'outlets','productGroup'));
+    }
+
+    // table management 
+    public function TableManagementList(Request $request)
+    {
+        $dataArray = TableManagement::select('table_management.*', 'outlets.outlet_name', 'outlet_department.outlet_department_name')
+        ->join('outlets','outlets.id','table_management.outlet_id')
+        ->join('outlet_department','outlet_department.id','table_management.outlet_department_id')
+        ->get();
+
+        return view('admin.master.table_management_list', compact('dataArray'));
+    }
+
+    public function getTableManagement(Request $request)
+    {
+        $outlets = Outlet::where('active', 1)->get();
+        return view('admin.master.table_management_add', compact('outlets'));
+    }
+
+    public function postTableManagement(Request $request)
+    {
+        $insertDataArr = $request->except(['_token', 'tableId']);
+        $insertDataArr['active'] = $request->active ? 1 : 0;
+        $dataInfo = TableManagement::updateOrCreate(['id' => $request->tableId], $insertDataArr);
+        return redirect()->to('/admin/table-management-list');
+    }
+
+    public function getEditTableManagement(Request $request, $id)
+    {
+        $dataArray = TableManagement::where('id', $id)->first();
+        $outlets = Outlet::all();
+        return view('admin.master.table_management_add', compact('dataArray', 'outlets'));
+    }
+
+    public function getOutletDepartmentData(Request $request, $id)
+    {
+        $outletDepartment = OutletDepartment::where('outlet_id', $id)->get();
+        return response()->json($outletDepartment, 200);
     }
 
 }

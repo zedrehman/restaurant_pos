@@ -68,6 +68,12 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/add-outlet-department', 'Admin\MasterController@postoutletDepartment');
             Route::get('/edit-outlet-department/{id}', 'Admin\MasterController@getEditoutletDepartment');
             
+            Route::get('/table-management-list', 'Admin\MasterController@TableManagementList');
+            Route::get('/add-table-management', 'Admin\MasterController@getTableManagement');
+            Route::post('/add-table-management', 'Admin\MasterController@postTableManagement');
+            Route::get('/edit-table-management/{id}', 'Admin\MasterController@getEditTableManagement');
+            Route::get('/outlet-department-data/{id}', 'Admin\MasterController@getOutletDepartmentData');
+            
         });
     });
 });

@@ -53,6 +53,17 @@ class Master extends Migration
             $table->timestamps();
         });
         
+        Schema::create('table_management', function (Blueprint $table) {
+            $table->id();
+            $table->integer('outlet_id');
+            $table->string('table_name');
+            $table->integer('outlet_department_id');
+            $table->integer('max_person');
+            $table->boolean('active')->default(0);
+            $table->softDeletes();
+            $table->timestamps();
+        });
+        
     }
 
     /**
@@ -66,5 +77,6 @@ class Master extends Migration
         Schema::dropIfExists('tax_configuration');
         Schema::dropIfExists('kitchen_department');
         Schema::dropIfExists('outlet_department');
+        Schema::dropIfExists('table_management');
     }
 }
