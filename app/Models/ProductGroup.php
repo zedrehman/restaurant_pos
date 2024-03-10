@@ -10,7 +10,7 @@ class ProductGroup extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'tax_configuration';
+    protected $table = 'product_groups';
 
     protected $dates = ['deleted_at'];
     
