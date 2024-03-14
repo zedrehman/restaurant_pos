@@ -9,6 +9,7 @@ use App\Models\Master\TaxConfiguration;
 use App\Models\Master\KitchenDepartment;
 use App\Models\Master\OutletDepartment;
 use App\Models\Master\TableManagement;
+use App\Models\Master\Coupon;
 use App\Models\Outlet;
 
 class MasterController extends Controller
@@ -162,6 +163,32 @@ class MasterController extends Controller
     {
         $outletDepartment = OutletDepartment::where('outlet_id', $id)->get();
         return response()->json($outletDepartment, 200);
+    }
+
+    // Outlet Department
+    public function couponList(Request $request)
+    {
+        $dataArray = Coupon::all();
+        return view('admin.master.coupon_list', compact('dataArray'));
+    }
+
+    public function getCoupon(Request $request)
+    {
+        return view('admin.master.coupon_add');
+    }
+
+    public function postCoupon(Request $request)
+    {
+        $insertDataArr = $request->except(['_token', 'tableId']);
+        $insertDataArr['active'] = $request->active ? 1 : 0;
+        $dataInfo = Coupon::updateOrCreate(['id' => $request->tableId], $insertDataArr);
+        return redirect()->to('/admin/coupon-list');
+    }
+
+    public function getEditCoupon(Request $request, $id)
+    {
+        $dataArray = Coupon::where('id', $id)->first();
+        return view('admin.master.coupon_add', compact('dataArray'));
     }
 
 }

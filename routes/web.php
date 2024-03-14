@@ -73,6 +73,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/add-table-management', 'Admin\MasterController@postTableManagement');
             Route::get('/edit-table-management/{id}', 'Admin\MasterController@getEditTableManagement');
             Route::get('/outlet-department-data/{id}', 'Admin\MasterController@getOutletDepartmentData');
+
+            Route::get('/coupon-list', 'Admin\MasterController@couponList');
+            Route::get('/add-coupon', 'Admin\MasterController@getCoupon');
+            Route::post('/add-coupon', 'Admin\MasterController@postCoupon');
+            Route::get('/edit-coupon/{id}', 'Admin\MasterController@getEditCoupon');
             
         });
     });
