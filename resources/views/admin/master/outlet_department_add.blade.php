@@ -3,9 +3,9 @@
 @section('content')
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-dark">
-        <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
+        <li class="breadcrumb-item"> <a href="{{url('/admin/dashboard')}}"> <i class="ti-home menu-icon"></i></a></li>
         <li class="breadcrumb-item">Master Configuration</li>
-        <li class="breadcrumb-item active">Outlet Department List</li>
+        <li class="breadcrumb-item active"> <a href="{{url('/admin/outlet-department-list')}}">Outlet Department List </a></li>
         <li class="breadcrumb-item active" aria-current="page">Add</li>
     </ol>
 </nav>

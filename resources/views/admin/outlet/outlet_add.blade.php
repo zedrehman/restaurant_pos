@@ -1,13 +1,12 @@
 @extends('layouts.admin')
 
 @section('content')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-dark">
         <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
         <li class="breadcrumb-item">Configuration</li>
-        <li class="breadcrumb-item">Outlet List</li>
+        <li class="breadcrumb-item"> <a href="{{url('/admin/outlet-list')}}"> Outlet List</a></li>
         <li class="breadcrumb-item active" aria-current="page">Add</li>
     </ol>
 </nav>
@@ -39,19 +38,19 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>Start Day Time <span style="color:red;">*</span> </label>
-                                <input type="text" name="start_day_time" id="start_day_time" class="form-control" placeholder="Start Day Time" value="@if(isset($outlet)){{ $outlet->start_day_time }}@endif" required>
+                                <input type="time" name="start_day_time" id="start_day_time" class="form-control" placeholder="Start Day Time" value="@if(isset($outlet)){{ $outlet->start_day_time }}@endif" required>
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>Close Day Time <span style="color:red;">*</span> </label>
-                                <input type="text" name="close_day_time" id="close_day_time" class="form-control" placeholder="Close Day Time" value="@if(isset($outlet)){{ $outlet->close_day_time }}@endif" required>
+                                <input type="time" name="close_day_time" id="close_day_time" class="form-control" placeholder="Close Day Time" value="@if(isset($outlet)){{ $outlet->close_day_time }}@endif" required>
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>Next Reset Bill Date </label>
-                                <input type="text" name="next_reset_bill_date" id="next_reset_bill_date" class="form-control" placeholder="Next Reset Bill Date" value="@if(isset($outlet)){{ $outlet->next_reset_bill_date }}@endif">
+                                <input type="datetime-local"  name="next_reset_bill_date" id="next_reset_bill_date" class="form-control" placeholder="Next Reset Bill Date" value="@if(isset($outlet)){{ $outlet->next_reset_bill_date }}@endif">
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -63,7 +62,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>Next Reset KOT Date </label>
-                                <input type="text" name="next_reset_kot_date" id="next_reset_kot_date" class="form-control" placeholder="Next Reset KOT Date" value="@if(isset($outlet)){{ $outlet->next_reset_kot_date }}@endif">
+                                <input type="datetime-local"  name="next_reset_kot_date" id="next_reset_kot_date" class="form-control" placeholder="Next Reset KOT Date" value="@if(isset($outlet)){{ $outlet->next_reset_kot_date }}@endif">
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -215,20 +214,6 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 <script>
-    $('#start_day_time').datetimepicker({
-        format: 'hh:mm:ss',
-    });
-    $('#close_day_time').datetimepicker({
-        format: 'hh:mm:ss',
-    });
-    $('#next_reset_bill_date').datetimepicker({
-        format: 'YYYY-MM-DD hh:mm:ss',
-    });
-    
-    $('#next_reset_kot_date').datetimepicker({
-        format: 'YYYY-MM-DD hh:mm:ss',
-    });
 </script>
 @endsection

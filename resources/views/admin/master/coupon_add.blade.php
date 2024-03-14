@@ -1,12 +1,11 @@
 @extends('layouts.admin')
 
 @section('content')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-dark">
         <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
         <li class="breadcrumb-item">Master Configuration</li>
-        <li class="breadcrumb-item active">Coupon  List</li>
+        <li class="breadcrumb-item active"> <a href="{{url('/admin/coupon-list')}}"> Coupon  List </a></li>
         <li class="breadcrumb-item active" aria-current="page">Add</li>
     </ol>
 </nav>
@@ -57,7 +56,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>end_date:<span style="color:red;">*</span> </label>
-                                <input type="text" name="end_date" id="end_date" class="form-control" placeholder="" value="@if(isset($dataArray)){{ $dataArray->end_date }}@endif" required>
+                                <input type="date" name="end_date" id="end_date" class="form-control" placeholder="" value="@if(isset($dataArray)){{ $dataArray->end_date }}@endif" required>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -89,11 +88,7 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 <script>
-    $('#end_date').datetimepicker({
-        format: 'YYYY-MM-DD',
-    });
     $("#coupon_code").keyup(function() {
         var val = $(this).val()
         $(this).val(val.toUpperCase());

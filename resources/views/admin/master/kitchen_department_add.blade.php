@@ -5,7 +5,7 @@
     <ol class="breadcrumb bg-dark">
         <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
         <li class="breadcrumb-item">Master Configuration</li>
-        <li class="breadcrumb-item active">Kitchen Department  List</li>
+        <li class="breadcrumb-item active"> <a href="{{url('/admin/kitchen-department-list')}}"> Kitchen Department List </a> </li>
         <li class="breadcrumb-item active" aria-current="page">Add</li>
     </ol>
 </nav>
