@@ -11,6 +11,7 @@ use App\Models\Master\OutletDepartment;
 use App\Models\Master\TableManagement;
 use App\Models\Master\Coupon;
 use App\Models\Outlet;
+use App\Models\Master\UserType;
 
 class MasterController extends Controller
 {
@@ -189,6 +190,31 @@ class MasterController extends Controller
     {
         $dataArray = Coupon::where('id', $id)->first();
         return view('admin.master.coupon_add', compact('dataArray'));
+    }
+
+    //  User Type
+    public function userTypeList(Request $request)
+    {
+        $dataArray = UserType::all();
+        return view('admin.master.usertype_list', compact('dataArray'));
+    }
+
+    public function getuserType(Request $request)
+    {
+        return view('admin.master.usertype_add');
+    }
+
+    public function postuserType(Request $request)
+    {
+        $insertDataArr = $request->except(['_token', 'tableId']);
+        $dataInfo = UserType::updateOrCreate(['id' => $request->tableId], $insertDataArr);
+        return redirect()->to('/admin/usertype-list');
+    }
+
+    public function getEdituserType(Request $request, $id)
+    {
+        $dataArray = UserType::where('id', $id)->first();
+        return view('admin.master.usertype_add', compact('dataArray'));
     }
 
 }

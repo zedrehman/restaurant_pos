@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Outlet;
+use App\Models\City;
 
 class User extends Authenticatable
 {
@@ -22,6 +24,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'user_type',
+        'outlet_id',
+        'address',
+        'city_id',
+        'postal_code',
+        'active'
     ];
 
     protected $dates = ['deleted_at'];
@@ -44,4 +52,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getOutlet()
+    {
+        return $this->belongsTo(Outlet::class, 'outlet_id', 'id');
+    }
+
+    public function getCity()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
 }

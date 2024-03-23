@@ -48,6 +48,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/add-outlet', 'Admin\OutletController@postAddOutlet');
             Route::get('/edit-outlet/{id}', 'Admin\OutletController@getEditOutlet');
 
+            Route::get('/outlet-user', 'Admin\OutletController@outletUserList');
+            Route::get('/add-user', 'Admin\OutletController@getAddUser');
+            Route::post('/add-user', 'Admin\OutletController@postAddUser');
+            Route::get('/edit-user/{id}', 'Admin\OutletController@getEditUser');
+
             Route::get('/product-group-list', 'Admin\MasterController@productGroupList');
             Route::get('/add-product-group', 'Admin\MasterController@getAddProductGroup');
             Route::post('/add-product-group', 'Admin\MasterController@postAddProductGroup');
@@ -78,6 +83,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/add-coupon', 'Admin\MasterController@getCoupon');
             Route::post('/add-coupon', 'Admin\MasterController@postCoupon');
             Route::get('/edit-coupon/{id}', 'Admin\MasterController@getEditCoupon');
+
+            Route::get('/usertype-list', 'Admin\MasterController@userTypeList');
+            Route::get('/add-usertype', 'Admin\MasterController@getuserType');
+            Route::post('/add-usertype', 'Admin\MasterController@postuserType');
+            Route::get('/edit-usertype/{id}', 'Admin\MasterController@getEdituserType');
             
         });
     });

@@ -8,7 +8,11 @@ use App\Models\OutletDesignation;
 use App\Models\Outlet;
 use App\Models\Brand;
 use App\Models\City;
+use App\Models\User;
+use App\Models\Master\UserType;
 use File;
+use Illuminate\Support\Facades\Hash;
+
 
 class OutletController extends Controller
 {
@@ -120,5 +124,42 @@ class OutletController extends Controller
         $brands = Brand::all();
         $cities = City::all();
         return view('admin.outlet.outlet_add', compact('outlet', 'brands', 'cities'));
+    }
+
+    public function outletUserList()
+    {
+        $users = User::with(['getOutlet','getCity'])->where('user_type', '!=', 'admin')->get();
+        return view('admin.outlet.user_list', compact('users'));
+    }
+
+    public function getAddUser(Request $request)
+    {
+        $outlets = Outlet::where('active', 1)->get();
+        $cities = City::all();
+        $userType = UserType::all();
+        return view('admin.outlet.user_add', compact('outlets', 'cities', 'userType'));
+    }
+
+    public function postAddUser(Request $request)
+    {
+        $insertDataArr = $request->except(['_token', 'tableId']);
+        if($request->password != '') {
+            $insertDataArr['password'] =  Hash::make($request->password);
+        } else {
+            unset($insertDataArr['password']);
+        }
+
+        $insertDataArr['active'] = $request->active ? 1 : 0;
+        $outletInfo = User::updateOrCreate(['id' => $request->tableId], $insertDataArr);
+        return redirect()->to('/admin/outlet-user');
+    }
+
+    public function getEditUser(Request $request, $id)
+    {
+        $outlets = Outlet::where('active', 1)->get();
+        $user = User::where('id', $id)->where('user_type', '!=', 'admin')->first();
+        $cities = City::all();
+        $userType = UserType::all();
+        return view('admin.outlet.user_add', compact('outlets', 'user', 'cities', 'userType'));
     }
 }
