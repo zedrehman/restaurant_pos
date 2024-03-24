@@ -101,7 +101,7 @@ class MasterController extends Controller
     // Outlet Department
     public function OutletDepartmentList(Request $request)
     {
-        $dataArray = OutletDepartment::select('outlet_department.*','outlets.outlet_name')->join('outlets','outlets.id','Outlet_department.outlet_id')->get();
+        $dataArray = OutletDepartment::select('outlet_department.*','outlets.outlet_name')->join('outlets','outlets.id','outlet_department.outlet_id')->get();
         return view('admin.master.outlet_department_list', compact('dataArray'));
     }
 
