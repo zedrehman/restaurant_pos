@@ -63,6 +63,12 @@ class Master extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+        Schema::create('cities', function (Blueprint $table) {
+            $table->id();
+            $table->string('city_name');
+            $table->timestamps();
+        });
         
     }
 
@@ -78,5 +84,6 @@ class Master extends Migration
         Schema::dropIfExists('kitchen_department');
         Schema::dropIfExists('outlet_department');
         Schema::dropIfExists('table_management');
+        Schema::dropIfExists('cities');
     }
 }
