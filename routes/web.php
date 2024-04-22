@@ -88,7 +88,22 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/add-usertype', 'Admin\MasterController@getuserType');
             Route::post('/add-usertype', 'Admin\MasterController@postuserType');
             Route::get('/edit-usertype/{id}', 'Admin\MasterController@getEdituserType');
-            
+
+            // Menu Management
+            Route::get('/menu-management/menu-categories', 'Admin\MeneuManagementController@menuCategoriesList');
+            Route::get('/menu-management/add-menu-categories', 'Admin\MeneuManagementController@getAddMenuCategories');
+            Route::post('/menu-management/add-menu-categories', 'Admin\MeneuManagementController@postAddMenuCategories');
+            Route::get('/menu-management/edit-menu-categories/{id}', 'Admin\MeneuManagementController@getEditMenuCategories');
+
+            Route::get('/menu-management/menu-catalogues', 'Admin\MeneuManagementController@menuCataloguesList');
+            Route::get('/menu-management/add-menu-catalogues', 'Admin\MeneuManagementController@getAddMenuCatalogues');
+            Route::post('/menu-management/add-menu-catalogues', 'Admin\MeneuManagementController@postAddMenuCatalogues');
+            Route::get('/menu-management/edit-menu-catalogues/{id}', 'Admin\MeneuManagementController@getEditMenuCatalogues');
+
+            Route::get('/menu-management/outlet-menu', 'Admin\MeneuManagementController@outletMenuList');
+            Route::get('/menu-management/add-outlet-menu', 'Admin\MeneuManagementController@getAddOutletMenu');
+            Route::post('/menu-management/add-outlet-menu', 'Admin\MeneuManagementController@postAddOutletMenu');
+            Route::get('/menu-management/edit-outlet-menu/{id}', 'Admin\MeneuManagementController@getEditOutletMenu');
         });
     });
 });

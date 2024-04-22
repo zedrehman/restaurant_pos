@@ -38,31 +38,23 @@
             </ul>
         </div>
     </li>
-    <li class="nav-item" id="lnkProductsCategoryList">
-        <a class="nav-link" href="{{url('/admin/products/category')}}">
-            <i class="ti-layers menu-icon"></i>
-            <span class="menu-title">Category</span>
+
+    <li class="nav-item" id="lnkMenuManagement">
+        <a class="nav-link" data-bs-toggle="collapse" href="#menuManagement" aria-expanded="false" aria-controls="menuManagement">
+            <i class="ti-gallery menu-icon"></i>
+            <span class="menu-title">Menu Management</span>
+            <i class="menu-arrow"></i>
         </a>
+        <div class="collapse" id="menuManagement">
+            <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{{url('/admin/menu-management/menu-categories')}}">Menu Categories</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{url('/admin/menu-management/menu-catalogues')}}">Menu Catalogues</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{url('/admin/menu-management/outlet-menu')}}">Outlet Menu</a></li>
+            </ul>
+        </div>
     </li>
-    <li class="nav-item" id="lnkProductsList">
-        <a class="nav-link" href="{{url('/admin/products')}}">
-            <i class="ti-shopping-cart menu-icon"></i>
-            <span class="menu-title">Products</span>
-        </a>
-    </li>
-    <li class="nav-item" id="lnkSupplierList">
-        <a class="nav-link" href="{{url('/admin/suppliers')}}">
-            <i class="ti-user menu-icon"></i>
-            <span class="menu-title">Supplier</span>
-        </a>
-    </li>
-    <li class="nav-item" id="lnkSetting">
-        <a class="nav-link" href="{{url('/admin/dashboard/setting')}}">
-            <i class="ti-settings menu-icon"></i>
-            <span class="menu-title">Setting</span>
-        </a>
-    </li>
-    <li class="nav-item" id="lnkWebContent">
+
+    <li class="nav-item" id="lnkWebContent" style="display: none;">
         <a class="nav-link" data-bs-toggle="collapse" href="#ui-advanced" aria-expanded="false" aria-controls="ui-advanced">
             <i class="ti-view-list menu-icon"></i>
             <span class="menu-title">Web Content</span>

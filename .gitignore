@@ -15,4 +15,5 @@ yarn-error.log
 /.vscode
 /public/brand
 /public/outlet
+/public/menu
 composer.lock
