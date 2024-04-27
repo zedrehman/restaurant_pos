@@ -5,6 +5,8 @@ namespace App\Models\Menu;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Menu\MenuCategory;
+use App\Models\FoodType;
 
 class MenuCatalogue extends Model
 {
@@ -15,4 +17,13 @@ class MenuCatalogue extends Model
     protected $dates = ['deleted_at'];
     
     protected $guarded = ['id', 'created_at', 'updated_at'];
+
+    public function getMenuCategory()
+    {
+        return $this->belongsTo(MenuCategory::class, 'menu_categories_id', 'id');
+    }
+    public function getFoodType()
+    {
+        return $this->belongsTo(FoodType::class, 'food_type', 'id');
+    }
 }

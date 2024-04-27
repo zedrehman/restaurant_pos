@@ -28,6 +28,7 @@
                                 <th>Short Code</th>
                                 <th>Sale price</th>
                                 <th>Current Stock</th>
+                                <th>Menu Category</th>
                                 <th>Food Type</th>
                                 <th>Image
                                 <th>Activ</th>
@@ -41,7 +42,8 @@
                                 <td> {{ $data->short_code }} </td>
                                 <td> {{ $data->sale_price }} </td>
                                 <td> {{ $data->current_stock }} </td>
-                                <td> {{ $data->food_type }} </td>
+                                <td> {{ $data->getMenuCategory->category_name }} </td>
+                                <td> {{ $data->getFoodType->type }} </td>
                                 <td> 
                                     @if ($data->image)
                                     <img src="{{ asset('menu/menu_catalogues/'.$data->image) }}" width="100">

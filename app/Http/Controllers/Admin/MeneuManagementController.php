@@ -57,7 +57,7 @@ class MeneuManagementController extends Controller
 
     public function menuCataloguesList(Request $request)
     {
-        $dataArray = MenuCatalogue::all();
+        $dataArray = MenuCatalogue::with('getMenuCategory','getFoodType')->get();
         return view('admin.menu.menu_catalogues_list', compact('dataArray'));
     }
 
@@ -103,7 +103,7 @@ class MeneuManagementController extends Controller
 
     public function outletMenuList(Request $request)
     {
-        $dataArray = OutletMenu::all();
+        $dataArray = OutletMenu::with('getOutlet')->get();
         return view('admin.menu.outlet_menu_list', compact('dataArray'));
     }
 

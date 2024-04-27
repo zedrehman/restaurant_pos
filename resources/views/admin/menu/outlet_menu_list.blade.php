@@ -33,7 +33,7 @@
                             @foreach ($dataArray as $data)
                             <tr>
                                 <td> {{ $data->menu_name }} </td>
-                                <td> {{ $data->outlet_id }} </td>
+                                <td> {{ $data->getOutlet->outlet_name }} </td>
                                 <td>
                                     <a class="btn-sm btn-warning" href="{{ url('/admin/menu-management/edit-outlet-menu/'.$data->id) }}">Edit</a>
                                 </td>
