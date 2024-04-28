@@ -1,8 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-<link href="https://raw.githack.com/ttskch/select2-bootstrap4-theme/master/dist/select2-bootstrap4.css" rel="stylesheet">
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-dark">
         <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
@@ -45,18 +43,14 @@
 @endsection
 
 @section('JsScript')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.2/select2.min.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.2/select2.css" rel="stylesheet"/>
 <script>
     $(function () {
         let sellerDetails = JSON.parse('{!! $menuDetail !!}');
         $('select').select2().val(sellerDetails).trigger('change.select2');
-        $('select').each(function () {
-            $(this).select2({
-            theme: 'bootstrap4',
-            placeholder: $(this).attr('placeholder'),
-            allowClear: Boolean($(this).data('allow-clear')),
-            });
-        });
+        $("select").select2();
     });
 </script>
 @endsection
