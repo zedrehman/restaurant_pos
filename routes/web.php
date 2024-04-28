@@ -104,6 +104,9 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/menu-management/add-outlet-menu', 'Admin\MeneuManagementController@getAddOutletMenu');
             Route::post('/menu-management/add-outlet-menu', 'Admin\MeneuManagementController@postAddOutletMenu');
             Route::get('/menu-management/edit-outlet-menu/{id}', 'Admin\MeneuManagementController@getEditOutletMenu');
+
+            Route::get('/menu-management/add-item/{id}', 'Admin\MeneuManagementController@getAddItem');
+            Route::post('/menu-management/add-item', 'Admin\MeneuManagementController@postAddItem');
         });
     });
 });

@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Menu\MenuCategory;
 use App\Models\Menu\MenuCatalogue;
 use App\Models\Menu\OutletMenu;
+use App\Models\Menu\MenuDetail;
 use App\Models\FoodType;
 use App\Models\Outlet;
 use File;
+use App\Models\Master\ProductGroup;
 
 class MeneuManagementController extends Controller
 {
@@ -125,5 +127,35 @@ class MeneuManagementController extends Controller
         $dataArray = OutletMenu::where('id', $id)->first();
         $outlets = Outlet::where('active', 1)->get();
         return view('admin.menu.outlet_menu_add', compact('dataArray','outlets'));
+    }
+
+    public function getAddItem(Request $request, $id)
+    {
+        $menuCatalogue = MenuCatalogue::where('active', 1)->get();
+        $menuDetail = json_encode(MenuDetail::where('outlets_menu_id', $id)->pluck('menu_catalogue_id')->toArray());
+        
+        $dataArray = OutletMenu::where('id', $id)->first();
+        return view('admin.menu.add_menu', compact('dataArray', 'menuCatalogue', 'menuDetail'));
+    }
+
+    public function postAddItem(Request $request)
+    {
+        $menuItems = $request->menu_catalogue_id;
+        if( count($menuItems) > 0 )
+        {
+            $insertDataArray = [];
+            for ($i=0; $i < count($menuItems); $i++) { 
+                $insertData = [
+                    'outlets_menu_id' => $request->tableId,
+                    'menu_catalogue_id' => $menuItems[$i],
+                ];
+                array_push($insertDataArray, $insertData);
+            }
+            if( count($insertDataArray) > 0) {
+                MenuDetail::where('outlets_menu_id', $request->tableId)->forceDelete();
+                MenuDetail::insert($insertDataArray);
+            }
+        }
+        return redirect()->to('/admin/menu-management/outlet-menu');
     }
 }
