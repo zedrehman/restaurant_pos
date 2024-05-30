@@ -34,7 +34,6 @@
                 <li class="nav-item"><a class="nav-link" href="{{url('/admin/outlet-department-list')}}">Outlet Department</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{url('/admin/table-management-list')}}">Table Management</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{url('/admin/coupon-list')}}">Coupons</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{url('/admin/usertype-list')}}">User Type</a></li>
             </ul>
         </div>
     </li>

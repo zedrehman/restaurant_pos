@@ -136,7 +136,7 @@ class OutletController extends Controller
     {
         $outlets = Outlet::where('active', 1)->get();
         $cities = City::all();
-        $userType = UserType::all();
+        $userType = [ WAITER, MANAGER];
         return view('admin.outlet.user_add', compact('outlets', 'cities', 'userType'));
     }
 
@@ -159,7 +159,7 @@ class OutletController extends Controller
         $outlets = Outlet::where('active', 1)->get();
         $user = User::where('id', $id)->where('user_type', '!=', 'admin')->first();
         $cities = City::all();
-        $userType = UserType::all();
+        $userType = [ WAITER, MANAGER];
         return view('admin.outlet.user_add', compact('outlets', 'user', 'cities', 'userType'));
     }
 }

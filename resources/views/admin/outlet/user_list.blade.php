@@ -36,7 +36,6 @@
                                 <td>
                                     <a class="btn-sm btn-warning" href="{{ url('/admin/edit-user/'.$user->id) }}">Edit</a>
                                 </td>
-                                <td> {{ $user->id }} </td>
                                 <td> {{ $user->name }} </td>
                                 <td> {{ $user->outlet_id }} </td>
                                 <td> {{ $user->phone_no }} </td>

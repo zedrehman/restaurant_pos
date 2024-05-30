@@ -62,8 +62,8 @@
                                 <label>User Type <span style="color:red;">*</span> </label>
                                 <select class="form-control" name="user_type" required>
                                     <option value="">Select usertype</option>
-                                    @foreach ($userType as $uType)
-                                        <option value="{{$uType->id}}" @if(isset($user) && $user->user_type == $uType->id) selected @endif> {{ $uType->type}}</option>
+                                    @foreach ($userType as $key => $uType)
+                                        <option value="{{$uType}}" @if(isset($user) && $user->user_type == $uType) selected @endif> {{ $uType}}</option>
                                     @endforeach
                                 </select>
                             </div>

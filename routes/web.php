@@ -29,6 +29,13 @@ Route::get('/register', 'Auth\LoginController@register');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => ['waiter']], function () {
+    });
+
+    Route::group(['middleware' => ['manager']], function () {
+    });
+
+    // Admin
     Route::group(['prefix' => 'admin'], function () {
         Route::group(['middleware' => ['admin']], function () {
             Route::get('/dashboard', 'Admin\DashboardController@Index');
