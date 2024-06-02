@@ -19,21 +19,25 @@ Route::get('/', function () {
 });
 
 //start POS 
-Route::get('/pos/dashboard', 'PosController@Dashboard');
-Route::get('/pos/order-table', 'PosController@OrderTable');
+Route::get('/oulet/login', 'Auth\LoginController@getUserLogin');
 //end POS 
-Route::post('/login/admin', 'Auth\LoginController@adminLogin');
+Route::post('/login/user', 'Auth\LoginController@postUserLogin');
+Route::get('/logout', 'Auth\LoginController@logout');
 
 Auth::routes();
 Route::get('/register', 'Auth\LoginController@register');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::group(['middleware' => ['waiter']], function () {
-    });
+    Route::get('/oulet/dashboard', 'PosController@ouletDashboard');
+    Route::get('/oulet/order-table', 'PosController@OrderTable');
+    // Route::group(['middleware' => ['waiter']], function () {
+    //     Route::get('/oulet/dashboard', 'PosController@OrderTable');
+    // });
 
-    Route::group(['middleware' => ['manager']], function () {
-    });
+    // Route::group(['middleware' => ['manager']], function () {
+    //     Route::get('/oulet/dashboard', 'PosController@OrderTable');
+    // });
 
     // Admin
     Route::group(['prefix' => 'admin'], function () {

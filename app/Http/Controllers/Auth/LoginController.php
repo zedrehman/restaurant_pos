@@ -41,9 +41,9 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function adminLogin(Request $request)
+    public function postUserLogin(Request $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'user_type' => ADMIN_ROLE])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect('/home');
         }
         return redirect()->back()->with("error", "User Name and password incorrect");
@@ -57,4 +57,28 @@ class LoginController extends Controller
             return view('auth.login');
         }
     }
+
+    public function getUserLogin(Request $request)
+    {
+        if (isset(Auth::user()->id)) {
+            return redirect('/home');
+        } else {
+            return view('auth.user_login');
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        $userType = Auth::user()->user_type;
+        Auth::logout();
+        session()->flush();
+        $redirectUrl = url('/');
+        if ($userType == ADMIN_ROLE) {
+            $redirectUrl = url('/login');
+        } elseif ($userType == WAITER || $userType  == MANAGER) {
+            $redirectUrl = url('/oulet/login');
+        }
+        return redirect($redirectUrl);
+    }
+
 }

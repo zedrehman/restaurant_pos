@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Master\TableManagement;
 
 class PosController extends Controller
 {
-    public function Dashboard()
+    public function ouletDashboard()
     {
         return view('pos.dashboard');
     }
     public function OrderTable()
     {
-        return view('pos.order_table');
+        $tablesArray = TableManagement::all();
+        return view('pos.order_table', compact(['tablesArray']));
     }
 }

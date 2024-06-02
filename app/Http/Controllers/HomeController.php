@@ -27,7 +27,10 @@ class HomeController extends Controller
         $user_role = Auth::user()->user_type;
         if ($user_role == ADMIN_ROLE) {
             return redirect('admin/dashboard');
-        } else {
+        } elseif( $user_role == WAITER || $user_role == MANAGER) {
+            return redirect('oulet/dashboard');
+        }
+        else {
             return abort(404);
         }
     }

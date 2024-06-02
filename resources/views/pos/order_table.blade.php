@@ -1,128 +1,24 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('content')
 <div class="row">
     <div class="col-sm-8">
         <div class="row" style="max-height: 205px;overflow: auto;">
+            @foreach ($tablesArray as $key => $data)
             <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-nifty-primary text-white align-items-center">
+                <div class="card text-white align-items-center
+                    @if ($key%2==0)
+                        bg-nifty-primary
+                    @else
+                        bg-success
+                    @endif 
+                ">
                     <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 1</h4>
+                        <h4 style="margin-bottom: 0px;">{{$data->table_name}}</h4>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-success text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 2</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-nifty-primary text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 3</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-success text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 4</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-success text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 5</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-nifty-primary text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 6</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-nifty-primary text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 7</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-nifty-primary text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 8</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-nifty-primary text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 9</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-nifty-primary text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 10</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-nifty-primary text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 11</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-nifty-primary text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">Table 12</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-mint text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">AC 1</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-mint text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">AC 2</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-success text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">AC 3</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-mint text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">AC 4</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-success text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">AC 5</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
+            @endforeach
+            <!-- <div class="col-sm-2" style="padding: 0px;">
                 <div class="card bg-mint text-white align-items-center">
                     <div class="card-body" style="padding: 10px 1.437rem;">
                         <h4 style="margin-bottom: 0px;">AC 6</h4>
@@ -135,7 +31,7 @@
                         <h4 style="margin-bottom: 0px;">AC 6</h4>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-sm-12" style="padding-left: 0px;">

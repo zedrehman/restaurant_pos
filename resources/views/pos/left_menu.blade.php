@@ -1,12 +1,12 @@
 <ul class="nav" style="margin-top: 10px !important;">
     <li class="nav-item" id="lnkDashboard">
-        <a class="nav-link" href="{{url('/pos/dashboard')}}">
+        <a class="nav-link" href="{{url('/oulet/dashboard')}}">
             <i class="ti-home menu-icon"></i>
             <span class="menu-title">Dashboard</span>
         </a>
     </li>
     <li class="nav-item" id="lnkProductsCategoryList">
-        <a class="nav-link" href="{{url('/pos/order-table')}}">
+        <a class="nav-link" href="{{url('/oulet/order-table')}}">
             <i class="fa fa-spoon menu-icon" style="rotate: 180deg;"></i><i class="fa fa-glass menu-icon"></i>
             <span class="menu-title">Order Table</span>
         </a>
@@ -25,7 +25,7 @@
         </a>
     </li>
     <li class="nav-item" id="lnkLogout">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{{ url('/logout') }}">
             <i class="ti-power-off menu-icon"></i>
             <span class="menu-title">Logout</span>
         </a>
