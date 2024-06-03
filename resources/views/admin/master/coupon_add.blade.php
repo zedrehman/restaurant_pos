@@ -5,7 +5,7 @@
     <ol class="breadcrumb bg-dark">
         <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
         <li class="breadcrumb-item">Master Configuration</li>
-        <li class="breadcrumb-item active"> <a href="{{url('/admin/coupon-list')}}"> Coupon  List </a></li>
+        <li class="breadcrumb-item active"> <a href="{{url('/admin/coupon-list')}}"> Coupon List </a></li>
         <li class="breadcrumb-item active" aria-current="page">Add</li>
     </ol>
 </nav>
@@ -34,8 +34,8 @@
                                 <label>coupon_type <span style="color:red;">*</span> </label>
                                 <select class="form-control" name="coupon_type" required>
                                     <option value="">Select Coupon Type</option>
-                                    <option value="1" @if(isset($dataArray) && 1 == $dataArray->coupon_type) selected @endif>Fixed</option>
-                                    <option value="2" @if(isset($dataArray) && 2 == $dataArray->coupon_type) selected @endif>Percentage</option>
+                                    <option value="1" @if(isset($dataArray) && 1==$dataArray->coupon_type) selected @endif>Fixed</option>
+                                    <option value="2" @if(isset($dataArray) && 2==$dataArray->coupon_type) selected @endif>Percentage</option>
                                 </select>
                             </div>
                         </div>
@@ -62,12 +62,13 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>description </label>
-                                <textarea name="description" class="form-control">@if(isset($dataArray)){{ $dataArray->description }}@endif</textarea
+                                <textarea name="description" class="form-control">@if(isset($dataArray)){{ $dataArray->description }}@endif</textarea>
                             </div>
                         </div>
 
                         <div class="col-sm-3">
                             <div class="form-group">
+                                <label>&nbsp;</label>
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input type="checkbox" name="active" class="form-check-input" @if(isset($dataArray) && $dataArray->active == 1) checked @endif> Active
@@ -77,7 +78,7 @@
                         </div>
 
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-sm-12">
                             <button type="submit" class="btn btn-sm btn-success"> Submit</button>
@@ -95,5 +96,3 @@
     });
 </script>
 @endsection
-
-

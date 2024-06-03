@@ -29,8 +29,10 @@ Route::get('/register', 'Auth\LoginController@register');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/oulet/dashboard', 'PosController@ouletDashboard');
-    Route::get('/oulet/order-table', 'PosController@OrderTable');
+    Route::get('/outlet/dashboard', 'PosController@ouletDashboard');
+    Route::get('/outlet/order-table', 'PosController@OrderTable');
+
+    Route::get('/outlet/menu-list-by-category-id/{CategoryId}', 'PosController@MenuListByCategoryId');
     // Route::group(['middleware' => ['waiter']], function () {
     //     Route::get('/oulet/dashboard', 'PosController@OrderTable');
     // });
@@ -83,7 +85,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/add-outlet-department', 'Admin\MasterController@getoutletDepartment');
             Route::post('/add-outlet-department', 'Admin\MasterController@postoutletDepartment');
             Route::get('/edit-outlet-department/{id}', 'Admin\MasterController@getEditoutletDepartment');
-            
+
             Route::get('/table-management-list', 'Admin\MasterController@TableManagementList');
             Route::get('/add-table-management', 'Admin\MasterController@getTableManagement');
             Route::post('/add-table-management', 'Admin\MasterController@postTableManagement');
