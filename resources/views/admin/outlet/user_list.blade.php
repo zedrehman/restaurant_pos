@@ -37,7 +37,7 @@
                                     <a class="btn-sm btn-warning" href="{{ url('/admin/edit-user/'.$user->id) }}">Edit</a>
                                 </td>
                                 <td> {{ $user->name }} </td>
-                                <td> {{ $user->outlet_id }} </td>
+                                <td> {{ $user->getOutlet->outlet_name }} </td>
                                 <td> {{ $user->phone_no }} </td>
                                 <td> @if($user->active==1)
                                     <div class="badge badge-success badge-pill">Active</div>

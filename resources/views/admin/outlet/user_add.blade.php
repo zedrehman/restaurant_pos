@@ -54,7 +54,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>Contact phone <span style="color:red;">*</span></label>
-                                <input type="text" name="contact_phone" class="form-control" placeholder="contact phone" value="@if(isset($user)){{ $user->contact_phone }}@endif" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" required>
+                                <input type="text" name="phone_no" class="form-control" placeholder="contact phone" value="@if(isset($user)){{ $user->phone_no }}@endif" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" required>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -90,7 +90,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>zip code <span style="color:red;">*</span></label>
-                                <input type="text" name="postal_code" class="form-control" placeholder="" value="@if(isset($user)){{ $user->postal_code }}@endif" required>
+                                <input type="text" name="postal_code" class="form-control" placeholder="" value="@if(isset($user)){{ $user->postal_code }}@endif" required  onKeyDown="if(this.value.length==6 && event.keyCode!=8) return false;">
                             </div>
                         </div>
                         <div class="col-sm-3">
