@@ -1,12 +1,12 @@
 <ul class="nav" style="margin-top: 10px !important;">
     <li class="nav-item" id="lnkDashboard">
-        <a class="nav-link" href="{{url('/oulet/dashboard')}}">
+        <a class="nav-link" href="{{url('/outlet/dashboard')}}">
             <i class="ti-home menu-icon"></i>
             <span class="menu-title">Dashboard</span>
         </a>
     </li>
     <li class="nav-item" id="lnkProductsCategoryList">
-        <a class="nav-link" href="{{url('/oulet/order-table')}}">
+        <a class="nav-link" href="{{url('/outlet/order-table')}}">
             <i class="fa fa-spoon menu-icon" style="rotate: 180deg;"></i><i class="fa fa-glass menu-icon"></i>
             <span class="menu-title">Order Table</span>
         </a>
