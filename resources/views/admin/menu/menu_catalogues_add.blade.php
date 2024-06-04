@@ -43,6 +43,12 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
+                                <label>Ready In</label>
+                                <input type="text" name="ready_in" class="form-control" placeholder="Ready In" value="@if(isset($dataArray)){{ $dataArray->ready_in }}@endif">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
                                 <label>Category name <span style="color:red;">*</span> </label>
                                 <select class="form-control" name="menu_categories_id" required>
                                     <option value="">Select Category</option>

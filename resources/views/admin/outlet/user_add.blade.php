@@ -54,7 +54,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>Contact phone <span style="color:red;">*</span></label>
-                                <input type="text" name="contact_phone" class="form-control" placeholder="contact phone" value="@if(isset($user)){{ $user->contact_phone }}@endif" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;">
+                                <input type="text" name="contact_phone" class="form-control" placeholder="contact phone" value="@if(isset($user)){{ $user->contact_phone }}@endif" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" required>
                             </div>
                         </div>
                         <div class="col-sm-3">
