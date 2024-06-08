@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 //start POS 
-Route::get('/oulet/login', 'Auth\LoginController@getUserLogin');
+Route::get('/outlet/login', 'Auth\LoginController@getUserLogin');
 //end POS 
 Route::post('/login/user', 'Auth\LoginController@postUserLogin');
 Route::get('/logout', 'Auth\LoginController@logout');
