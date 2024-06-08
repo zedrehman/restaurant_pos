@@ -57,7 +57,7 @@
                 @include('pos.left_menu')
             </nav>
             <div class="main-panel">
-                <div class="content-wrapper" style="padding-top: 0px;padding-bottom: 3px;">
+                <div class="content-wrapper" style="padding-top: 0px;padding-right: 15px;padding-bottom: 3px;">
                     @yield('content')
                 </div>
             </div>

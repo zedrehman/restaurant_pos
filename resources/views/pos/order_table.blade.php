@@ -4,6 +4,15 @@
     .text-bold {
         font-weight: bold;
     }
+
+    .table-sm th,
+    .table-sm td {
+        padding: 3px;
+    }
+
+    .table-sm td input {
+        height: 25px;
+    }
 </style>
 @endsection
 @section('content')
@@ -85,21 +94,60 @@
                 <div class="row" id="divDineIn">
                     <div class="col-sm-12" style="text-align: center;">
                         <div style="text-align: center;border-bottom: 1px solid #e2e2e2;margin: 5px 0px 5px 0px;"></div>
-                        <a type="button" class="btn btn-sm btn-outline-success">Order / KOT</a>
-                        <a type="button" class="btn btn-sm btn-outline-dark">Billing</a>
+                        <a type="button" class="btn btn-sm btn-outline-success" id="btnOrder_KOT">Order / KOT</a>
+                        <a type="button" class="btn btn-sm btn-outline-dark" id="btnBilling">Billing</a>
+                        <a type="button" class="btn btn-sm btn-dark">New Order</a>
                     </div>
                     <div class="col-sm-12 bg-success" style="margin-top: 5px;">
-                        <label style="margin-top: 5px;">KOT 1</label>
-                        <button type="button" class="btn btn-sm btn-outline-dark" style="float: right;">Remote KOT</button>
+                    <label style="margin-top: 5px;font-weight: bold;" id="lblKOTtableNo"></label>
+                    <label style="margin-top: 5px;font-weight: bold;float: right;">KOT - 1</label>
+                        <button type="button" class="btn btn-sm btn-outline-dark" style="float: right;display: none;">Remote KOT</button>
                     </div>
                 </div>
-                <div class="row" id="divPickUpDevelivery">
-                    <div class="col-sm-12" style="text-align: center;">
-                        <div style="text-align: center;border-bottom: 1px solid #e2e2e2;margin: 5px 0px 5px 0px;"></div>
-                        <a type="button" class="btn btn-sm btn-outline-success">Order / KOT</a>
-                        <a type="button" class="btn btn-sm btn-outline-success">Billing</a>
-                        <input type="checkbox">Pick Up
-                        <a type="button" class="btn btn-sm btn-dark">New Order</a>
+                <div class="row" id="divOrder_KOT">
+                    <div class="col-sm-12">
+                        <div style="height: calc(100vh - 325px);overflow-y: auto;overflow-x:hidden;">
+                            <table style="width: 100%;" class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 60%;">Item Name</th>
+                                        <th style="text-align: right;width: 20%;">Qty</th>
+                                        <th style="text-align: right;width: 20%;">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyKOTMenuBill"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 bg-success" style="color: #fff;padding: 5px;">
+                        Total: <span id="lblTotalKOTBillAmount" style="float: right;margin-right: 10px;">0</span>
+                    </div>
+                    <div class="col-sm-12" style="margin-top: 5px;text-align: center;">
+                        <a class="btn btn-sm btn-dark" id="btnSavePrintKOT">Save & Print KOT</a>
+                    </div>
+                </div>
+                <div class="row" id="divBilling" style="display: none;">
+                    <div class="col-sm-12">
+                        <div style="height: calc(100vh - 325px);overflow-y: auto;overflow-x:hidden;">
+                            <table style="width: 100%;" class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 60%;">Item Name</th>
+                                        <th style="text-align: right;width: 20%;">Qty</th>
+                                        <th style="text-align: right;width: 20%;">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyBillingMenu"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 bg-success" style="color: #fff;padding: 5px;">
+                        Total: <span id="lblTotalBillAmount" style="float: right;margin-right: 10px;">0</span>
+                    </div>
+                    <div class="col-sm-12" style="margin-top: 5px;text-align: center;">
+                        <a class="btn btn-sm btn-dark" id="btnSavePrintBill">Save & Print Bill</a>
+                        <a class="btn btn-sm btn-dark" id="btnPayment">Payment</a>
+                        <a class="btn btn-sm btn-dark" id="btnSettleBill">Settle Bill</a>
                     </div>
                 </div>
                 <div class="row" id="divQuickBill">
