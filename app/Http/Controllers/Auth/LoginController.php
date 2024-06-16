@@ -76,7 +76,7 @@ class LoginController extends Controller
         if ($userType == ADMIN_ROLE) {
             $redirectUrl = url('/login');
         } elseif ($userType == WAITER || $userType  == MANAGER) {
-            $redirectUrl = url('/oulet/login');
+            $redirectUrl = url('/outlet/login');
         }
         return redirect($redirectUrl);
     }

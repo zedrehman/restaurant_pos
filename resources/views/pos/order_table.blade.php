@@ -13,6 +13,17 @@
     .table-sm td input {
         height: 25px;
     }
+
+    .payment-mode {
+        display: inline-block;
+        padding: 10px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .payment-border {
+        border: 2px solid red;
+    }
 </style>
 @endsection
 @section('content')
@@ -20,29 +31,29 @@
     <div class="col-sm-8">
         <div class="row" style="max-height: 205px;overflow: auto;">
             @foreach ($tablesArray as $key => $data)
-            <div class="col-sm-2 divTable" style="padding: 0px;" data-id="{{$data->id}}">
-                <div class="card text-white align-items-center bg-nifty-primary">
+            <?php
+            $bg = 'bg-nifty-primary';
+            if ($data->selectedTableId != 0) {
+                $bg = 'bg-info';
+            }
+            if ($data->SavedTableId != 0) {
+                $bg = 'bg-dark';
+            }
+            ?>
+            <div class="col-sm-2 divTable" style="padding: 0px;" data-id="{{$data->id}}" data-tableId="{{$data->selectedTableId}}">
+                <div class="card text-white align-items-center {{$bg}}" id="divtbl_{{$data->id}}">
                     <div class="card-body" style="padding: 10px 1.437rem;">
                         <h4 style="margin-bottom: 0px;">{{$data->table_name}}</h4>
+                        @if($data->SavedTableId != 0)
+                        <i class="table-amount">Rs: {{$data->SavedTableId}}</i>
+                        @else
+                        <i class="table-amount">&nbsp;</i>
+                        @endif
                     </div>
                 </div>
             </div>
             @endforeach
             <input type="hidden" id="hdnSelectedTable" value="0">
-            <!-- <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-mint text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">AC 6</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2" style="padding: 0px;">
-                <div class="card bg-success text-white align-items-center">
-                    <div class="card-body" style="padding: 10px 1.437rem;">
-                        <h4 style="margin-bottom: 0px;">AC 6</h4>
-                    </div>
-                </div>
-            </div> -->
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-sm-12" style="padding-left: 0px;">
@@ -82,6 +93,7 @@
     </div>
     <div class="col-sm-4" style="padding-right: 0px;padding-left: 5px;">
         <div class="card">
+            <input type="hidden" id="hdnOrderId" value="0">
             <div class="card-body" style="padding:0px 15px 0px 15px;">
                 <div class="row">
                     <div class="col-sm-12" style="text-align: center;">
@@ -96,17 +108,17 @@
                         <div style="text-align: center;border-bottom: 1px solid #e2e2e2;margin: 5px 0px 5px 0px;"></div>
                         <a type="button" class="btn btn-sm btn-outline-success" id="btnOrder_KOT">Order / KOT</a>
                         <a type="button" class="btn btn-sm btn-outline-dark" id="btnBilling">Billing</a>
-                        <a type="button" class="btn btn-sm btn-dark">New Order</a>
+
                     </div>
                     <div class="col-sm-12 bg-success" style="margin-top: 5px;">
-                    <label style="margin-top: 5px;font-weight: bold;" id="lblKOTtableNo"></label>
-                    <label style="margin-top: 5px;font-weight: bold;float: right;">KOT - 1</label>
+                        <label style="margin-top: 5px;font-weight: bold;" id="lblKOTtableNo"></label>
+                        <label style="margin-top: 5px;font-weight: bold;float: right;">KOT - <span id="lblKOTNumber">0</span> </label>
                         <button type="button" class="btn btn-sm btn-outline-dark" style="float: right;display: none;">Remote KOT</button>
                     </div>
                 </div>
                 <div class="row" id="divOrder_KOT">
                     <div class="col-sm-12">
-                        <div style="height: calc(100vh - 325px);overflow-y: auto;overflow-x:hidden;">
+                        <div style="height: calc(100vh - 280px);overflow-y: auto;overflow-x:hidden;">
                             <table style="width: 100%;" class="table table-sm">
                                 <thead>
                                     <tr>
@@ -119,7 +131,25 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-sm-12 bg-success" style="color: #fff;padding: 5px;">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-4" style="padding: 0;">
+                                <input type="text" id="txtCustomerName" value="" placeholder="Customer Name" class="form-control">
+                            </div>
+                            <div class="col-sm-4" style="padding: 0;">
+                                <input type="text" id="txtMobileNo" value="" placeholder="Mobile No" class="form-control">
+                            </div>
+                            <div class="col-sm-4" style="padding: 0;">
+                                <input type="text" id="txtAddress" value="" placeholder="Address" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 3px;">
+                            <div class="col-sm-4" style="padding: 0;">
+                                <input type="text" id="txtKotNote" value="" placeholder="KOT Note" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 bg-success" style="color: #fff;padding: 5px;margin-top: 1px;">
                         Total: <span id="lblTotalKOTBillAmount" style="float: right;margin-right: 10px;">0</span>
                     </div>
                     <div class="col-sm-12" style="margin-top: 5px;text-align: center;">
@@ -128,13 +158,13 @@
                 </div>
                 <div class="row" id="divBilling" style="display: none;">
                     <div class="col-sm-12">
-                        <div style="height: calc(100vh - 325px);overflow-y: auto;overflow-x:hidden;">
+                        <div style="height: calc(100vh - 270px);overflow-y: auto;overflow-x:hidden;">
                             <table style="width: 100%;" class="table table-sm">
                                 <thead>
                                     <tr>
                                         <th style="width: 60%;">Item Name</th>
-                                        <th style="text-align: right;width: 20%;">Qty</th>
-                                        <th style="text-align: right;width: 20%;">Amount</th>
+                                        <th style="text-align: right;width: 10%;">Qty</th>
+                                        <th style="text-align: right;width: 30%;">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyBillingMenu"></tbody>
@@ -158,13 +188,64 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+<div class="modal right animated fadeInRight" id="divChannelListToLabModel" role="dialog" aria-labelledby="Channel List">
+    <div class="modal-dialog modal-lg" role="document" style="width:100%;max-width:1000px;">
+        <div class="modal-content" style="background: #ecf0f5">
+            <div class="modal-header" style="padding: 15px;">
+                <h4 class="modal-title">Choose Payment Mode</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-3" style="text-align: center;">
+                        <a class="payment-mode" id="btnPaytm" data-value="Paytm">
+                            <img src="{{ asset('img') }}/paytm.jpg" alt="" style="width: 80px;">
+                            <br>
+                            <b>Paytm</b>
+                        </a>
+                    </div>
+                    <div class="col-sm-3" style="text-align: center;">
+                        <a class="payment-mode" id="btnGooglePay" data-value="Google Pay">
+                            <img src="{{ asset('img') }}/google-pay-logo.png" alt="" style="width: 150px;height: 60px;"><br>
+                            <b>Google Pay</b>
+                        </a>
+                    </div>
+                    <div class="col-sm-3" style="text-align: center;">
+                        <a class="payment-mode" id="btnCard" data-value="Card">
+                            <img src="{{ asset('img') }}/card-transparent.png" alt="" style="width: 120px;"><br>
+                            <b>Card</b>
+                        </a>
+                    </div>
+                    <div class="col-sm-3" style="text-align: center;">
+                        <a class="payment-mode" id="btnCash" data-value="Cash">
+                            <img src="{{ asset('img') }}/cash-logo.png" alt="" style="width: 100px;"><br>
+                            <b>Cash</b>
+                        </a>
+                    </div>
+                    <input type="hidden" id="hdnPaymentMode" value="">
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-12" style="text-align: center;" id="divGrandTotal"></div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-12" style="text-align: right;">
+                        <a type="button" class="btn btn-sm btn-dark" id="btnSavePaymentAndSettleBill">Save Payment And Settle Bill</a>
+                        <a type="button" class="btn btn-sm btn-dark" id="btnCloseModel">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @endsection
 @section('JsScript')
 <script>
     var baseUrl = "{{url('/')}}";
+    var _token = "{{ csrf_token() }}";
+    var outlet_id = "{{$outlet_id}}";
 </script>
 <script src="{{ asset('validation/order_table.js') }}?version={{config('constant.script_version')}}"></script>
 @endsection

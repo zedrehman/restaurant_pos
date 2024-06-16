@@ -15,11 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->to('/login');
 });
 
 //start POS 
 Route::get('/outlet/login', 'Auth\LoginController@getUserLogin');
+
 //end POS 
 Route::post('/login/user', 'Auth\LoginController@postUserLogin');
 Route::get('/logout', 'Auth\LoginController@logout');
@@ -33,6 +34,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/outlet/order-table', 'PosController@OrderTable');
 
     Route::get('/outlet/menu-list-by-category-id/{CategoryId}', 'PosController@MenuListByCategoryId');
+
+    Route::get('/outlet/order-table-details/{tableId}', 'PosController@GetOrderTableDetails');
+    Route::get('/outlet/order-table-mneu-details/{OrderId}', 'PosController@GetOrderTableMenu');
+
+    Route::post('/outlet/save-print-kot', 'PosController@SavePrintKOT');
+    Route::post('/outlet/save-print-bill', 'PosController@SavePrintBill');
+    Route::post('/outlet/save-payment-bill', 'PosController@SavePaymentAndSettleBill');    
+    Route::post('/outlet/settle-bill', 'PosController@SettleBill');
     // Route::group(['middleware' => ['waiter']], function () {
     //     Route::get('/oulet/dashboard', 'PosController@OrderTable');
     // });

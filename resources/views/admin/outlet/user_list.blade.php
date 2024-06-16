@@ -24,8 +24,9 @@
                         <thead>
                             <tr>
                                 <th>Action</th>
-                                <th>Name</th>
                                 <th>Outlet Name</th>
+                                <th>Name</th>
+                                <th>Email</th>
                                 <th>Phone</th>
                                 <th>Active</th>
                             </tr>
@@ -34,10 +35,11 @@
                             @foreach ($users as $user)
                             <tr>
                                 <td>
-                                    <a class="btn-sm btn-warning" href="{{ url('/admin/edit-user/'.$user->id) }}">Edit</a>
+                                    <a class="btn btn-sm btn-warning" href="{{ url('/admin/edit-user/'.$user->id) }}">Edit</a>
                                 </td>
-                                <td> {{ $user->name }} </td>
                                 <td> {{ $user->getOutlet->outlet_name }} </td>
+                                <td> {{ $user->name }} </td>
+                                <td> {{ $user->email }} </td>
                                 <td> {{ $user->phone_no }} </td>
                                 <td> @if($user->active==1)
                                     <div class="badge badge-success badge-pill">Active</div>

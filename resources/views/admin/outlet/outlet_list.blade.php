@@ -54,7 +54,6 @@
                                 <td> {{ $out->next_reset_bill_date }} </td>
                                 <td> {{ $out->created_at }} </td>
                             </tr>
-                            next _reset_bill_date
                             @endforeach
                         </tbody>
                     </table>

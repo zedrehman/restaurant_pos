@@ -8,15 +8,20 @@ $(document).ready(function () {
         $("#hdnSelectedCategory").val(CategoryId);
         GetMenuList(CategoryId);
     }
+    //$('#divChannelListToLabModel').modal('show');
 });
 
 $(".divTable").click(function () {
     let TableId = $(this).attr('data-id');
 
+
     $('.divTable').each(function () {
-        if ($(this).children('.card').hasClass('bg-info')) {
-            $(this).children('.card').removeClass('bg-info');
-            $(this).children('.card').addClass('bg-nifty-primary');
+        let SelectedTableId = $(this).attr('data-tableId');
+        if (SelectedTableId == 0) {
+            if ($(this).children('.card').hasClass('bg-info')) {
+                $(this).children('.card').removeClass('bg-info');
+                $(this).children('.card').addClass('bg-nifty-primary');
+            }
         }
     });
 
@@ -27,13 +32,36 @@ $(".divTable").click(function () {
 
     $("#hdnSelectedTable").val(TableId);
 
+    GetTableBillDetails(TableId);
+
     let MenuITableIdtem = JSON.parse(localStorage.getItem('KOT_Table_' + TableId));
     if (MenuITableIdtem != null) {
-        BindMenuBillItems(MenuITableIdtem);
-    } else {
-        BindMenuBillItems(MenuItem);
+        MenuItem = MenuITableIdtem;
     }
+    $('#btnOrder_KOT').trigger('click');
+    //BindMenuBillItems(MenuItem);
 });
+
+function GetTableBillDetails(TableId) {
+    $("#lblKOTNumber").html(0);
+    $("#hdnOrderId").val(0);
+
+    $.ajax({
+        url: baseUrl + '/outlet/order-table-details/' + TableId,
+        type: 'GET',
+        success: function (response) {
+            console.log(response);
+            if (response != null) {
+                $("#lblKOTNumber").html(response.kot);
+                $("#hdnOrderId").val(response.id);
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+            console.log(errorMsg)
+        }
+    });
+}
 
 $("#btnRefresh").click(function () {
     window.location.reload(true);
@@ -123,21 +151,25 @@ $("#btnOrder_KOT").click(function () {
 });
 
 $("#btnBilling").click(function () {
+
     let TableId = $("#hdnSelectedTable").val();
-    let MenuITableIdtem = JSON.parse(localStorage.getItem('KOT_Table_' + TableId));
-    if (MenuITableIdtem != null) {
-        BindViewMenuBillItems(MenuITableIdtem);
+    if (TableId != 0) {
+        let OrderId = $("#hdnOrderId").val();
+
+        BindViewMenuBillItems(OrderId);
+
+        $("#divOrder_KOT").hide();
+        $("#divBilling").show();
+
+        $("#btnBilling").removeClass('btn-outline-dark');
+        $("#btnBilling").addClass('btn-outline-success');
+
+        $("#btnOrder_KOT").removeClass('btn-outline-success');
+        $("#btnOrder_KOT").addClass('btn-outline-dark');
     } else {
-        BindViewMenuBillItems(MenuItem);
+        alert('Select Table to view the bill')
     }
-    $("#divOrder_KOT").hide();
-    $("#divBilling").show();
 
-    $("#btnBilling").removeClass('btn-outline-dark');
-    $("#btnBilling").addClass('btn-outline-success');
-
-    $("#btnOrder_KOT").removeClass('btn-outline-success');
-    $("#btnOrder_KOT").addClass('btn-outline-dark');
 });
 
 
@@ -185,9 +217,6 @@ $("#divMenuList").on("click", ".div-menu-item", function () {
                 }
             }
         }
-
-        //let ExistsItem = MenuItem.filter(items => items.id == id);
-        //console.log(ExistsItem);
 
         if (IsExist == 0) {
             let Items = {
@@ -255,35 +284,188 @@ function BindMenuBillItems(MenuItem) {
     localStorage.setItem('KOT_Table_' + TableId, JSON.stringify(MenuItem));
 }
 
-function BindViewMenuBillItems(MenuItem) {
+function BindViewMenuBillItems(OrderId) {
     $("#tbodyBillingMenu").html('');
-    let TotalBillAmount = 0;
-    if (MenuItem != null) {
-        for (let i = 0; i < MenuItem.length; i++) {
-            let Quantity = MenuItem[i].qty;
-            let Amount = MenuItem[i].price;
-            let TotalAmount = Amount * Quantity;
-            TotalBillAmount += TotalAmount;
-            let MenuBillItems = `<tr>
-                                    <td>${MenuItem[i].name}</td>
-                                    <td style="text-align: right;">${Quantity}</td>
-                                    <td style="text-align: right;">${TotalAmount}</td>
-                                </tr>`;
-            $("#tbodyBillingMenu").append(MenuBillItems);
+    $("#lblTotalBillAmount").html('0');
+    $.ajax({
+        url: baseUrl + '/outlet/order-table-mneu-details/' + OrderId,
+        type: 'GET',
+        success: function (response) {
+            console.log(response);
+            let TotalBillAmount = 0;
+            for (let i = 0; i < response.length; i++) {
+                let Quantity = response[i].quantity;
+                let Amount = response[i].amount;
+                let TotalAmount = response[i].total;
+                TotalBillAmount += eval(TotalAmount);
+                let MenuBillItems = `<tr>
+                                        <td style="width: 60%;">${response[i].menu_name}</td>
+                                        <td style="text-align: right;width: 10%;">${Quantity}</td>
+                                        <td style="text-align: right;width: 30%;"><b>${TotalAmount}</b></td>
+                                    </tr>`;
+                $("#tbodyBillingMenu").append(MenuBillItems);
+            }
+            $("#lblTotalBillAmount").html(TotalBillAmount);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+            console.log(errorMsg)
         }
-    }
-    $("#lblTotalBillAmount").html(TotalBillAmount.toFixed(2));
-
-    let TableId = $("#hdnSelectedTable").val();
-    localStorage.setItem('KOT_Table_' + TableId, JSON.stringify(MenuItem));
+    });
 }
 
 $("#btnSavePrintKOT").click(function () {
     let TableId = $("#hdnSelectedTable").val();
     if (TableId != 0) {
         if (MenuItem != null) {
-            //localStorage.setItem('KOT_Table_bill_' + TableId, JSON.stringify(MenuItem));
+            //console.log(MenuItem);
+            $("#btnSavePrintKOT").html('Saving KOT.....');
+
+            let CustomerName = $("#txtCustomerName").val();
+            let MobileNo = $("#txtMobileNo").val();
+            let Address = $("#txtAddress").val();
+            let KotNote = $("#txtKotNote").val();
+            let BillType = $("#hdnSelectedOrderType").val();
+            $.ajax({
+                url: baseUrl + '/outlet/save-print-kot',
+                type: 'post',
+                data: {
+                    "_token": _token,
+                    MenuItem: MenuItem,
+                    TableId: TableId,
+                    CustomerName: CustomerName,
+                    MobileNo: MobileNo,
+                    Address: Address,
+                    KotNote: KotNote,
+                    BillType: BillType
+                },
+                success: function (response) {
+                    console.log(response);
+                    $("#btnSavePrintKOT").html('Save & Print KOT');
+                    MenuItem = [];
+                    localStorage.removeItem('KOT_Table_' + TableId);
+                    $("#tbodyKOTMenuBill").html('');
+                    $("#hdnOrderId").val(response.OrderId);
+                    $("#lblKOTNumber").html(response.KOTId);
+                    $("#btnBilling").trigger('click');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+                    console.log(errorMsg)
+                }
+            });
         }
-        //localStorage.removeItem('KOT_Table_' + TableId);
+    }
+});
+
+$("#btnSavePrintBill").click(function () {
+    let TableId = $("#hdnSelectedTable").val();
+    let OrderId = $("#hdnOrderId").val();
+
+    if (OrderId != 0) {
+        $("#btnSavePrintBill").html('Saving Bill....');
+        $.ajax({
+            url: baseUrl + '/outlet/save-print-bill',
+            type: 'post',
+            data: {
+                "_token": _token,
+                OrderId: OrderId,
+                TableId: TableId
+            },
+            success: function (response) {
+                alert('Bill Saved');
+                $("#btnSavePrintBill").html('Save & Print Bill');
+
+                let TotalBillAmount = $("#lblTotalBillAmount").html();
+                $("#divtbl_" + TableId).removeClass('bg-info');
+                $("#divtbl_" + TableId).addClass('bg-dark');
+                $("#divtbl_" + TableId).find('.table-amount').html('Rs: ' + eval(TotalBillAmount).toFixed(2));
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+                console.log(errorMsg)
+            }
+        });
+    } else {
+        alert('No Bill Found');
+    }
+});
+
+
+$("#btnPayment").click(function () {
+    let TableId = $("#hdnSelectedTable").val();
+    let OrderId = $("#hdnOrderId").val();
+    if (OrderId != 0) {
+        let TotalAmount = $("#lblTotalBillAmount").html();
+        $("#divGrandTotal").html('<b>Grand Total </b>: ' + TotalAmount);
+        $('#divChannelListToLabModel').modal('show');
+    } else {
+        alert('Order not found for Payment')
+    }
+
+});
+
+$("#btnCloseModel").click(function () {
+    $("#divGrandTotal").html('');
+    $('#divChannelListToLabModel').modal('hide');
+});
+
+$(".payment-mode").click(function () {
+    let PaymentMode = $(this).attr('data-value');
+    $("#hdnPaymentMode").val(PaymentMode);
+    $(".payment-mode").removeClass("payment-border");
+    $(this).addClass("payment-border");
+});
+
+$("#btnSavePaymentAndSettleBill").click(function () {
+    let TableId = $("#hdnSelectedTable").val();
+    let OrderId = $("#hdnOrderId").val();
+    let PaymentMode = $("#hdnPaymentMode").val();
+    if (OrderId != 0) {
+        $.ajax({
+            url: baseUrl + '/outlet/save-payment-bill',
+            type: 'post',
+            data: {
+                "_token": _token,
+                OrderId: OrderId,
+                TableId: TableId,
+                PaymentMode: PaymentMode
+            },
+            success: function (response) {
+                alert('Payment done and Bill Settled');
+                window.location.reload();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+                console.log(errorMsg)
+            }
+        });
+    }
+});
+
+$("#btnSettleBill").click(function () {
+    let TableId = $("#hdnSelectedTable").val();
+    let OrderId = $("#hdnOrderId").val();
+    if (OrderId != 0) {
+        $("#btnSettleBill").html('Settlling Bill....');
+        $.ajax({
+            url: baseUrl + '/outlet/settle-bill',
+            type: 'post',
+            data: {
+                "_token": _token,
+                OrderId: OrderId,
+                TableId: TableId
+            },
+            success: function (response) {
+                alert('Bill Settled');
+                window.location.reload();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+                console.log(errorMsg)
+            }
+        });
+    } else {
+        alert('Bill not found to settle');
     }
 });

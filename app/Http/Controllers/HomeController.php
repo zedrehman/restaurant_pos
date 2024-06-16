@@ -22,15 +22,16 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $user_role = Auth::user()->user_type;
+        $user_role = Auth::user()->user_type;        
+        $request->session()->put('outlet_id', Auth::user()->outlet_id);
+
         if ($user_role == ADMIN_ROLE) {
             return redirect('admin/dashboard');
-        } elseif( $user_role == WAITER || $user_role == MANAGER) {
-            return redirect('oulet/dashboard');
-        }
-        else {
+        } elseif ($user_role == WAITER || $user_role == MANAGER) {
+            return redirect('outlet/dashboard');
+        } else {
             return abort(404);
         }
     }

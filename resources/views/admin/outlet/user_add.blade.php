@@ -24,7 +24,7 @@
                                 <select class="form-control" name="outlet_id" required>
                                     <option value="">Select Outlet</option>
                                     @foreach ($outlets as $outlet)
-                                        <option value="{{$outlet->id}}" @if(isset($user) && $user->outlet_id == $outlet->id) selected @endif> {{ $outlet->outlet_name}}</option>
+                                    <option value="{{$outlet->id}}" @if(isset($user) && $user->outlet_id == $outlet->id) selected @endif> {{ $outlet->outlet_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -48,7 +48,7 @@
                                 @if (isset($user->id))
                                 <span>Leave blank to keep current password</span>
                                 @endif
-                                
+
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -63,7 +63,7 @@
                                 <select class="form-control" name="user_type" required>
                                     <option value="">Select usertype</option>
                                     @foreach ($userType as $key => $uType)
-                                        <option value="{{$uType}}" @if(isset($user) && $user->user_type == $uType) selected @endif> {{ $uType}}</option>
+                                    <option value="{{$uType}}" @if(isset($user) && $user->user_type == $uType) selected @endif> {{ $uType}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -80,9 +80,9 @@
                                 <label>City <span style="color:red;">*</span></label>
                                 <select class="form-control" name="city_id" required>
                                     <option value="">Select City</option>
-                                    
+
                                     @foreach ($cities as $city)
-                                        <option value="{{$city->id}}" @if(isset($user) && $user->city_id == $city->id) selected @endif> {{ $city->city_name}}</option>
+                                    <option value="{{$city->id}}" @if(isset($user) && $user->city_id == $city->id) selected @endif> {{ $city->city_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -90,11 +90,12 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>zip code <span style="color:red;">*</span></label>
-                                <input type="text" name="postal_code" class="form-control" placeholder="" value="@if(isset($user)){{ $user->postal_code }}@endif" required  onKeyDown="if(this.value.length==6 && event.keyCode!=8) return false;">
+                                <input type="text" name="postal_code" class="form-control" placeholder="" value="@if(isset($user)){{ $user->postal_code }}@endif" required onKeyDown="if(this.value.length==6 && event.keyCode!=8) return false;">
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
+                                <label>&nbsp;</label>
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input type="checkbox" name="active" class="form-check-input" @if(isset($user) && $user->active == 1) checked @endif> Active
@@ -102,7 +103,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-2" style="padding-top: 20px;text-align: right;">
+                        <div class="col-sm-6" style="padding-top: 20px;text-align: right;">
                             <button type="submit" class="btn btn-sm btn-success"> Submit</button>
                         </div>
                     </div>
