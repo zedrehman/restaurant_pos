@@ -33,14 +33,14 @@ class MeneuManagementController extends Controller
         $dataInfo = MenuCategory::updateOrCreate(['id' => $request->tableId], $insertDataArr);
         if ($request->file('image')) {
             $file = $request->file('image');
-            $filename = $dataInfo->id.'_'.preg_replace('/[^a-zA-Z0-9_.]/', '-', $file->getClientOriginalName());
+            $filename = $dataInfo->id . '_' . preg_replace('/[^a-zA-Z0-9_.]/', '-', $file->getClientOriginalName());
             $filePath = public_path('menu/menu_category/');
             if (!File::isDirectory($filePath)) {
                 File::makeDirectory($filePath, 0777, true, true);
             }
             $file->move($filePath, $filename);
             // delete File
-            $filePath = public_path('menu/menu_category/'.$dataInfo->image);
+            $filePath = public_path('menu/menu_category/' . $dataInfo->image);
             if (File::exists($filePath)) {
                 File::delete($filePath);
             }
@@ -59,7 +59,7 @@ class MeneuManagementController extends Controller
 
     public function menuCataloguesList(Request $request)
     {
-        $dataArray = MenuCatalogue::with('getMenuCategory','getFoodType')->get();
+        $dataArray = MenuCatalogue::with('getMenuCategory', 'getFoodType')->get();
         return view('admin.menu.menu_catalogues_list', compact('dataArray'));
     }
 
@@ -77,14 +77,14 @@ class MeneuManagementController extends Controller
         $dataInfo = MenuCatalogue::updateOrCreate(['id' => $request->tableId], $insertDataArr);
         if ($request->file('image')) {
             $file = $request->file('image');
-            $filename = $dataInfo->id.'_'.preg_replace('/[^a-zA-Z0-9_.]/', '-', $file->getClientOriginalName());
+            $filename = $dataInfo->id . '_' . preg_replace('/[^a-zA-Z0-9_.]/', '-', $file->getClientOriginalName());
             $filePath = public_path('menu/menu_catalogues/');
             if (!File::isDirectory($filePath)) {
                 File::makeDirectory($filePath, 0777, true, true);
             }
             $file->move($filePath, $filename);
             // delete File
-            $filePath = public_path('menu/menu_catalogues/'.$dataInfo->image);
+            $filePath = public_path('menu/menu_catalogues/' . $dataInfo->image);
             if (File::exists($filePath)) {
                 File::delete($filePath);
             }
@@ -100,7 +100,7 @@ class MeneuManagementController extends Controller
         $dataArray = MenuCatalogue::where('id', $id)->first();
         $menuCategory = MenuCategory::where('active', 1)->get();
         $foodType = FoodType::all();
-        return view('admin.menu.menu_catalogues_add', compact('dataArray','menuCategory', 'foodType'));
+        return view('admin.menu.menu_catalogues_add', compact('dataArray', 'menuCategory', 'foodType'));
     }
 
     public function outletMenuList(Request $request)
@@ -126,32 +126,32 @@ class MeneuManagementController extends Controller
     {
         $dataArray = OutletMenu::where('id', $id)->first();
         $outlets = Outlet::where('active', 1)->get();
-        return view('admin.menu.outlet_menu_add', compact('dataArray','outlets'));
+        return view('admin.menu.outlet_menu_add', compact('dataArray', 'outlets'));
     }
 
     public function getAddItem(Request $request, $id)
     {
         $menuCatalogue = MenuCatalogue::where('active', 1)->get();
-        $menuDetail = json_encode(MenuDetail::where('outlets_menu_id', $id)->pluck('menu_catalogue_id')->toArray());
-        
+        $menuDetail = MenuDetail::where('outlets_menu_id', $id)->pluck('menu_catalogue_id')->toArray();//json_encode();
         $dataArray = OutletMenu::where('id', $id)->first();
+        //dd($menuDetail);
         return view('admin.menu.add_menu', compact('dataArray', 'menuCatalogue', 'menuDetail'));
     }
 
     public function postAddItem(Request $request)
     {
-        $menuItems = $request->menu_catalogue_id;
-        if( count($menuItems) > 0 )
-        {
+        $menuItems = $request->chkMenuName;
+        //dd($menuItems,$request->tableId);
+        if (count($menuItems) > 0) {
             $insertDataArray = [];
-            for ($i=0; $i < count($menuItems); $i++) { 
+            for ($i = 0; $i < count($menuItems); $i++) {
                 $insertData = [
                     'outlets_menu_id' => $request->tableId,
                     'menu_catalogue_id' => $menuItems[$i],
                 ];
                 array_push($insertDataArray, $insertData);
             }
-            if( count($insertDataArray) > 0) {
+            if (count($insertDataArray) > 0) {
                 MenuDetail::where('outlets_menu_id', $request->tableId)->forceDelete();
                 MenuDetail::insert($insertDataArray);
             }

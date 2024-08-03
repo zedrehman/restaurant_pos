@@ -1,6 +1,16 @@
 @extends('layouts.admin')
 
 @section('content')
+<style>
+    #ulOutletMenu {
+        list-style-type: none;
+    }
+
+    #ulOutletMenu li {
+        display: inline;
+        margin-right: 15px;
+    }
+</style>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-dark">
         <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
@@ -17,22 +27,21 @@
                     @csrf
                     <input type="hidden" name="tableId" value="@if(isset($dataArray)){{ $dataArray->id }}@endif">
                     <div class="row">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label>Add Item Menu <span style="color:red;">*</span> </label>
-                                <select class="form-control" multiple name="menu_catalogue_id[]" required>
-                                    <option value="">Select Item</option>
-                                    @foreach ($menuCatalogue as $catalogue)
-                                        <option value="{{$catalogue->id}}"> {{ $catalogue->menu_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="col-sm-12">
+                            <ul id="ulOutletMenu">
+                                @foreach ($menuCatalogue as $catalogue)
+                                <li>
+                                    <label>
+                                        <input type="checkbox" name="chkMenuName[]" id="chk{{ $catalogue->id}}" value="{{ $catalogue->id}}"> {{ $catalogue->menu_name}}
+                                    </label>
+                                </li>
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
-                    
                     <div class="row">
                         <div class="col-sm-12">
-                            <button type="submit" class="btn btn-sm btn-success"> Submit</button>
+                            <button type="submit" class="btn btn-sm btn-success">Submit</button>
                         </div>
                     </div>
                 </form>
@@ -43,14 +52,9 @@
 @endsection
 
 @section('JsScript')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.2/select2.min.js"></script>
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.2/select2.css" rel="stylesheet"/>
 <script>
-    $(function () {
-        let sellerDetails = JSON.parse('{!! $menuDetail !!}');
-        $('select').select2().val(sellerDetails).trigger('change.select2');
-        $("select").select2();
+    $(function() {
+        //let sellerDetails = JSON.parse('{!! $menuDetail !!}');
     });
 </script>
 @endsection

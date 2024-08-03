@@ -180,7 +180,7 @@
                         <a class="btn btn-sm btn-dark" id="btnSettleBill">Settle Bill</a>
                     </div>
                 </div>
-                <div class="row" id="divQuickBill">
+                <div class="row" id="divQuickBill" style="display: none;">
                     <div class="col-sm-12" style="text-align: center;">
                         <div style="text-align: center;border-bottom: 1px solid #e2e2e2;margin: 5px 0px 5px 0px;"></div>
                         <input type="checkbox"> KOT <input type="checkbox"> Bill No <input type="checkbox"> eBill <b>No:1</b>

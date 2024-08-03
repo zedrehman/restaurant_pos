@@ -129,6 +129,11 @@ $("#btnDineIn").click(function () {
     $("#btnQuickBill").addClass('btn-outline-dark');
 
     $("#hdnSelectedOrderType").val('Dine In');
+
+    $("#divQuickBill").hide();
+    $("#divDineIn").show();
+    $("#divOrder_KOT").show();
+    $("#divBilling").hide();
 });
 
 
@@ -197,6 +202,11 @@ $("#btnQuickBill").click(function () {
     $("#btnPickUpDelivery").addClass('btn-outline-dark');
 
     $("#hdnSelectedOrderType").val('Quick Bill');
+
+    $("#divQuickBill").show();
+    $("#divDineIn").hide();
+    $("#divOrder_KOT").hide();
+    $("#divBilling").hide();
 });
 
 
