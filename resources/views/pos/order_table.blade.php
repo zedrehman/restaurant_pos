@@ -205,7 +205,7 @@
                 <div class="row" id="divQuickBill" style="display: none;">
                     <div class="col-sm-12" style="text-align: center;">
                         <div style="text-align: center;border-bottom: 1px solid #e2e2e2;margin: 5px 0px 5px 0px;"></div>
-                        <input type="checkbox"> KOT <input type="checkbox"> Bill No <input type="checkbox"> eBill <b>No:1</b>
+                        <!--<input type="checkbox"> KOT <input type="checkbox"> Bill No-->
                     </div>
                     <div class="col-sm-12">
                         <div style="height: calc(100vh - 240px);overflow-y: auto;overflow-x:hidden;">
@@ -245,6 +245,7 @@
                     <div class="col-sm-12" style="margin-top: 5px;text-align: center;">
                         <a class="btn btn-sm btn-dark" id="btnQuickBillPayment">Payment</a>
                         <a class="btn btn-sm btn-dark" id="btnQuickBillSettleBill">Settle Bill</a>
+                        <input type="hidden" id="hdnQuickBillType" value="">
                     </div>
                 </div>
             </div>
@@ -293,6 +294,28 @@
                     <div class="col-sm-12" style="text-align: right;">
                         <a type="button" class="btn btn-sm btn-dark" id="btnSavePaymentAndSettleBill">Save Payment And Settle Bill</a>
                         <a type="button" class="btn btn-sm btn-dark" id="btnCloseModel">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal right animated fadeInRight" id="divQuickBillTypeModel" role="dialog" aria-labelledby="Choose Order Type">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background: #ecf0f5">
+            <div class="modal-header" style="padding: 15px;">
+                <h4 class="modal-title">Choose Order Type</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-4" style="text-align: center;">
+                        <a class="btn btn-md btn-primary btnQuickBillType" id="btnPaytm" data-value="Dine In">Dine In</a>
+                    </div>
+                    <div class="col-sm-4" style="text-align: center;">
+                        <a class="btn btn-md btn-primary btnQuickBillType" id="btnGooglePay" data-value="Takeaway">Take Away</a>
+                    </div>
+                    <div class="col-sm-4" style="text-align: center;">
+                        <a class="btn btn-md btn-primary btnQuickBillType" id="btnCard" data-value="Delivery">Delivery</a>
                     </div>
                 </div>
             </div>

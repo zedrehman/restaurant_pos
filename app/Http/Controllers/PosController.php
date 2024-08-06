@@ -246,4 +246,67 @@ class PosController extends Controller
         OrderTable::where('id', $OrderId)->update(['is_bill_saved' => 1, 'is_settled' => 1]);
         return $OrderId;
     }
+
+    public function SaveQuickBill(Request $request)
+    {
+        $KOTId = 1;
+        $customer_id = 0;
+        $OrderId = 0;
+        $total_bill_amount = 0;
+        $outlet_id = $request->session()->get('outlet_id');
+        $MenuItem = $request->MenuItem;
+        $CustomerName = $request->CustomerName;
+        $MobileNo = $request->MobileNo;
+        $Address = $request->Address;
+        $KotNote = $request->KotNote;
+
+        $QuickBillType = $request->QuickBillType;
+
+        $PaymentMode = $request->PaymentMode;
+
+
+        $OrderTable = OrderTable::orderBy('id', 'DESC')->first();
+        if ($OrderTable != null) {
+            $KOTId = $OrderTable->kot + 1;
+        }
+
+        $OrderId = OrderTable::insertGetId([
+            'outlet_id' => $outlet_id,
+            'kot' => $KOTId,
+            'table_id' => 0,
+            'customer_id' => $customer_id,
+            'kot_note' => $KotNote,
+            'bill_type' => 'Quick Bill',
+            'quick_bill_type' => $QuickBillType,
+            'is_bill_saved' => 1,
+            'is_settled' => 1,
+            'payment_mode' => $PaymentMode,
+            'created_at' => now()
+        ]);
+
+        for ($i = 0; $i < count($MenuItem); $i++) {
+            $total = $MenuItem[$i]['qty'] * $MenuItem[$i]['price'];
+            OrderTableMenuItems::insert([
+                'order_id' => $OrderId,
+                'menu_id' => $MenuItem[$i]['id'],
+                'quantity' => $MenuItem[$i]['qty'],
+                'amount' => $MenuItem[$i]['price'],
+                'total' => $total,
+                'created_at' => now()
+            ]);
+        }
+
+        $Query = "SELECT SUM(quantity*amount) As total_bill_amount FROM `order_table_menu_items` WHERE order_id=$OrderId";
+        $TotalCots = DB::select($Query);
+        if ($TotalCots != null) {
+            $total_bill_amount = $TotalCots[0]->total_bill_amount;
+        }
+        OrderTable::where('id', $OrderId)->update(['total_bill_amount' => $total_bill_amount]);
+
+        $ResponseArray = [];
+        $ResponseArray['OrderId'] = $OrderId;
+        $ResponseArray['KOTId'] = $KOTId;
+
+        return response()->json($ResponseArray, 200);
+    }
 }

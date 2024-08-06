@@ -1,5 +1,6 @@
 let MenuItem = [];
 let PD_MenuItem = [];
+let Q_MenuItem = [];
 $(document).ready(function () {
     let CategoryId = $("#hdnSelectedCategory").val();
     if (CategoryId == 0) {
@@ -257,7 +258,7 @@ $("#btnPickUpDelivery").click(function () {
 
     $("#divTableList").hide();
     $("#divPDOrderList").show();
-    
+
     $("#hdnOrderId").val('0');
     $("#lblKOTNumber").html(0);
 
@@ -286,10 +287,21 @@ $("#btnQuickBill").click(function () {
     $("#divBilling").hide();
 
     $("#btnPickUpDelivery_NewBill").hide();
-    
+
     $("#hdnOrderId").val('0');
     $("#lblKOTNumber").html(0);
-    
+
+    let Q_MenuITableIdtem = JSON.parse(localStorage.getItem('Q_KOT_Table'));
+    if (Q_MenuITableIdtem != null) {
+        Q_MenuItem = Q_MenuITableIdtem;
+        Q_BindMenuBillItems(Q_MenuItem);
+
+        let QuickBillType = localStorage.getItem('QuickBillType');
+        $("#hdnQuickBillType").val(QuickBillType);
+    } else {
+        $('#divQuickBillTypeModel').modal('show');
+    }
+
 });
 
 
@@ -354,31 +366,77 @@ $("#divMenuList").on("click", ".div-menu-item", function () {
     }
 
     if (OrderType == 'Quick Bill') {
-        //do nothing
+        let id = $(this).attr("data-id");
+        let price = $(this).attr("data-price");
+        let name = $(this).attr("data-name");
+
+        let IsExist = 0;
+        if (Q_MenuItem != null) {
+            for (let [i, menu] of Q_MenuItem.entries()) {
+                if (menu.id === id) {
+                    IsExist = 1;
+                    Q_MenuItem[i].qty = Q_MenuItem[i].qty + 1;
+                }
+            }
+        }
+        if (IsExist == 0) {
+            let Items = {
+                id: id,
+                price: price,
+                name: name,
+                qty: 1
+            };
+            Q_MenuItem.push(Items);
+        }
+        Q_BindMenuBillItems(Q_MenuItem);
     }
-
-
 });
 
 $("#tbodyKOTMenuBill").on("click", ".btnMenuBillItem", function () {
+    let OrderType = $("#hdnSelectedOrderType").val();
     let Id = $(this).attr('data-id');
-    for (let [i, menu] of MenuItem.entries()) {
-        if (menu.id === Id) {
-            MenuItem.splice(i, 1); // Tim is now removed from "users"
+
+    if (OrderType == 'Dine In') {
+
+        for (let [i, menu] of MenuItem.entries()) {
+            if (menu.id === Id) {
+                MenuItem.splice(i, 1); // Tim is now removed from "users"
+            }
         }
+        BindMenuBillItems(MenuItem);
     }
-    BindMenuBillItems(MenuItem);
+    if (OrderType == 'Pick Up / Delivery') {
+        for (let [i, menu] of PD_MenuItem.entries()) {
+            if (menu.id === Id) {
+                PD_MenuItem.splice(i, 1); // Tim is now removed from "users"
+            }
+        }
+        PD_BindMenuBillItems(PD_MenuItem);
+    }
 });
 $("#tbodyKOTMenuBill").on("change", ".txtQuantity", function () {
+    let OrderType = $("#hdnSelectedOrderType").val();
     let Id = $(this).attr('data-id');
     let Quantity = $(this).val();
 
-    for (let [i, menu] of MenuItem.entries()) {
-        if (menu.id === Id) {
-            MenuItem[i].qty = Quantity;
+    if (OrderType == 'Dine In') {
+        for (let [i, menu] of MenuItem.entries()) {
+            if (menu.id === Id) {
+                MenuItem[i].qty = Quantity;
+            }
         }
+        BindMenuBillItems(MenuItem);
     }
-    BindMenuBillItems(MenuItem);
+    if (OrderType == 'Pick Up / Delivery') {
+        for (let [i, menu] of PD_MenuItem.entries()) {
+            if (menu.id === Id) {
+                PD_MenuItem[i].qty = Quantity;
+            }
+        }
+        PD_BindMenuBillItems(PD_MenuItem);
+    }
+
+
 });
 
 function BindMenuBillItems(MenuItem) {
@@ -437,6 +495,54 @@ function PD_BindMenuBillItems(MenuItem) {
     $("#lblTotalKOTBillAmount").html(TotalBillAmount.toFixed(2));
     localStorage.setItem('PD_KOT_Table', JSON.stringify(MenuItem));
 }
+
+function Q_BindMenuBillItems(MenuItem) {
+    $("#tbodyQuickBill").html('');
+    let TotalBillAmount = 0;
+    if (MenuItem != null) {
+        for (let i = 0; i < MenuItem.length; i++) {
+            let Quantity = MenuItem[i].qty;
+            let Amount = MenuItem[i].price;
+            let TotalAmount = Amount * Quantity;
+            TotalBillAmount += TotalAmount;
+            let MenuBillItems = `<tr id="trmenubill_${MenuItem[i].id}">
+                                <td>
+                                    <a class="badge badge-danger btnMenuBillItem" data-id="${MenuItem[i].id}">x</a>${MenuItem[i].name}
+                                </td>
+                                <td>
+                                    <input type="number" class="txtQuantity" style="width: 100%;" value="${Quantity}" data-id="${MenuItem[i].id}">
+                                </td>
+                                <td>
+                                    <b>${TotalAmount}</b>
+                                    <span>(${Amount})</span>
+                                </td>
+                            </tr>`;
+            $("#tbodyQuickBill").append(MenuBillItems);
+        }
+    }
+    $("#lblQuickTotalBillAmount").html(TotalBillAmount.toFixed(2));
+    localStorage.setItem('Q_KOT_Table', JSON.stringify(MenuItem));
+}
+$("#tbodyQuickBill").on("click", ".btnMenuBillItem", function () {
+    let Id = $(this).attr('data-id');
+    for (let [i, menu] of Q_MenuItem.entries()) {
+        if (menu.id === Id) {
+            Q_MenuItem.splice(i, 1); // Tim is now removed from "users"
+        }
+    }
+    Q_BindMenuBillItems(Q_MenuItem);
+});
+$("#tbodyQuickBill").on("change", ".txtQuantity", function () {
+    let Id = $(this).attr('data-id');
+    let Quantity = $(this).val();
+
+    for (let [i, menu] of Q_MenuItem.entries()) {
+        if (menu.id === Id) {
+            Q_MenuItem[i].qty = Quantity;
+        }
+    }
+    Q_BindMenuBillItems(Q_MenuItem);
+});
 
 function BindViewMenuBillItems(OrderId) {
     $("#tbodyBillingMenu").html('');
@@ -618,7 +724,6 @@ $("#btnSavePrintBill").click(function () {
     }
 });
 
-
 $("#btnPayment").click(function () {
     let TableId = $("#hdnSelectedTable").val();
     let OrderId = $("#hdnOrderId").val();
@@ -629,7 +734,6 @@ $("#btnPayment").click(function () {
     } else {
         alert('Order not found for Payment')
     }
-
 });
 
 $("#btnCloseModel").click(function () {
@@ -645,29 +749,39 @@ $(".payment-mode").click(function () {
 });
 
 $("#btnSavePaymentAndSettleBill").click(function () {
-    let TableId = $("#hdnSelectedTable").val();
-    let OrderId = $("#hdnOrderId").val();
+    let OrderType = $("#hdnSelectedOrderType").val();
     let PaymentMode = $("#hdnPaymentMode").val();
-    if (OrderId != 0) {
-        $.ajax({
-            url: baseUrl + '/outlet/save-payment-bill',
-            type: 'post',
-            data: {
-                "_token": _token,
-                OrderId: OrderId,
-                TableId: TableId,
-                PaymentMode: PaymentMode
-            },
-            success: function (response) {
-                alert('Payment done and Bill Settled');
-                window.location.reload();
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
-                console.log(errorMsg)
-            }
-        });
+
+    if (OrderType == 'Quick Bill') {
+
+        SaveQuickBill(PaymentMode);
+        alert('Payment done');
+        window.location.reload(true);
+    } else {
+        let TableId = $("#hdnSelectedTable").val();
+        let OrderId = $("#hdnOrderId").val();
+        if (OrderId != 0) {
+            $.ajax({
+                url: baseUrl + '/outlet/save-payment-bill',
+                type: 'post',
+                data: {
+                    "_token": _token,
+                    OrderId: OrderId,
+                    TableId: TableId,
+                    PaymentMode: PaymentMode
+                },
+                success: function (response) {
+                    alert('Payment done and Bill Settled');
+                    window.location.reload(true);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+                    console.log(errorMsg)
+                }
+            });
+        }
     }
+
 });
 
 $("#btnSettleBill").click(function () {
@@ -685,7 +799,7 @@ $("#btnSettleBill").click(function () {
             },
             success: function (response) {
                 alert('Bill Settled');
-                window.location.reload();
+                window.location.reload(true);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
@@ -696,3 +810,70 @@ $("#btnSettleBill").click(function () {
         alert('Bill not found to settle');
     }
 });
+
+$(".btnQuickBillType").click(function () {
+    let QuickBillType = $(this).attr("data-value");
+    $("#hdnQuickBillType").val(QuickBillType);
+    localStorage.setItem('QuickBillType', QuickBillType);
+
+    $('#divQuickBillTypeModel').modal('hide');
+});
+
+$("#btnQuickBillPayment").click(function () {
+    if (Q_MenuItem.length != 0) {
+        let TotalAmount = $("#lblQuickTotalBillAmount").html();
+        $("#divGrandTotal").html('<b>Grand Total </b>: ' + TotalAmount);
+        $('#divChannelListToLabModel').modal('show');
+    } else {
+        alert('Please Add Item in Bill');
+    }
+});
+
+$("#btnQuickBillSettleBill").click(function () {
+    if (Q_MenuItem.length != 0) {
+        SaveQuickBill('');
+        alert('Quick Bill Settled');
+        window.location.reload(true);
+    } else {
+        alert('Please Add Item in Bill');
+    }
+});
+
+function SaveQuickBill(PaymentMode) {
+    let CustomerName = $("#txtQuickCustomerName").val();
+    let MobileNo = $("#txtQuickMobileNo").val();
+    let Address = $("#txtQuickAddress").val();
+    let KotNote = $("#txtQuickKotNote").val();
+    let QuickBillType = $("#hdnQuickBillType").val();
+
+    $.ajax({
+        url: baseUrl + '/outlet/save-quick-bill',
+        type: 'post',
+        data: {
+            "_token": _token,
+            MenuItem: Q_MenuItem,
+            CustomerName: CustomerName,
+            MobileNo: MobileNo,
+            Address: Address,
+            KotNote: KotNote,
+            BillType: 'Quick Bill',
+            QuickBillType: QuickBillType,
+            PaymentMode: PaymentMode
+        },
+        success: function (response) {
+            console.log(response);
+
+            Q_MenuItem = [];
+            localStorage.removeItem('Q_KOT_Table');
+            localStorage.removeItem('QuickBillType');
+
+            $("#tbodyQuickBill").html('');
+            $("#lblQuickTotalBillAmount").html('0');
+            $("#hdnQuickBillType").val('');
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+            console.log(errorMsg)
+        }
+    });
+}

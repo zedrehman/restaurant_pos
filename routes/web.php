@@ -43,6 +43,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/outlet/save-print-bill', 'PosController@SavePrintBill');
     Route::post('/outlet/save-payment-bill', 'PosController@SavePaymentAndSettleBill');    
     Route::post('/outlet/settle-bill', 'PosController@SettleBill');
+
+    Route::post('/outlet/save-quick-bill', 'PosController@SaveQuickBill');
     // Route::group(['middleware' => ['waiter']], function () {
     //     Route::get('/oulet/dashboard', 'PosController@OrderTable');
     // });
