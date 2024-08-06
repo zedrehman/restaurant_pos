@@ -1,4 +1,5 @@
 let MenuItem = [];
+let PD_MenuItem = [];
 $(document).ready(function () {
     let CategoryId = $("#hdnSelectedCategory").val();
     if (CategoryId == 0) {
@@ -13,7 +14,6 @@ $(document).ready(function () {
 
 $(".divTable").click(function () {
     let TableId = $(this).attr('data-id');
-
 
     $('.divTable').each(function () {
         let SelectedTableId = $(this).attr('data-tableId');
@@ -40,6 +40,29 @@ $(".divTable").click(function () {
     }
     $('#btnOrder_KOT').trigger('click');
     //BindMenuBillItems(MenuItem);
+});
+$(".divPDTable").click(function () {
+    let Order_Id = $(this).attr('data-id');
+    $.ajax({
+        url: baseUrl + '/outlet/order-details-byid/' + Order_Id,
+        type: 'GET',
+        success: function (response) {
+            let order_table = response.order_table
+            let order_table_menu_items = response.order_table_menu_items
+            //console.log(response.order_table);
+            //console.log(response.order_table_menu_items);
+            /*if (response != null) {
+                
+            }*/
+            $("#lblKOTNumber").html(order_table.kot);
+            $("#hdnOrderId").val(Order_Id);
+            $('#btnBilling').trigger('click');
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+            console.log(errorMsg);
+        }
+    });
 });
 
 function GetTableBillDetails(TableId) {
@@ -134,17 +157,37 @@ $("#btnDineIn").click(function () {
     $("#divDineIn").show();
     $("#divOrder_KOT").show();
     $("#divBilling").hide();
+
+    $("#btnPickUpDelivery_NewBill").hide();
+    $("#tbodyKOTMenuBill").html('');
+
+    $("#divTableList").show();
+    $("#divPDOrderList").hide();
+
+    $("#hdnOrderId").val('0');
+    $("#lblKOTNumber").html(0);
 });
 
 
 $("#btnOrder_KOT").click(function () {
-    let TableId = $("#hdnSelectedTable").val();
-    let MenuITableIdtem = JSON.parse(localStorage.getItem('KOT_Table_' + TableId));
-    if (MenuITableIdtem != null) {
-        BindMenuBillItems(MenuITableIdtem);
-    } else {
-        BindMenuBillItems(MenuItem);
+    let OrderType = $("#hdnSelectedOrderType").val();
+    if (OrderType == 'Dine In') {
+        let TableId = $("#hdnSelectedTable").val();
+        let MenuITableIdtem = JSON.parse(localStorage.getItem('KOT_Table_' + TableId));
+        if (MenuITableIdtem != null) {
+            BindMenuBillItems(MenuITableIdtem);
+        } else {
+            BindMenuBillItems(MenuItem);
+        }
     }
+
+    if (OrderType == 'Pick Up / Delivery') {
+        let PD_MenuITableIdtem = JSON.parse(localStorage.getItem('PD_KOT_Table'));
+        if (PD_MenuITableIdtem != null) {
+            PD_BindMenuBillItems(PD_MenuITableIdtem);
+        }
+    }
+
     $("#divOrder_KOT").show();
     $("#divBilling").hide();
 
@@ -156,12 +199,30 @@ $("#btnOrder_KOT").click(function () {
 });
 
 $("#btnBilling").click(function () {
+    let OrderType = $("#hdnSelectedOrderType").val();
+    let OrderId = $("#hdnOrderId").val();
 
-    let TableId = $("#hdnSelectedTable").val();
-    if (TableId != 0) {
-        let OrderId = $("#hdnOrderId").val();
+    if (OrderType == 'Dine In') {
+        let TableId = $("#hdnSelectedTable").val();
+        if (TableId != 0) {
 
-        BindViewMenuBillItems(OrderId);
+            BindViewMenuBillItems(OrderId);
+
+            $("#divOrder_KOT").hide();
+            $("#divBilling").show();
+
+            $("#btnBilling").removeClass('btn-outline-dark');
+            $("#btnBilling").addClass('btn-outline-success');
+
+            $("#btnOrder_KOT").removeClass('btn-outline-success');
+            $("#btnOrder_KOT").addClass('btn-outline-dark');
+        } else {
+            alert('Select Table to view the bill')
+        }
+    }
+    if (OrderType == 'Pick Up / Delivery') {
+        //do nothing
+        PD_BindViewMenuBillItems(OrderId);
 
         $("#divOrder_KOT").hide();
         $("#divBilling").show();
@@ -171,8 +232,6 @@ $("#btnBilling").click(function () {
 
         $("#btnOrder_KOT").removeClass('btn-outline-success');
         $("#btnOrder_KOT").addClass('btn-outline-dark');
-    } else {
-        alert('Select Table to view the bill')
     }
 
 });
@@ -189,6 +248,24 @@ $("#btnPickUpDelivery").click(function () {
     $("#btnQuickBill").addClass('btn-outline-dark');
 
     $("#hdnSelectedOrderType").val('Pick Up / Delivery');
+
+    $("#btnPickUpDelivery_NewBill").show();
+    $("#divQuickBill").hide();
+    $("#divDineIn").show();
+    $("#divOrder_KOT").show();
+    $("#divBilling").hide();
+
+    $("#divTableList").hide();
+    $("#divPDOrderList").show();
+    
+    $("#hdnOrderId").val('0');
+    $("#lblKOTNumber").html(0);
+
+    let PD_MenuITableIdtem = JSON.parse(localStorage.getItem('PD_KOT_Table'));
+    if (PD_MenuITableIdtem != null) {
+        PD_MenuItem = PD_MenuITableIdtem;
+    }
+    PD_BindMenuBillItems(PD_MenuItem);
 });
 
 $("#btnQuickBill").click(function () {
@@ -207,27 +284,63 @@ $("#btnQuickBill").click(function () {
     $("#divDineIn").hide();
     $("#divOrder_KOT").hide();
     $("#divBilling").hide();
+
+    $("#btnPickUpDelivery_NewBill").hide();
+    
+    $("#hdnOrderId").val('0');
+    $("#lblKOTNumber").html(0);
+    
 });
 
 
 $("#divMenuList").on("click", ".div-menu-item", function () {
-    let TableId = $("#hdnSelectedTable").val();
-    if (TableId != 0) {
+    let OrderType = $("#hdnSelectedOrderType").val();
+    if (OrderType == 'Dine In') {
+        let TableId = $("#hdnSelectedTable").val();
+        if (TableId != 0) {
+            let id = $(this).attr("data-id");
+            let price = $(this).attr("data-price");
+            let name = $(this).attr("data-name");
 
+            let IsExist = 0;
+            if (MenuItem != null) {
+                for (let [i, menu] of MenuItem.entries()) {
+                    if (menu.id === id) {
+                        IsExist = 1;
+                        MenuItem[i].qty = MenuItem[i].qty + 1;
+                    }
+                }
+            }
+
+            if (IsExist == 0) {
+                let Items = {
+                    id: id,
+                    price: price,
+                    name: name,
+                    qty: 1
+                };
+                MenuItem.push(Items);
+            }
+            BindMenuBillItems(MenuItem);
+        } else {
+            alert('Table not selected');
+        }
+    }
+
+    if (OrderType == 'Pick Up / Delivery') {
         let id = $(this).attr("data-id");
         let price = $(this).attr("data-price");
         let name = $(this).attr("data-name");
 
         let IsExist = 0;
-        if (MenuItem != null) {
-            for (let [i, menu] of MenuItem.entries()) {
+        if (PD_MenuItem != null) {
+            for (let [i, menu] of PD_MenuItem.entries()) {
                 if (menu.id === id) {
                     IsExist = 1;
-                    MenuItem[i].qty = MenuItem[i].qty + 1;
+                    PD_MenuItem[i].qty = PD_MenuItem[i].qty + 1;
                 }
             }
         }
-
         if (IsExist == 0) {
             let Items = {
                 id: id,
@@ -235,12 +348,16 @@ $("#divMenuList").on("click", ".div-menu-item", function () {
                 name: name,
                 qty: 1
             };
-            MenuItem.push(Items);
+            PD_MenuItem.push(Items);
         }
-        BindMenuBillItems(MenuItem);
-    } else {
-        alert('Table not selected');
+        PD_BindMenuBillItems(PD_MenuItem);
     }
+
+    if (OrderType == 'Quick Bill') {
+        //do nothing
+    }
+
+
 });
 
 $("#tbodyKOTMenuBill").on("click", ".btnMenuBillItem", function () {
@@ -293,6 +410,33 @@ function BindMenuBillItems(MenuItem) {
     let TableId = $("#hdnSelectedTable").val();
     localStorage.setItem('KOT_Table_' + TableId, JSON.stringify(MenuItem));
 }
+function PD_BindMenuBillItems(MenuItem) {
+    $("#tbodyKOTMenuBill").html('');
+    let TotalBillAmount = 0;
+    if (MenuItem != null) {
+        for (let i = 0; i < MenuItem.length; i++) {
+            let Quantity = MenuItem[i].qty;
+            let Amount = MenuItem[i].price;
+            let TotalAmount = Amount * Quantity;
+            TotalBillAmount += TotalAmount;
+            let MenuBillItems = `<tr id="trmenubill_${MenuItem[i].id}">
+                                <td>
+                                    <a class="badge badge-danger btnMenuBillItem" data-id="${MenuItem[i].id}">x</a>${MenuItem[i].name}
+                                </td>
+                                <td>
+                                    <input type="number" class="txtQuantity" style="width: 100%;" value="${Quantity}" data-id="${MenuItem[i].id}">
+                                </td>
+                                <td>
+                                    <b>${TotalAmount}</b>
+                                    <span>(${Amount})</span>
+                                </td>
+                            </tr>`;
+            $("#tbodyKOTMenuBill").append(MenuBillItems);
+        }
+    }
+    $("#lblTotalKOTBillAmount").html(TotalBillAmount.toFixed(2));
+    localStorage.setItem('PD_KOT_Table', JSON.stringify(MenuItem));
+}
 
 function BindViewMenuBillItems(OrderId) {
     $("#tbodyBillingMenu").html('');
@@ -324,36 +468,105 @@ function BindViewMenuBillItems(OrderId) {
     });
 }
 
+function PD_BindViewMenuBillItems(OrderId) {
+    $("#tbodyBillingMenu").html('');
+    $("#lblTotalBillAmount").html('0');
+    $.ajax({
+        url: baseUrl + '/outlet/order-table-mneu-details/' + OrderId,
+        type: 'GET',
+        success: function (response) {
+            console.log(response);
+            let TotalBillAmount = 0;
+            for (let i = 0; i < response.length; i++) {
+                let Quantity = response[i].quantity;
+                let Amount = response[i].amount;
+                let TotalAmount = response[i].total;
+                TotalBillAmount += eval(TotalAmount);
+                let MenuBillItems = `<tr>
+                                        <td style="width: 60%;">${response[i].menu_name}</td>
+                                        <td style="text-align: right;width: 10%;">${Quantity}</td>
+                                        <td style="text-align: right;width: 30%;"><b>${TotalAmount}</b></td>
+                                    </tr>`;
+                $("#tbodyBillingMenu").append(MenuBillItems);
+            }
+            $("#lblTotalBillAmount").html(TotalBillAmount);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+            console.log(errorMsg)
+        }
+    });
+}
+
 $("#btnSavePrintKOT").click(function () {
-    let TableId = $("#hdnSelectedTable").val();
-    if (TableId != 0) {
-        if (MenuItem != null) {
+    let CustomerName = $("#txtCustomerName").val();
+    let MobileNo = $("#txtMobileNo").val();
+    let Address = $("#txtAddress").val();
+    let KotNote = $("#txtKotNote").val();
+
+    let OrderType = $("#hdnSelectedOrderType").val();
+    if (OrderType == 'Dine In') {
+        let TableId = $("#hdnSelectedTable").val();
+        if (TableId != 0) {
+            if (MenuItem != null) {
+                //console.log(MenuItem);
+                $("#btnSavePrintKOT").html('Saving KOT.....');
+
+                $.ajax({
+                    url: baseUrl + '/outlet/save-print-kot',
+                    type: 'post',
+                    data: {
+                        "_token": _token,
+                        MenuItem: MenuItem,
+                        TableId: TableId,
+                        CustomerName: CustomerName,
+                        MobileNo: MobileNo,
+                        Address: Address,
+                        KotNote: KotNote,
+                        BillType: OrderType
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        $("#btnSavePrintKOT").html('Save & Print KOT');
+                        MenuItem = [];
+                        localStorage.removeItem('KOT_Table_' + TableId);
+                        $("#tbodyKOTMenuBill").html('');
+                        $("#hdnOrderId").val(response.OrderId);
+                        $("#lblKOTNumber").html(response.KOTId);
+                        $("#btnBilling").trigger('click');
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+                        console.log(errorMsg)
+                    }
+                });
+            }
+        }
+    }
+
+    if (OrderType == 'Pick Up / Delivery') {
+        if (PD_MenuItem != null) {
             //console.log(MenuItem);
             $("#btnSavePrintKOT").html('Saving KOT.....');
-
-            let CustomerName = $("#txtCustomerName").val();
-            let MobileNo = $("#txtMobileNo").val();
-            let Address = $("#txtAddress").val();
-            let KotNote = $("#txtKotNote").val();
-            let BillType = $("#hdnSelectedOrderType").val();
             $.ajax({
                 url: baseUrl + '/outlet/save-print-kot',
                 type: 'post',
                 data: {
                     "_token": _token,
-                    MenuItem: MenuItem,
-                    TableId: TableId,
+                    MenuItem: PD_MenuItem,
+                    TableId: 0,
                     CustomerName: CustomerName,
                     MobileNo: MobileNo,
                     Address: Address,
                     KotNote: KotNote,
-                    BillType: BillType
+                    BillType: OrderType,
+                    Pd_kOT_ID: 0
                 },
                 success: function (response) {
                     console.log(response);
                     $("#btnSavePrintKOT").html('Save & Print KOT');
-                    MenuItem = [];
-                    localStorage.removeItem('KOT_Table_' + TableId);
+                    PD_MenuItem = [];
+                    localStorage.removeItem('PD_KOT_Table');
                     $("#tbodyKOTMenuBill").html('');
                     $("#hdnOrderId").val(response.OrderId);
                     $("#lblKOTNumber").html(response.KOTId);
@@ -366,9 +579,12 @@ $("#btnSavePrintKOT").click(function () {
             });
         }
     }
+
 });
 
 $("#btnSavePrintBill").click(function () {
+    let OrderType = $("#hdnSelectedOrderType").val();
+
     let TableId = $("#hdnSelectedTable").val();
     let OrderId = $("#hdnOrderId").val();
 
@@ -380,7 +596,8 @@ $("#btnSavePrintBill").click(function () {
             data: {
                 "_token": _token,
                 OrderId: OrderId,
-                TableId: TableId
+                TableId: TableId,
+                OrderType: OrderType
             },
             success: function (response) {
                 alert('Bill Saved');

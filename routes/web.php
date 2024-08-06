@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/outlet/order-table-details/{tableId}', 'PosController@GetOrderTableDetails');
     Route::get('/outlet/order-table-mneu-details/{OrderId}', 'PosController@GetOrderTableMenu');
+    Route::get('/outlet/order-details-byid/{OrderId}', 'PosController@GetOrderDetailsByOrderId');
 
     Route::post('/outlet/save-print-kot', 'PosController@SavePrintKOT');
     Route::post('/outlet/save-print-bill', 'PosController@SavePrintBill');

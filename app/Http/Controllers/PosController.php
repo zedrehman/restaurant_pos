@@ -31,23 +31,77 @@ class PosController extends Controller
         $Query = "
             SELECT 
                 tm.*,
-                IFNULL((SELECT ot.table_id FROM order_table ot WHERE ot.table_id=tm.id AND ot.is_settled=0),0) as selectedTableId,
-                IFNULL((SELECT ot.total_bill_amount FROM order_table ot WHERE ot.table_id=tm.id AND ot.is_bill_saved=1 AND ot.is_settled=0),0) as SavedTableId
+                IFNULL((
+                    SELECT 
+                        ot.table_id 
+                    FROM 
+                        order_table ot 
+                    WHERE 
+                        ot.table_id=tm.id AND ot.is_settled=0 AND bill_type='Dine In' 
+                        AND ot.outlet_id=$outlet_id
+                ),0) as selectedTableId,
+                IFNULL((
+                    SELECT 
+                        ot.total_bill_amount 
+                    FROM 
+                        order_table ot 
+                    WHERE 
+                        ot.table_id=tm.id AND ot.is_bill_saved=1 AND ot.is_settled=0 AND bill_type='Dine In' 
+                        AND ot.outlet_id=$outlet_id
+                ),0) as SavedTableId
             FROM 
                 `table_management` tm
             WHERE tm.outlet_id=$outlet_id
         ";
         $tablesArray = DB::select($Query);
-        //dd($tablesArray);
+
+
+        $PD_Query = "
+            SELECT 
+                ot.id,
+                ot.kot,
+                ot.total_bill_amount,
+                is_bill_saved
+            FROM 
+                order_table ot 
+            WHERE 
+                ot.table_id=0 AND ot.is_settled=0 AND bill_type='Pick Up / Delivery' 
+                AND ot.outlet_id=$outlet_id
+        ";
+        $PD_KOTArray = DB::select($PD_Query);
+
+        //dd($PD_KOTArray);
         $MenuCategory = MenuCategory::where('active', 1)->get();
 
-        return view('pos.order_table', compact(['tablesArray', 'MenuCategory', 'outlet_id']));
+        return view('pos.order_table', compact(['tablesArray', 'MenuCategory', 'outlet_id', 'PD_KOTArray']));
     }
 
     public function GetOrderTableDetails(Request $request, $tableId)
     {
         $OrderTable = OrderTable::where('is_settled', 0)->where('table_id', $tableId)->first();
         return response()->json($OrderTable, 200);
+    }
+
+    public function GetOrderDetailsByOrderId(Request $request, $OrderId)
+    {
+        $OrderTable = OrderTable::where('id', $OrderId)->first();
+        $Query = "
+            SELECT 
+                om.*,
+                mc.menu_name
+            FROM 
+                order_table_menu_items om
+                INNER JOIN menu_catalogues mc ON mc.id=om.menu_id
+            WHERE
+                om.order_id=$OrderId
+        ";
+        $OrderTableMenu = DB::select($Query);
+
+        $ResponseArray = [];
+        $ResponseArray['order_table'] = $OrderTable;
+        $ResponseArray['order_table_menu_items'] = $OrderTableMenu;
+
+        return response()->json($ResponseArray, 200);
     }
 
     public function GetOrderTableMenu(Request $request, $OrderId)
@@ -82,6 +136,7 @@ class PosController extends Controller
         $KotNote = $request->KotNote;
         $TableId = $request->TableId;
         $BillType = $request->BillType;
+        $Pd_kOT_ID = $request->Pd_kOT_ID;
         //dd($MenuItem, $CustomerName, $MobileNo, $Address, $KotNote, $TableId);
 
         $OrderTable = OrderTable::orderBy('id', 'DESC')->first();
@@ -89,7 +144,20 @@ class PosController extends Controller
             $KOTId = $OrderTable->kot + 1;
         }
 
-        $OrderDetails = OrderTable::where('is_settled', 0)->where('table_id', $TableId)->first();
+
+        if ($BillType == 'Dine In') {
+            $OrderDetails = OrderTable::where('is_settled', 0)
+                ->where('bill_type', 'Dine In')
+                ->where('table_id', $TableId)
+                ->first();
+        }
+        if ($BillType == 'Pick Up / Delivery') {
+            $OrderDetails = OrderTable::where('is_settled', 0)
+                ->where('bill_type', 'Pick Up / Delivery')
+                ->where('kot', $Pd_kOT_ID)
+                ->first();
+        }
+
         if ($OrderDetails != null) {
             $OrderId = $OrderDetails->id;
             $KOTId = $OrderDetails->kot;
@@ -157,6 +225,7 @@ class PosController extends Controller
     {
         $OrderId = $request->OrderId;
         $TableId = $request->TableId;
+        $OrderType = $request->OrderType;
         OrderTable::where('id', $OrderId)->update(['is_bill_saved' => 1]);
         return $OrderId;
     }

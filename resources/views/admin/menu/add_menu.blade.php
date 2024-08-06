@@ -29,10 +29,14 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <ul id="ulOutletMenu">
-                                @foreach ($menuCatalogue as $catalogue)
+                                @foreach ($MenuCatalogueList as $Item)
                                 <li>
                                     <label>
-                                        <input type="checkbox" name="chkMenuName[]" id="chk{{ $catalogue->id}}" value="{{ $catalogue->id}}"> {{ $catalogue->menu_name}}
+                                        @if(in_array($Item->id, $menuDetail))
+                                            <input type="checkbox" name="chkMenuName[]" id="chk_{{ $Item->id}}" value="{{ $Item->id}}" checked> {{ $Item->menu_name}}
+                                        @else
+                                            <input type="checkbox" name="chkMenuName[]" id="chk_{{ $Item->id}}" value="{{ $Item->id}}"> {{ $Item->menu_name}}
+                                        @endif                                        
                                     </label>
                                 </li>
                                 @endforeach
@@ -54,7 +58,7 @@
 @section('JsScript')
 <script>
     $(function() {
-        //let sellerDetails = JSON.parse('{!! $menuDetail !!}');
+        
     });
 </script>
 @endsection
