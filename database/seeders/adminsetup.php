@@ -16,7 +16,7 @@ class adminsetup extends Seeder
     public function run()
     {
         $data = [
-            ['name' => 'Admin', 'email' => 'ansari.abdul4@gmail.com', 'password' => '$2y$10$v7PiyKvtl9UtzJq8a97h0.aGwH4efsWGkkbWbXV0ATkAKCtH6HH7C', 'user_type'=> ADMIN_ROLE],
+            ['name' => 'Admin', 'email' => 'ansari.abdul4@gmail.com', 'password' => '$2y$10$v7PiyKvtl9UtzJq8a97h0.aGwH4efsWGkkbWbXV0ATkAKCtH6HH7C', 'user_type'=> ADMIN_ROLE, 'outlet_id' => 0],
         ];
 
         User::insert($data);
