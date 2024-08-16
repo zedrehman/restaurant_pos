@@ -131,11 +131,11 @@ class MeneuManagementController extends Controller
 
     public function getAddItem(Request $request, $id)
     {
-        $menuCatalogue = MenuCatalogue::where('active', 1)->get();
+        $MenuCatalogueList = MenuCatalogue::where('active', 1)->get();
         $menuDetail = MenuDetail::where('outlets_menu_id', $id)->pluck('menu_catalogue_id')->toArray();//json_encode();
         $dataArray = OutletMenu::where('id', $id)->first();
         //dd($menuDetail);
-        return view('admin.menu.add_menu', compact('dataArray', 'menuCatalogue', 'menuDetail'));
+        return view('admin.menu.add_menu', compact('dataArray', 'MenuCatalogueList', 'menuDetail'));
     }
 
     public function postAddItem(Request $request)
