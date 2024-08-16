@@ -118,7 +118,7 @@ $(".listMenuCategory").click(function () {
 function GetMenuList(CategoryId) {
     $("#divMenuList").html('');
     $.ajax({
-        url: baseUrl + '/outlet/menu-list-by-category-id/' + CategoryId,
+        url: baseUrl + '/outlet/menu-list-by-category-id/' + CategoryId+'/'+outlet_id,
         type: 'GET',
         success: function (response) {
             for (let i = 0; i < response.length; i++) {

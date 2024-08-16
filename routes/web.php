@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/outlet/dashboard', 'PosController@ouletDashboard');
     Route::get('/outlet/order-table', 'PosController@OrderTable');
 
-    Route::get('/outlet/menu-list-by-category-id/{CategoryId}', 'PosController@MenuListByCategoryId');
+    Route::get('/outlet/menu-list-by-category-id/{CategoryId}/{outlet_id}', 'PosController@MenuListByCategoryId');
 
     Route::get('/outlet/order-table-details/{tableId}', 'PosController@GetOrderTableDetails');
     Route::get('/outlet/order-table-mneu-details/{OrderId}', 'PosController@GetOrderTableMenu');

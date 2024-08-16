@@ -96,7 +96,7 @@
                                 @foreach ($MenuCategory as $Item)
                                 <li class="list-group-item d-flex justify-content-between align-items-center listMenuCategory" data-id="{{$Item->id}}">
                                     {{$Item->category_name}}
-                                    <span class="badge bg-nifty-primary rounded-pill">0</span>
+                                    <span class="badge bg-nifty-primary rounded-pill">{{$Item->MenuCount}}</span>
                                 </li>
                                 @endforeach
                             </ul>

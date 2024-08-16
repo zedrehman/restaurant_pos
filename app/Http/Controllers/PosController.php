@@ -17,9 +17,21 @@ class PosController extends Controller
         $outlet_id = $request->session()->get('outlet_id');
         return view('pos.dashboard');
     }
-    public function MenuListByCategoryId(Request $request, $CategoryId)
+    public function MenuListByCategoryId(Request $request, $CategoryId, $outlet_id)
     {
-        $MenuList = MenuCatalogue::where('menu_categories_id', $CategoryId)->get();
+        //
+        $Query = "
+            SELECT 
+                mc.* 
+            FROM 
+                `outlets_menu` om 
+                INNER JOIN menu_details md ON om.id=md.outlets_menu_id
+                INNER JOIN menu_catalogues mc ON md.menu_catalogue_id=mc.id
+            WHERE 
+                om.outlet_id=$outlet_id AND mc.menu_categories_id=$CategoryId;
+        ";
+        $MenuList = DB::select($Query);
+        //$MenuList = MenuCatalogue::where('menu_categories_id', $CategoryId)->get();
         return response()->json($MenuList, 200);
     }
 
@@ -70,8 +82,25 @@ class PosController extends Controller
         ";
         $PD_KOTArray = DB::select($PD_Query);
 
+
+        $MLQuery="
+                SELECT 
+                    mcat.id,
+                    mcat.category_name,
+                    COUNT(mc.id) as MenuCount
+                FROM 
+                    `outlets_menu` om 
+                    INNER JOIN menu_details md ON om.id=md.outlets_menu_id
+                    INNER JOIN menu_catalogues mc ON md.menu_catalogue_id=mc.id
+                    INNER JOIN Menu_categories mcat ON mcat.id=mc.menu_categories_id
+
+                WHERE 
+                    om.outlet_id=$outlet_id AND mcat.active=1
+                GROUP BY mcat.id, mcat.category_name;";
+
         //dd($PD_KOTArray);
-        $MenuCategory = MenuCategory::where('active', 1)->get();
+        //$MenuCategory = MenuCategory::where('active', 1)->get();
+        $MenuCategory = DB::select($MLQuery);
 
         return view('pos.order_table', compact(['tablesArray', 'MenuCategory', 'outlet_id', 'PD_KOTArray']));
     }
