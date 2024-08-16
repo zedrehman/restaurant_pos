@@ -12,10 +12,10 @@
         </a>
     </li>
     
-    <li class="nav-item" id="lnkSetting">
-        <a class="nav-link" href="">
-            <i class="ti-settings menu-icon"></i>
-            <span class="menu-title">Setting</span>
+    <li class="nav-item" id="lnkReports">
+        <a class="nav-link" href="{{url('/outlet/report')}}">
+            <i class="fa fa-file-text-o menu-icon"></i>
+            <span class="menu-title">Reports</span>
         </a>
     </li>
     <li class="nav-item" id="lnkSupplierList">
