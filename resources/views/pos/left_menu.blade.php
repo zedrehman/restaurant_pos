@@ -12,9 +12,15 @@
         </a>
     </li>
     
+    <li class="nav-item" id="lnkAllBills">
+        <a class="nav-link" href="{{url('/outlet/all-bills')}}">
+            <i class="fa fa-file-text-o menu-icon"></i>
+            <span class="menu-title">All Bills</span>
+        </a>
+    </li>
     <li class="nav-item" id="lnkReports">
         <a class="nav-link" href="{{url('/outlet/report')}}">
-            <i class="fa fa-file-text-o menu-icon"></i>
+            <i class="fa fa-bar-chart-o menu-icon"></i>
             <span class="menu-title">Reports</span>
         </a>
     </li>

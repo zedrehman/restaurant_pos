@@ -12,6 +12,15 @@ use Illuminate\Support\Facades\DB;
 
 class OutletReportController extends Controller
 {
+    public function AllBills(Request $request)
+    {
+        $outlet_id = $request->session()->get('outlet_id');
+
+        $PD_Query = "SELECT * FROM order_table ot WHERE ot.is_settled=1 AND ot.outlet_id=$outlet_id ORDER BY ot.id DESC";
+        $OrderTable = DB::select($PD_Query);
+        return view('outlet_report.all-bills', compact(['outlet_id', 'OrderTable']));
+    }
+
     public function ReportDashboard(Request $request)
     {
         $outlet_id = $request->session()->get('outlet_id');

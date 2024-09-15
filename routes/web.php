@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/outlet/save-quick-bill', 'PosController@SaveQuickBill');
 
+    
+    Route::get('/outlet/all-bills', 'OutletReportController@AllBills');
 
     Route::get('/outlet/report', 'OutletReportController@ReportDashboard');
     // Route::group(['middleware' => ['waiter']], function () {
