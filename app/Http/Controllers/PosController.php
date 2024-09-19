@@ -92,7 +92,7 @@ class PosController extends Controller
                     `outlets_menu` om 
                     INNER JOIN menu_details md ON om.id=md.outlets_menu_id
                     INNER JOIN menu_catalogues mc ON md.menu_catalogue_id=mc.id
-                    INNER JOIN Menu_categories mcat ON mcat.id=mc.menu_categories_id
+                    INNER JOIN menu_categories mcat ON mcat.id=mc.menu_categories_id
 
                 WHERE 
                     om.outlet_id=$outlet_id AND mcat.active=1
