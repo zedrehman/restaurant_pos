@@ -31,6 +31,64 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/outlet/dashboard', 'PosController@ouletDashboard');
+
+    Route::group(['prefix' => 'usersetup'], function () {
+        Route::get('/outletlist', 'UserSetupController@OutletList');
+        Route::get('/editoutlet/{id}', 'UserSetupController@EditOutlet');
+        Route::get('/addoutlet', 'UserSetupController@AddOutlet');
+        Route::post('/addoutlet', 'UserSetupController@PostAddOutlet');
+    });
+
+    Route::group(['prefix' => 'appsetting'], function () {
+        Route::get('/unitmaster', 'AppSettingController@UnitMaster');
+        Route::get('/addunitmaster', 'AppSettingController@AddUnitMaster');
+        Route::post('/addunitmaster', 'AppSettingController@PostAddUnitMaster');
+        Route::get('/editunitmaster/{id}', 'AppSettingController@EditUnitMaster');
+        Route::get('/deleteunitmaster/{id}', 'AppSettingController@DeleteUnitMaster');
+
+        Route::get('/sms', 'AppSettingController@SMS');
+        Route::get('/addsms', 'AppSettingController@AddSMS');
+        Route::post('/addsms', 'AppSettingController@PostAddSMS');
+        Route::get('/editsms/{id}', 'AppSettingController@EditSMS');
+        Route::get('/deletesms/{id}', 'AppSettingController@DeleteSMS');
+
+        Route::get('/email', 'AppSettingController@Email');
+        Route::get('/addemail', 'AppSettingController@AddEmail');
+        Route::post('/addemail', 'AppSettingController@PostAddEmail');
+        Route::get('/editemail/{id}', 'AppSettingController@EditEmail');
+        Route::get('/deleteemail/{id}', 'AppSettingController@DeleteEmail');
+
+        Route::get('/printer', 'AppSettingController@Printer');
+        Route::get('/addprinter', 'AppSettingController@AddPrinter');
+        Route::post('/addprinter', 'AppSettingController@PostAddPrinter');
+        Route::get('/editprinter/{id}', 'AppSettingController@EditPrinter');
+        Route::get('/deleteprinter/{id}', 'AppSettingController@DeletePrinter');
+    });
+
+    Route::group(['prefix' => 'foodsetup'], function () {
+        Route::get('/ingrediant', 'FoodSetupController@Ingrediant');
+        Route::get('/addingrediant', 'FoodSetupController@AddIngrediant');
+        Route::post('/addingrediant', 'FoodSetupController@PostAddIngrediant');
+        Route::get('/editingrediant/{id}', 'FoodSetupController@EditIngrediant');
+        Route::get('/deleteingrediant/{id}', 'FoodSetupController@DeleteIngrediant');
+        Route::get('/ingrediantstock/{id}', 'FoodSetupController@IngrediantStock');
+        Route::post('/saveingrediantstock', 'FoodSetupController@SaveIngrediantStock');
+    });
+
+    Route::group(['prefix' => 'expenses'], function () {
+        Route::get('/expensetype', 'ExpensesController@ExpenseType');
+        Route::get('/addexpensetype', 'ExpensesController@AddExpenseType');
+        Route::post('/addexpensetype', 'ExpensesController@PostAddExpenseType');
+        Route::get('/editexpensetype/{id}', 'ExpensesController@EditExpenseType');
+        Route::get('/deleteexpensetype/{id}', 'ExpensesController@DeleteExpenseType');
+
+        Route::get('/outletexpenses', 'ExpensesController@OutletExpenses');
+        Route::get('/addoutletexpenses', 'ExpensesController@AddOutletExpenses');
+        Route::post('/addoutletexpenses', 'ExpensesController@PostAddOutletExpenses');
+        Route::get('/editoutletexpenses/{id}', 'ExpensesController@EditOutletExpenses');
+        Route::get('/deleteoutletexpenses/{id}', 'ExpensesController@DeleteOutletExpenses');
+    });
+
     Route::get('/outlet/order-table', 'PosController@OrderTable');
 
     Route::get('/outlet/menu-list-by-category-id/{CategoryId}/{outlet_id}', 'PosController@MenuListByCategoryId');
@@ -41,22 +99,15 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/outlet/save-print-kot', 'PosController@SavePrintKOT');
     Route::post('/outlet/save-print-bill', 'PosController@SavePrintBill');
-    Route::post('/outlet/save-payment-bill', 'PosController@SavePaymentAndSettleBill');    
+    Route::post('/outlet/save-payment-bill', 'PosController@SavePaymentAndSettleBill');
     Route::post('/outlet/settle-bill', 'PosController@SettleBill');
 
     Route::post('/outlet/save-quick-bill', 'PosController@SaveQuickBill');
 
-    
+
     Route::get('/outlet/all-bills', 'OutletReportController@AllBills');
 
     Route::get('/outlet/report', 'OutletReportController@ReportDashboard');
-    // Route::group(['middleware' => ['waiter']], function () {
-    //     Route::get('/oulet/dashboard', 'PosController@OrderTable');
-    // });
-
-    // Route::group(['middleware' => ['manager']], function () {
-    //     Route::get('/oulet/dashboard', 'PosController@OrderTable');
-    // });
 
     // Admin
     Route::group(['prefix' => 'admin'], function () {
@@ -92,6 +143,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/add-tax-configuration', 'Admin\MasterController@getAddTaxConfiguration');
             Route::post('/add-tax-configuration', 'Admin\MasterController@postAddTaxConfiguration');
             Route::get('/edit-tax-configuration/{id}', 'Admin\MasterController@getEditTaxConfiguration');
+            Route::get('/delete-tax-configuration/{id}', 'Admin\MasterController@DeleteTaxConfiguration');
 
             Route::get('/kitchen-department-list', 'Admin\MasterController@KitchenDepartmentList');
             Route::get('/add-kitchen-department', 'Admin\MasterController@getKitchenDepartment');
@@ -107,6 +159,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/add-table-management', 'Admin\MasterController@getTableManagement');
             Route::post('/add-table-management', 'Admin\MasterController@postTableManagement');
             Route::get('/edit-table-management/{id}', 'Admin\MasterController@getEditTableManagement');
+            Route::get('/delete-table-management/{id}', 'Admin\MasterController@DeleteTableManagement');
+
             Route::get('/outlet-department-data/{id}', 'Admin\MasterController@getOutletDepartmentData');
 
             Route::get('/coupon-list', 'Admin\MasterController@couponList');

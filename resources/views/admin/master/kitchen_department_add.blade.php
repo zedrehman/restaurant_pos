@@ -1,14 +1,10 @@
 @extends('layouts.admin')
+@section('dashboard_bar')
+Kitchen Department
+@endsection
 
 @section('content')
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-dark">
-        <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
-        <li class="breadcrumb-item">Master Configuration</li>
-        <li class="breadcrumb-item active"> <a href="{{url('/admin/kitchen-department-list')}}"> Kitchen Department List </a> </li>
-        <li class="breadcrumb-item active" aria-current="page">Add</li>
-    </ol>
-</nav>
+
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -17,26 +13,26 @@
                     @csrf
                     <input type="hidden" name="tableId" value="@if(isset($dataArray)){{ $dataArray->id }}@endif">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Outlets <span style="color:red;">*</span> </label>
                                 <select class="form-control" name="outlet_id" required>
                                     <option value="">Select Outlet</option>
                                     @foreach ($outlets as $outlet)
-                                        <option value="{{$outlet->id}}" @if(isset($dataArray) && $outlet->id == $dataArray->outlet_id) selected @endif> {{ $outlet->outlet_name}}</option>
+                                    <option value="{{$outlet->id}}" @if(isset($dataArray) && $outlet->id == $dataArray->outlet_id) selected @endif> {{ $outlet->outlet_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Kitchen Department Name <span style="color:red;">*</span> </label>
                                 <input type="text" name="kitchen_department_name" class="form-control" placeholder="Tax Name" value="@if(isset($dataArray)){{ $dataArray->kitchen_department_name }}@endif" required>
                             </div>
                         </div>
-
                         <div class="col-sm-3">
                             <div class="form-group">
+                                <label>Status</label><br>
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input type="checkbox" name="active" class="form-check-input" @if(isset($dataArray) && $dataArray->active == 1) checked @endif> Active
@@ -44,9 +40,7 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    
                     <div class="row">
                         <div class="col-sm-12">
                             <button type="submit" class="btn btn-sm btn-success"> Submit</button>

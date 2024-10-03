@@ -41,7 +41,7 @@ class MasterController extends Controller
 
     public function taxConfigurationList(Request $request)
     {
-        $taxConfiguration = TaxConfiguration::select('tax_configuration.*','product_groups.product_group_name')->join('product_groups', 'product_groups.id', 'tax_configuration.product_group_id')->get();
+        $taxConfiguration = TaxConfiguration::all();
         return view('admin.master.tax_configuration_list', compact('taxConfiguration'));
     }
 
@@ -49,7 +49,7 @@ class MasterController extends Controller
     {
         $outlets = Outlet::where('active', 1)->get();
         $productGroup = ProductGroup::all();
-        return view('admin.master.tax_configuration_add', compact('outlets','productGroup'));
+        return view('admin.master.tax_configuration_add', compact('outlets', 'productGroup'));
     }
 
     public function postAddTaxConfiguration(Request $request)
@@ -67,13 +67,19 @@ class MasterController extends Controller
         $taxConfiguration = TaxConfiguration::where('id', $id)->first();
         $productGroup = ProductGroup::all();
         $outlets = Outlet::all();
-        return view('admin.master.tax_configuration_add', compact('taxConfiguration', 'outlets','productGroup'));
+        return view('admin.master.tax_configuration_add', compact('taxConfiguration', 'outlets', 'productGroup'));
+    }
+
+    public function DeleteTaxConfiguration(Request $request, $id)
+    {
+        TaxConfiguration::where('id', $id)->delete();
+        return redirect()->to('/admin/tax-configuration-list');
     }
 
     // Kitchen Department
     public function KitchenDepartmentList(Request $request)
     {
-        $dataArray = KitchenDepartment::select('kitchen_department.*','outlets.outlet_name')->join('outlets','outlets.id','kitchen_department.outlet_id')->get();
+        $dataArray = KitchenDepartment::select('kitchen_department.*', 'outlets.outlet_name')->join('outlets', 'outlets.id', 'kitchen_department.outlet_id')->get();
         return view('admin.master.kitchen_department_list', compact('dataArray'));
     }
 
@@ -95,13 +101,13 @@ class MasterController extends Controller
     {
         $dataArray = KitchenDepartment::where('id', $id)->first();
         $outlets = Outlet::all();
-        return view('admin.master.kitchen_department_add', compact('dataArray', 'outlets','productGroup'));
+        return view('admin.master.kitchen_department_add', compact('dataArray', 'outlets'));
     }
 
     // Outlet Department
     public function OutletDepartmentList(Request $request)
     {
-        $dataArray = OutletDepartment::select('outlet_department.*','outlets.outlet_name')->join('outlets','outlets.id','outlet_department.outlet_id')->get();
+        $dataArray = OutletDepartment::select('outlet_department.*', 'outlets.outlet_name')->join('outlets', 'outlets.id', 'outlet_department.outlet_id')->get();
         return view('admin.master.outlet_department_list', compact('dataArray'));
     }
 
@@ -109,7 +115,7 @@ class MasterController extends Controller
     {
         $outlets = Outlet::where('active', 1)->get();
         $productGroup = ProductGroup::all();
-        return view('admin.master.outlet_department_add', compact('outlets','productGroup'));
+        return view('admin.master.outlet_department_add', compact('outlets', 'productGroup'));
     }
 
     public function postOutletDepartment(Request $request)
@@ -125,16 +131,20 @@ class MasterController extends Controller
         $dataArray = OutletDepartment::where('id', $id)->first();
         $outlets = Outlet::all();
         $productGroup = ProductGroup::all();
-        return view('admin.master.outlet_department_add', compact('dataArray', 'outlets','productGroup'));
+        return view('admin.master.outlet_department_add', compact('dataArray', 'outlets', 'productGroup'));
     }
 
     // table management 
     public function TableManagementList(Request $request)
     {
-        $dataArray = TableManagement::select('table_management.*', 'outlets.outlet_name', 'outlet_department.outlet_department_name')
-        ->join('outlets','outlets.id','table_management.outlet_id')
-        ->join('outlet_department','outlet_department.id','table_management.outlet_department_id')
-        ->get();
+        /*$dataArray = TableManagement::select('table_management.*', 'outlets.outlet_name', 'outlet_department.outlet_department_name')
+            ->join('outlets', 'outlets.id', 'table_management.outlet_id')
+            ->join('outlet_department', 'outlet_department.id', 'table_management.outlet_department_id')
+            ->get();*/
+
+        $dataArray = TableManagement::select('table_management.*', 'outlets.outlet_name')
+            ->join('outlets', 'outlets.id', 'table_management.outlet_id')
+            ->get();
 
         return view('admin.master.table_management_list', compact('dataArray'));
     }
@@ -158,6 +168,12 @@ class MasterController extends Controller
         $dataArray = TableManagement::where('id', $id)->first();
         $outlets = Outlet::all();
         return view('admin.master.table_management_add', compact('dataArray', 'outlets'));
+    }
+
+    public function DeleteTableManagement(Request $request, $id)
+    {
+        TableManagement::where('id', $id)->delete();
+        return redirect()->to('/admin/table-management-list');
     }
 
     public function getOutletDepartmentData(Request $request, $id)
@@ -216,5 +232,4 @@ class MasterController extends Controller
         $dataArray = UserType::where('id', $id)->first();
         return view('admin.master.usertype_add', compact('dataArray'));
     }
-
 }
