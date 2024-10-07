@@ -98,25 +98,28 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/deleteoutletexpenses/{id}', 'ExpensesController@DeleteOutletExpenses');
     });
 
-    Route::get('/outlet/order-table', 'PosController@OrderTable');
+    Route::group(['prefix' => 'outlet'], function () {
+        Route::get('/pos', 'PosController@OutletPOS');
+        Route::get('/redirect-to-pos/{CategoryId}', 'PosController@RedirectToPOS');
 
-    Route::get('/outlet/menu-list-by-category-id/{CategoryId}/{outlet_id}', 'PosController@MenuListByCategoryId');
+        Route::get('/order-table', 'PosController@OrderTable');
 
-    Route::get('/outlet/order-table-details/{tableId}', 'PosController@GetOrderTableDetails');
-    Route::get('/outlet/order-table-mneu-details/{OrderId}', 'PosController@GetOrderTableMenu');
-    Route::get('/outlet/order-details-byid/{OrderId}', 'PosController@GetOrderDetailsByOrderId');
+        Route::get('/menu-list-by-category-id/{CategoryId}/{outlet_id}', 'PosController@MenuListByCategoryId');
 
-    Route::post('/outlet/save-print-kot', 'PosController@SavePrintKOT');
-    Route::post('/outlet/save-print-bill', 'PosController@SavePrintBill');
-    Route::post('/outlet/save-payment-bill', 'PosController@SavePaymentAndSettleBill');
-    Route::post('/outlet/settle-bill', 'PosController@SettleBill');
+        Route::get('/order-table-details/{tableId}', 'PosController@GetOrderTableDetails');
+        Route::get('/order-table-mneu-details/{OrderId}', 'PosController@GetOrderTableMenu');
+        Route::get('/order-details-byid/{OrderId}', 'PosController@GetOrderDetailsByOrderId');
 
-    Route::post('/outlet/save-quick-bill', 'PosController@SaveQuickBill');
+        Route::post('/save-print-kot', 'PosController@SavePrintKOT');
+        Route::post('/save-print-bill', 'PosController@SavePrintBill');
+        Route::post('/save-payment-bill', 'PosController@SavePaymentAndSettleBill');
+        Route::post('/settle-bill', 'PosController@SettleBill');
+        Route::post('/save-quick-bill', 'PosController@SaveQuickBill');
+        Route::get('/all-bills', 'OutletReportController@AllBills');
+        Route::get('/report', 'OutletReportController@ReportDashboard');
+    });
 
 
-    Route::get('/outlet/all-bills', 'OutletReportController@AllBills');
-
-    Route::get('/outlet/report', 'OutletReportController@ReportDashboard');
 
     // Admin
     Route::group(['prefix' => 'admin'], function () {

@@ -4,9 +4,11 @@ let Q_MenuItem = [];
 $(document).ready(function () {
     let CategoryId = $("#hdnSelectedCategory").val();
     if (CategoryId == 0) {
-        CategoryId = $('ul#ulMenuCategory li:first').attr('data-id');
-        $('ul#ulMenuCategory li:first').addClass('text-bold');
-        $('ul#ulMenuCategory li:first').addClass('text-success');
+        if ($('ul#ulMenuCategory li').length > 0) {
+            CategoryId = $('ul#ulMenuCategory li:first').attr('data-id');
+            $('ul#ulMenuCategory li:first').addClass('text-bold');
+            $('ul#ulMenuCategory li:first').addClass('text-success');
+        }
         $("#hdnSelectedCategory").val(CategoryId);
         GetMenuList(CategoryId);
     }
@@ -118,7 +120,7 @@ $(".listMenuCategory").click(function () {
 function GetMenuList(CategoryId) {
     $("#divMenuList").html('');
     $.ajax({
-        url: baseUrl + '/outlet/menu-list-by-category-id/' + CategoryId+'/'+outlet_id,
+        url: baseUrl + '/outlet/menu-list-by-category-id/' + CategoryId + '/' + outlet_id,
         type: 'GET',
         success: function (response) {
             for (let i = 0; i < response.length; i++) {

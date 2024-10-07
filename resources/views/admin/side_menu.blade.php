@@ -5,7 +5,7 @@
             <span class="nav-text">Dashboard</span>
         </a>
     </li>
-    
+
     <li id="lnkUserSetup">
         <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
             <i class="flaticon-381-networking"></i>
@@ -79,7 +79,7 @@
     </li>
 
     <li>
-        <a href="{{url('/outlet/order-table')}}" class="ai-icon" aria-expanded="false">
+        <a href="{{url('/outlet/pos')}}" class="ai-icon" aria-expanded="false">
             <i class="flaticon-381-networking"></i>
             <span class="nav-text">POS</span>
         </a>

@@ -8,10 +8,24 @@ use App\Models\Menu\MenuCatalogue;
 use App\Models\Menu\MenuCategory;
 use App\Models\OrderTable;
 use App\Models\OrderTableMenuItems;
+use App\Models\Outlet;
 use Illuminate\Support\Facades\DB;
 
 class PosController extends Controller
 {
+    public function OutletPOS(Request $request)
+    {
+        $outlets = Outlet::where('active', 1)->get();
+        return view('pos.outlet_pos', compact(['outlets']));
+    }
+
+    public function RedirectToPOS(Request $request, $id)
+    {
+        $request->session()->put('outlet_id', $id);
+        echo 'Redirecting to POS screen.....';
+        return redirect()->to('/outlet/order-table');
+    }
+
     public function ouletDashboard(Request $request)
     {
         $outlet_id = $request->session()->get('outlet_id');
@@ -31,7 +45,6 @@ class PosController extends Controller
                 om.outlet_id=$outlet_id AND mc.menu_categories_id=$CategoryId;
         ";
         $MenuList = DB::select($Query);
-        //$MenuList = MenuCatalogue::where('menu_categories_id', $CategoryId)->get();
         return response()->json($MenuList, 200);
     }
 
@@ -83,7 +96,7 @@ class PosController extends Controller
         $PD_KOTArray = DB::select($PD_Query);
 
 
-        $MLQuery="
+        $MLQuery = "
                 SELECT 
                     mcat.id,
                     mcat.category_name,
@@ -98,8 +111,6 @@ class PosController extends Controller
                     om.outlet_id=$outlet_id AND mcat.active=1
                 GROUP BY mcat.id, mcat.category_name;";
 
-        //dd($PD_KOTArray);
-        //$MenuCategory = MenuCategory::where('active', 1)->get();
         $MenuCategory = DB::select($MLQuery);
 
         return view('pos.order_table', compact(['tablesArray', 'MenuCategory', 'outlet_id', 'PD_KOTArray']));
