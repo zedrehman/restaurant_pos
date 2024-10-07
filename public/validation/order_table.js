@@ -124,11 +124,11 @@ function GetMenuList(CategoryId) {
         type: 'GET',
         success: function (response) {
             for (let i = 0; i < response.length; i++) {
-                let MenuItem = `<div class="col-sm-4" style="padding: 0px;">
+                let MenuItem = `<div class="col-sm-3" style="padding: 0px;">
                                     <div class="card">
                                         <div class="card-body div-menu-item" style="padding: 10px 1.437rem;" data-id="${response[i].id}" data-name="${response[i].menu_name}" data-price="${response[i].sale_price}">
                                             <h4 style="margin-bottom: 0px;">${response[i].menu_name}</h4>
-                                            <span style="float: left;">${response[i].short_code}</span> <span style="float: right;">Rs ${response[i].sale_price}</span><br>
+                                            <small style="float: left;">${response[i].short_code}</small> <small style="float: right;">Rs ${response[i].sale_price}</small><br>
                                             <small class="badge badge-info">${response[i].ready_in}</small>
                                         </div>
                                     </div>

@@ -43,8 +43,8 @@
 <body class="sidebar-fixed sidebar-icon-only">
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper" style="padding-top: 0px;">
-            <div class="main-panel" style="margin-left: 0px;width: 100%;">
-                <div class="content-wrapper" style="padding: 0px;">
+            <div class="main-panel" style="width: 100%;margin-left: 15px;">
+                <div class="content-wrapper" style="padding: 0px ;">
                     <div class="row">
                         <div class="col-sm-8">
                             <div class="row" style="max-height: 205px;overflow: auto;" id="divTableList">
@@ -92,7 +92,7 @@
                                 @endforeach
                             </div>
                             <div class="row" style="margin-top: 10px;">
-                                <div class="col-sm-12" style="padding-left: 0px;">
+                                <div class="col-sm-12" style="padding-left: 1px;">
                                     <a class="btn btn-sm btn-dark" style="width: 120px;">Filter Tables</a>
                                     <a class="btn btn-sm btn-dark" style="width: 120px;">Change Table</a>
                                     <a class="btn btn-sm btn-dark" style="width: 120px;">Add Customer</a>
@@ -102,9 +102,9 @@
                                 </div>
                             </div>
                             <div class="row" style="margin-top: 10px;">
-                                <div class="col-sm-12" style="padding: 0px;">
+                                <div class="col-sm-12">
                                     <div class="row">
-                                        <div class="col-sm-4" style="padding: 0px;">
+                                        <div class="col-sm-3" style="padding: 1px;">
                                             <div style="max-height: calc(100vh - 225px);overflow-y: auto;overflow-x:hidden;">
                                                 <ul class="list-group" id="ulMenuCategory">
                                                     @foreach ($MenuCategory as $Item)
@@ -117,7 +117,7 @@
                                                 <input type="hidden" id="hdnSelectedCategory" value="0">
                                             </div>
                                         </div>
-                                        <div class="col-sm-8" style="padding-left: 0px;">
+                                        <div class="col-sm-9" style="padding-left: 0px;">
                                             <div style="max-height: calc(100vh - 225px);overflow-y: auto;overflow-x:hidden;">
                                                 <div class="row" id="divMenuList"></div>
                                             </div>
