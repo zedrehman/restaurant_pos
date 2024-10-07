@@ -13187,7 +13187,7 @@ a.active {
 }
 
 .nav-header {
-  height: 7.5rem;
+  height: 4.5rem;
   width: 21.563rem;
   display: inline-block;
   text-align: left;
@@ -13425,7 +13425,7 @@ a.active {
 }
 
 .header {
-  height: 7.5rem;
+  height: 4.5rem;
   z-index: 1;
   position: relative;
   padding: 0rem;
@@ -13637,12 +13637,12 @@ svg.pulse-svg .third-circle {
 }
 
 [data-header-position="fixed"] .content-body {
-  padding-top: 7.5rem;
+  padding-top: 4.5rem;
 }
 
 @media only screen and (max-width: 1199px) {
   [data-header-position="fixed"] .content-body {
-    padding-top: 5rem;
+    padding-top: 4rem;
   }
 }
 
@@ -17487,7 +17487,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   height: 100%;
   position: absolute;
   top: 0;
-  padding-top: 120px;
+  padding-top: 80px;
   z-index: 4;
   background-color: #fff;
   box-shadow: 0px 0px 10px rgba(120, 130, 140, 0.13);
