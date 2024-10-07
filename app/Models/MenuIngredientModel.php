@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-class UnitMasterModel extends Model
+
+class MenuIngredientModel extends Model
 {
     use HasFactory;
-
-    protected $table = 'unit_master';    
-    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $table = 'menu_catalogues_ingredient';
+    protected $guarded = ['id'];
 }

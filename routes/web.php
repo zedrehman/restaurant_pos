@@ -73,6 +73,15 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/deleteingrediant/{id}', 'FoodSetupController@DeleteIngrediant');
         Route::get('/ingrediantstock/{id}', 'FoodSetupController@IngrediantStock');
         Route::post('/saveingrediantstock', 'FoodSetupController@SaveIngrediantStock');
+
+        Route::post('/GetIngrediantByOutletId', 'FoodSetupController@GetIngrediantByOutletId');
+
+        Route::get('/modifiers', 'FoodSetupController@Modifiers');
+        Route::get('/addmodifiers', 'FoodSetupController@AddModifiers');
+        Route::post('/SaveModifiers', 'FoodSetupController@SaveModifiers');
+        Route::get('/editmodifiers/{id}', 'FoodSetupController@EditModifiers');
+        Route::get('/deletemodifiers/{id}', 'FoodSetupController@DeleteModifiers');
+        Route::post('/DeleteModifiersIngredient', 'FoodSetupController@DeleteModifiersIngredient');
     });
 
     Route::group(['prefix' => 'expenses'], function () {
@@ -183,6 +192,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/menu-management/add-menu-catalogues', 'Admin\MeneuManagementController@getAddMenuCatalogues');
             Route::post('/menu-management/add-menu-catalogues', 'Admin\MeneuManagementController@postAddMenuCatalogues');
             Route::get('/menu-management/edit-menu-catalogues/{id}', 'Admin\MeneuManagementController@getEditMenuCatalogues');
+            Route::post('/menu-management/delete-menu-ingredient', 'Admin\MeneuManagementController@DeleteMenuIngredient');
 
             Route::get('/menu-management/outlet-menu', 'Admin\MeneuManagementController@outletMenuList');
             Route::get('/menu-management/add-outlet-menu', 'Admin\MeneuManagementController@getAddOutletMenu');

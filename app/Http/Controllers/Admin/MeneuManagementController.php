@@ -12,6 +12,8 @@ use App\Models\FoodType;
 use App\Models\Outlet;
 use File;
 use App\Models\Master\ProductGroup;
+use App\Models\MenuIngredientModel;
+use Illuminate\Support\Facades\DB;
 
 class MeneuManagementController extends Controller
 {
@@ -67,17 +69,22 @@ class MeneuManagementController extends Controller
     {
         $menuCategory = MenuCategory::where('active', 1)->get();
         $foodType = FoodType::all();
-        return view('admin.menu.menu_catalogues_add', compact('menuCategory', 'foodType'));
+        $outlets = Outlet::where('active', 1)->get();
+        $Json_Ingrediant = json_encode([]);
+
+        return view('admin.menu.menu_catalogues_add', compact('menuCategory', 'foodType', 'outlets', 'Json_Ingrediant'));
     }
 
     public function postAddMenuCatalogues(Request $request)
     {
-        $insertDataArr = $request->except(['_token', 'tableId']);
+        $insertDataArr = $request->except(['_token', 'tableId', 'IngrediantItem']);
         $insertDataArr['active'] = $request->active ? 1 : 0;
+
         $dataInfo = MenuCatalogue::updateOrCreate(['id' => $request->tableId], $insertDataArr);
+        $tableId = $dataInfo->id;
         if ($request->file('image')) {
             $file = $request->file('image');
-            $filename = $dataInfo->id . '_' . preg_replace('/[^a-zA-Z0-9_.]/', '-', $file->getClientOriginalName());
+            $filename = $tableId . '_' . preg_replace('/[^a-zA-Z0-9_.]/', '-', $file->getClientOriginalName());
             $filePath = public_path('menu/menu_catalogues/');
             if (!File::isDirectory($filePath)) {
                 File::makeDirectory($filePath, 0777, true, true);
@@ -88,11 +95,21 @@ class MeneuManagementController extends Controller
             if (File::exists($filePath)) {
                 File::delete($filePath);
             }
-
             $dataInfo->image = $filename;
         }
         $dataInfo->save();
-        return redirect()->to('/admin/menu-management/menu-catalogues');
+
+        $IngrediantItem = json_decode($request->IngrediantItem);
+        MenuIngredientModel::where('menu_id', $tableId)->delete();
+        foreach ($IngrediantItem as $item) {
+            MenuIngredientModel::insert([
+                'menu_id' => $tableId,
+                'ingrediant_id' => $item->IngredientId,
+                'quantity' => $item->Quantity
+            ]);
+        }
+        /*return redirect()->to('/admin/menu-management/menu-catalogues');*/
+        return true;
     }
 
     public function getEditMenuCatalogues(Request $request, $id)
@@ -100,7 +117,20 @@ class MeneuManagementController extends Controller
         $dataArray = MenuCatalogue::where('id', $id)->first();
         $menuCategory = MenuCategory::where('active', 1)->get();
         $foodType = FoodType::all();
-        return view('admin.menu.menu_catalogues_add', compact('dataArray', 'menuCategory', 'foodType'));
+        $outlets = Outlet::where('active', 1)->get();
+        $MenuIngredient = MenuIngredientModel::where('menu_id', $id)->get();
+
+        $Query = "SELECT * FROM ingrediant WHERE outlet_id=$dataArray->outlet_id AND deleted_at is null";
+        $IngrediantList = DB::select($Query);
+        $Json_Ingrediant = json_encode($IngrediantList);
+        
+        return view('admin.menu.menu_catalogues_add', compact('dataArray', 'menuCategory', 'foodType', 'outlets', 'MenuIngredient', 'IngrediantList', 'Json_Ingrediant'));
+    }
+
+    public function DeleteMenuIngredient(Request $request)
+    {
+        MenuIngredientModel::where('id', $request->Id)->delete();
+        return true;
     }
 
     public function outletMenuList(Request $request)
@@ -132,7 +162,7 @@ class MeneuManagementController extends Controller
     public function getAddItem(Request $request, $id)
     {
         $MenuCatalogueList = MenuCatalogue::where('active', 1)->get();
-        $menuDetail = MenuDetail::where('outlets_menu_id', $id)->pluck('menu_catalogue_id')->toArray();//json_encode();
+        $menuDetail = MenuDetail::where('outlets_menu_id', $id)->pluck('menu_catalogue_id')->toArray(); //json_encode();
         $dataArray = OutletMenu::where('id', $id)->first();
         //dd($menuDetail);
         return view('admin.menu.add_menu', compact('dataArray', 'MenuCatalogueList', 'menuDetail'));

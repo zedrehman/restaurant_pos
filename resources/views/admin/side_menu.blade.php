@@ -40,10 +40,10 @@
         <ul aria-expanded="false">
             <li><a href="{{url('/admin/kitchen-department-list')}}">Kitchen Department</a></li>
             <li><a href="{{url('/foodsetup/ingrediant')}}">Ingrediant</a></li>
-            <li><a href="page-login.html">Modifier</a></li>
+            <li><a href="{{url('/foodsetup/modifiers')}}">Modifier</a></li>
             <li><a href="{{url('/admin/menu-management/menu-categories')}}">Category</a></li>
             <li><a href="{{url('/admin/menu-management/menu-catalogues')}}">Items</a></li>
-            <li><a href="{{url('/admin/menu-management/outlet-menu')}}">Outlet Items</a></li>
+            <!--<li><a href="{{url('/admin/menu-management/outlet-menu')}}">Outlet Items</a></li>-->
         </ul>
     </li>
     <li>
@@ -79,7 +79,7 @@
     </li>
 
     <li>
-        <a href="{{url('/outlet/dashboard')}}" class="ai-icon" aria-expanded="false">
+        <a href="{{url('/outlet/order-table')}}" class="ai-icon" aria-expanded="false">
             <i class="flaticon-381-networking"></i>
             <span class="nav-text">POS</span>
         </a>

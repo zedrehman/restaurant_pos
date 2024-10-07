@@ -31,10 +31,9 @@
     <div id="main-wrapper">
         <div class="nav-header">
             <a href="index.html" class="brand-logo">
-                <img src="{{ asset('assets/images') }}/mominagrologo.png" alt="" style="width: 50px;">
-                <!--<img class="logo-abbr" src="public/images/logo.png" alt="">
-                <img class="logo-compact" src="public/images/logo-text.png" alt="">
-                <img class="brand-title" src="public/images/logo-text.png" alt="">-->
+                <img class="logo-abbr" src="{{ asset('img') }}/a-logo.png" alt="">
+                <img class="logo-compact" src="{{ asset('img') }}/logo-text.png" alt="">
+                <img class="brand-title" src="{{ asset('img') }}/logo-text.png" alt="">
             </a>
 
             <div class="nav-control">
@@ -54,7 +53,7 @@
                             </div>
                         </div>
                         <ul class="navbar-nav header-right">
-                            <li class="nav-item dropdown notification_dropdown">
+                            <!--<li class="nav-item dropdown notification_dropdown">
                                 <a class="nav-link  ai-icon" href="javascript:void(0)" role="button" data-toggle="dropdown">
                                     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -219,17 +218,16 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </li>
+                            </li>-->
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown">
-                                    <img src="public/images/profile/17.jpg" width="20" alt="" />
                                     <div class="header-info">
                                         <span class="text-black"><strong>{{ Auth::user()->name }}</strong></span>
                                         <p class="fs-12 mb-0">Admin</p>
                                     </div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="app-profile.html" class="dropdown-item ai-icon">
+                                    <!--<a href="app-profile.html" class="dropdown-item ai-icon">
                                         <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                             stroke-linejoin="round">
@@ -246,7 +244,7 @@
                                             <polyline points="22,6 12,13 2,6"></polyline>
                                         </svg>
                                         <span class="ml-2">Inbox </span>
-                                    </a>
+                                    </a>-->
                                     <a href="{{ url('/logout') }}" class="dropdown-item ai-icon">
                                         <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18" height="18"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

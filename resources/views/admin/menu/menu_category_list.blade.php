@@ -2,6 +2,7 @@
 @section('dashboard_bar')
 Category
 @endsection
+
 @section('content')
 <div class="row">
     <div class="col-12">
