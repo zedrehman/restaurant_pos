@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Menu\MenuCategory;
 use App\Models\FoodType;
+use App\Models\Outlet;
 
 class MenuCatalogue extends Model
 {
@@ -15,7 +16,7 @@ class MenuCatalogue extends Model
     protected $table = 'menu_catalogues';
 
     protected $dates = ['deleted_at'];
-    
+
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     public function getMenuCategory()
@@ -25,5 +26,10 @@ class MenuCatalogue extends Model
     public function getFoodType()
     {
         return $this->belongsTo(FoodType::class, 'food_type', 'id');
+    }
+
+    public function getOutlet()
+    {
+        return $this->belongsTo(Outlet::class, 'outlet_id', 'id');
     }
 }

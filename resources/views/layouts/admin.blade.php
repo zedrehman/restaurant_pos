@@ -270,7 +270,7 @@
         </div>
 
         <div class="content-body">
-            <div class="container-fluid">
+            <div class="container-fluid" style="padding-left: 10px;">
                 @yield('content')
             </div>
         </div>

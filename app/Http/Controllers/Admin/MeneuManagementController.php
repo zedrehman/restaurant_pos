@@ -61,7 +61,8 @@ class MeneuManagementController extends Controller
 
     public function menuCataloguesList(Request $request)
     {
-        $dataArray = MenuCatalogue::with('getMenuCategory', 'getFoodType')->get();
+        $dataArray = MenuCatalogue::with('getMenuCategory', 'getFoodType', 'getOutlet')->get();
+        //dd($dataArray);
         return view('admin.menu.menu_catalogues_list', compact('dataArray'));
     }
 
@@ -123,7 +124,7 @@ class MeneuManagementController extends Controller
         $Query = "SELECT * FROM ingrediant WHERE outlet_id=$dataArray->outlet_id AND deleted_at is null";
         $IngrediantList = DB::select($Query);
         $Json_Ingrediant = json_encode($IngrediantList);
-        
+
         return view('admin.menu.menu_catalogues_add', compact('dataArray', 'menuCategory', 'foodType', 'outlets', 'MenuIngredient', 'IngrediantList', 'Json_Ingrediant'));
     }
 

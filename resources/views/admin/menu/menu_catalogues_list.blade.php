@@ -7,7 +7,7 @@ Items
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="padding: 10px;">
                 <div class="row grid-margin">
                     <div class="col-12" style="text-align: right;">
                         <a class="btn-sm btn-primary" href="{{url('/admin/menu-management/add-menu-catalogues')}}">
@@ -20,12 +20,13 @@ Items
                     <table class="table table-bordered table-responsive-sm" id="dataTable">
                         <thead>
                             <tr>
+                                <th>Outlet</th>
                                 <th>Name</th>
                                 <th>Code</th>
                                 <th>Category</th>
                                 <th>Image</th>
                                 <th>Price</th>
-                                <th>Current Stock</th>
+                                <th>Stock</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -33,6 +34,11 @@ Items
                         <tbody>
                             @foreach ($dataArray as $data)
                             <tr>
+                                <td>
+                                    @if($data->getOutlet)
+                                    {{ $data->getOutlet->outlet_name }}
+                                    @endif
+                                </td>
                                 <td> {{ $data->menu_name }} </td>
                                 <td> {{ $data->short_code }} </td>
                                 <td> {{ $data->getMenuCategory->category_name }} </td>
