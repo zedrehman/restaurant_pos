@@ -37,7 +37,7 @@ Expenses Reports
                     <th>Amount</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tblBody">
                 @foreach ($ExpensesDetailsTable as $Items)
                 <tr>
                     <td> {{ $Items->outlet_name }} </td>
@@ -55,6 +55,10 @@ Expenses Reports
 <script>
     var baseUrl = "{{url('/')}}";
     $("#ulDate .list-group-item").click(function() {
+        $('#tblBody').html('');
+        $("#ulDate .list-group-item").removeClass('active');
+        $(this).addClass('active');
+        
         let date = $(this).attr("data-id");
         $.ajax({
             url: baseUrl + '/reports/GetExpensesDetailsReportsByDate',
@@ -66,7 +70,13 @@ Expenses Reports
             success: function(response) {
                 console.log(response);
                 for (let i = 0; i < response.length; i++) {
-
+                    let html = `<tr>
+                                    <td> ${response[i].outlet_name} </td>
+                                    <td> ${response[i].type_name}</td>
+                                    <td> ${response[i].description}</td>
+                                    <td> ${response[i].expense_amount}</td>
+                                </tr>`;
+                    $('#tblBody').append(html);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
