@@ -110,7 +110,18 @@ class PosController extends Controller
 
     public function GetOrderDetailsByOrderId(Request $request, $OrderId)
     {
-        $OrderTable = OrderTable::where('id', $OrderId)->first();
+        $TQuery = "
+            SELECT 
+                ot.*,
+                tm.table_name
+            FROM 
+                order_table ot
+                INNER JOIN table_management tm ON ot.table_id=tm.id
+            WHERE
+                ot.id=$OrderId
+        ";
+        $OrderTable = DB::select($TQuery);
+
         $Query = "
             SELECT 
                 om.*,

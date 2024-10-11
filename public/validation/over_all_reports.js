@@ -30,12 +30,21 @@ $(".trtable").click(function () {
     $(this).addClass('selected');
 
     let OrderId = $(this).attr("data-id");
+    $("#tbodyBillingMenu").html('');
+    $("#lblTotalBillAmount").html('');
+    $('html,body').animate({ scrollTop: $("#tbodyBillingMenu").offset().top }, 'slow');
     $.ajax({
         url: baseUrl + '/outlet/order-details-byid/' + OrderId,
         type: 'GET',
         success: function (response) {
-            console.log();
+
+
             let order_table = response.order_table;
+            console.log(order_table);
+            $("#lblOrderId").html("#" + order_table[0].id);
+            $("#lblDate").html(order_table[0].created_at);
+            $("#lblTableNo").html(order_table[0].table_name);
+
             let order_table_menu_items = response.order_table_menu_items;
             let TotalBillAmount = 0;
             for (let i = 0; i < order_table_menu_items.length; i++) {
@@ -45,12 +54,13 @@ $(".trtable").click(function () {
                 TotalBillAmount += eval(TotalAmount);
                 let MenuBillItems = `<tr>
                                         <td style="width: 60%;">${order_table_menu_items[i].menu_name}</td>
-                                        <td style="text-align: right;width: 10%;">${Quantity}</td>
-                                        <td style="text-align: right;width: 30%;"><b>${TotalAmount}</b></td>
+                                        <td style="text-align: right;">${Quantity}</td>
+                                        <td style="text-align: right;">${Amount}</td>
+                                        <td style="text-align: right;"><b>${TotalAmount}</b></td>
                                     </tr>`;
                 $("#tbodyBillingMenu").append(MenuBillItems);
             }
-            $("#lblTotalBillAmount").html(TotalBillAmount);
+            $("#lblTotalBillAmount").html("Rs. " + TotalBillAmount);
         },
         error: function (xhr, ajaxOptions, thrownError) {
             var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;

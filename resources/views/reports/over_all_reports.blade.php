@@ -9,7 +9,7 @@ Overall Reports
 @endsection
 
 @section('content')
-<div class="d-sm-flex mb-lg-4 mb-2">
+<!--<div class="d-sm-flex mb-lg-4 mb-2">
     <div class="dropdown mb-2 ml-auto mr-3">
         <a href="javascript:void(0)" class="btn btn-primary btn-rounded light" data-toggle="dropdown"
             aria-expanded="false">
@@ -25,7 +25,7 @@ Overall Reports
     </div>
     <input class="d-inline-block form-control date-button btn btn-primary light btn-rounded" id="timepicker"
         placeholder="Today">
-</div>
+</div>-->
 <div class="row">
     <div class="col-sm-12">
         <div class="table-responsive rounded card-table">
@@ -73,19 +73,51 @@ Overall Reports
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6">
-                <table class="table">
+                <table class="table-sm">
                     <thead>
                         <tr>
-                            <th>Item Name </th>
-                            <th>Oty</th>
-                            <th>Price</th>
-                            <th>Amount</th>
+                            <th style="width: 60%;">Item Name </th>
+                            <th style="width: 10%;">Oty</th>
+                            <th style="width: 10%;">Price</th>
+                            <th style="width: 20%;">Amount</th>
                         </tr>
                     </thead>
+                    <tbody id="tbodyBillingMenu"></tbody>
                 </table>
             </div>
             <div class="col-sm-6">
-                <h4>Bill Details</h4>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h4>Bill Details</h4>
+                    </div>
+                    <div class="col-sm-4" style="text-align: right;color: red;">
+                        <label class="text-main" id="lblTotalBillAmount"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5>Order Id</h5>
+                    </div>
+                    <div class="col-sm-6" style="text-align: right;">
+                        <label class="text-main" id="lblOrderId"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5>Date</h5>
+                    </div>
+                    <div class="col-sm-6" style="text-align: right;">
+                        <label class="text-main" id="lblDate"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5>Table No</h5>
+                    </div>
+                    <div class="col-sm-6" style="text-align: right;">
+                        <label class="text-main" id="lblTableNo"></label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
