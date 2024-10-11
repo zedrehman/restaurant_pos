@@ -1,7 +1,33 @@
+jQuery(document).ready(function () {
+    if ($('#tblOrder').length > 0) {
+        var tblOrder = $('#tblOrder').DataTable({
+            searching: false,
+            paging: true,
+            select: false,
+            //info: false,         
+            lengthChange: false
+        });
+        /*tblOrder.on('click', 'tbody tr', function () {
+            var $row = table2.row(this).nodes().to$();
+            var hasClass = $row.hasClass('selected');
+            if (hasClass) {
+                $row.removeClass('selected')
+            } else {
+                $row.addClass('selected')
+            }
+        });
+        tblOrder.rows().every(function () {
+            this.nodes().to$().removeClass('selected')
+        });*/
+    }
+});
+
 $(".trtable").click(function () {
 
-    $(".trtable").removeAttr("style");
-    $(this).css({ "background-color": "gray", "color": "#fff" });
+    //$(".trtable").removeAttr("style");
+    //$(this).css({ "background-color": "#000", "color": "#fff" });
+    $(".trtable").removeClass('selected');
+    $(this).addClass('selected');
 
     let OrderId = $(this).attr("data-id");
     $.ajax({

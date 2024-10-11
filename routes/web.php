@@ -119,6 +119,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/report', 'OutletReportController@ReportDashboard');
     });
 
+    Route::group(['prefix' => 'reports'], function () {
+        Route::get('/overallreports', 'ReportsController@OverAllReports');
+        Route::get('/expensesreports', 'ReportsController@ExpensesReports');
+        Route::post('/GetExpensesDetailsReportsByDate', 'ReportsController@GetExpensesDetailsReportsByDate');
+    });
 
 
     // Admin

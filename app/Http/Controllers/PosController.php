@@ -33,17 +33,7 @@ class PosController extends Controller
     }
     public function MenuListByCategoryId(Request $request, $CategoryId, $outlet_id)
     {
-        //
-        $Query = "
-            SELECT 
-                mc.* 
-            FROM 
-                `outlets_menu` om 
-                INNER JOIN menu_details md ON om.id=md.outlets_menu_id
-                INNER JOIN menu_catalogues mc ON md.menu_catalogue_id=mc.id
-            WHERE 
-                om.outlet_id=$outlet_id AND mc.menu_categories_id=$CategoryId;
-        ";
+        $Query = "SELECT * FROM menu_catalogues WHERE outlet_id=$outlet_id AND menu_categories_id=$CategoryId;";
         $MenuList = DB::select($Query);
         return response()->json($MenuList, 200);
     }
@@ -95,20 +85,16 @@ class PosController extends Controller
         ";
         $PD_KOTArray = DB::select($PD_Query);
 
-
         $MLQuery = "
                 SELECT 
                     mcat.id,
                     mcat.category_name,
                     COUNT(mc.id) as MenuCount
-                FROM 
-                    `outlets_menu` om 
-                    INNER JOIN menu_details md ON om.id=md.outlets_menu_id
-                    INNER JOIN menu_catalogues mc ON md.menu_catalogue_id=mc.id
+                FROM
+                    menu_catalogues mc
                     INNER JOIN menu_categories mcat ON mcat.id=mc.menu_categories_id
-
                 WHERE 
-                    om.outlet_id=$outlet_id AND mcat.active=1
+                    mc.outlet_id=$outlet_id AND mcat.active=1
                 GROUP BY mcat.id, mcat.category_name;";
 
         $MenuCategory = DB::select($MLQuery);

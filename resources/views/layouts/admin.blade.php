@@ -8,12 +8,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{{ config('app.name', '') }}</title>
 
+    @yield('Css')
+    <link href="{{ asset('assets/vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}?version={{config('constant.script_version')}}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.css') }}?version={{config('constant.script_version')}}" rel="stylesheet" type="text/css" />
+
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;family=Roboto:wght@100;300;400;500;700;900&amp;display=swap"
         rel="stylesheet" type="text/css" />
-
-    @yield('Css')
+        
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
 
@@ -282,6 +284,7 @@
     </div>
 
     <script src="{{ asset('assets/vendor/global/global.min.js') }}?version={{config('constant.script_version')}}" type="text/javascript"></script>
+    <script src="{{ asset('assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}?version={{config('constant.script_version')}}" type="text/javascript"></script>
     <script src="{{ asset('assets/vendor/peity/jquery.peity.min.js') }}?version={{config('constant.script_version')}}" type="text/javascript"></script>
     <!--<script src="public/vendor/apexchart/apexchart.js" type="text/javascript"></script>
     <script src="{{ asset('assets/js/dashboard/dashboard-1.js') }}?version={{config('constant.script_version')}}" type="text/javascript"></script>-->
