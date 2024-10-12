@@ -130,7 +130,7 @@ class ReportsController extends Controller
                             ingrediant_stock inst
                         GROUP BY inst.ingrediant_id
                     )stock
-                    INNER JOIN `ingrediant` i ON I.id=stock.ingrediant_id
+                    INNER JOIN `ingrediant` i ON i.id=stock.ingrediant_id
                     INNER JOIN outlets o ON i.outlet_id=o.id
                 WHERE
                     IFNULL(remind_at,0) <= (totalstock - TotalUsed)
