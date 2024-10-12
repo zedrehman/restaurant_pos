@@ -74,7 +74,7 @@
         <ul aria-expanded="false">
             <li><a href="{{url('/reports/overallreports')}}">Overall Reports</a></li>
             <li><a href="{{url('/reports/expensesreports')}}">Expense Reports</a></li>
-            <li><a href="page-register.html">Stock Alert</a></li>
+            <li><a href="{{url('/reports/stockalertreports')}}">Stock Alert</a></li>
         </ul>
     </li>
 

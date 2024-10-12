@@ -13,7 +13,7 @@ SMS Master
                     @csrf
                     <input type="hidden" name="IngrediantId" value="@if(isset($IngrediantList)){{ $IngrediantList->id }}@endif">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Outlets <span style="color:red;">*</span> </label>
                                 <select class="form-control" name="outlet_id" required>
@@ -24,19 +24,13 @@ SMS Master
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Name <span style="color:red;">*</span></label>
                                 <input type="text" name="ingrediant_name" class="form-control" placeholder="Name" value="@if(isset($IngrediantList)){{ $IngrediantList->ingrediant_name }}@endif" required>
                             </div>
                         </div>
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label>Cost <span style="color:red;">*</span></label>
-                                <input type="text" name="cost" class="form-control" placeholder="Cost" value="@if(isset($IngrediantList)){{ $IngrediantList->cost }}@endif" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <div class="form-group">
                                 <label>Unit <span style="color:red;">*</span></label>
                                 <select class="form-control" name="unit_id" required>
@@ -47,6 +41,20 @@ SMS Master
                                 </select>
                             </div>
                         </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Cost <span style="color:red;">*</span></label>
+                                <input type="text" name="cost" class="form-control" placeholder="Cost" value="@if(isset($IngrediantList)){{ $IngrediantList->cost }}@endif" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Remind At <span style="color:red;">*</span></label>
+                                <input type="number" name="remind_at" class="form-control" placeholder="Remind At" value="@if(isset($IngrediantList)){{ $IngrediantList->remind_at }}@endif" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-3">
                             <button type="submit" class="btn btn-sm btn-success">Submit</button>
                         </div>

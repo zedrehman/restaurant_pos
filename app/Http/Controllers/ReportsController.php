@@ -96,7 +96,48 @@ class ReportsController extends Controller
             ";
 
         $ExpensesDetailsTable = DB::select($EX_Query);
-        
+
         return response()->json($ExpensesDetailsTable, 200);
+    }
+
+    public function StockAlertReports(Request $request)
+    {
+
+        $EX_Query = "            
+                SELECT 
+                    stock.*,
+                    i.ingrediant_name,
+                    o.outlet_name,
+                    (totalstock - TotalUsed) avl_stock
+                FROM 
+                    (
+                        SELECT 
+                            inst.ingrediant_id,
+                            SUM(inst.stock_value) as totalstock,
+                            SUM(
+                                (
+                                    SELECT 
+                                        IFNULL(SUM(mci.quantity), 0)
+                                    FROM 
+                                        menu_catalogues_ingredient mci 
+                                        INNER JOIN order_table_menu_items otmi ON mci.menu_id=otmi.menu_id
+                                    WHERE
+                                        mci.ingrediant_id=inst.ingrediant_id
+                                )+
+                                (SELECT IFNULL(SUM(quantity), 0) FROM modifiers_ingredient mi WHERE mi.ingrediant_id=inst.ingrediant_id)
+                            ) as TotalUsed
+                        FROM
+                            ingrediant_stock inst
+                        GROUP BY inst.ingrediant_id
+                    )stock
+                    INNER JOIN `ingrediant` i ON I.id=stock.ingrediant_id
+                    INNER JOIN outlets o ON i.outlet_id=o.id
+                WHERE
+                    IFNULL(remind_at,0) <= (totalstock - TotalUsed)
+        ";
+
+        $stockDetails = DB::select($EX_Query);
+
+        return view('reports.stock_alert', compact(['stockDetails']));
     }
 }
