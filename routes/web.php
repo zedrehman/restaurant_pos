@@ -37,6 +37,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/editoutlet/{id}', 'UserSetupController@EditOutlet');
         Route::get('/addoutlet', 'UserSetupController@AddOutlet');
         Route::post('/addoutlet', 'UserSetupController@PostAddOutlet');
+
+        Route::get('/userrole', 'UserSetupController@UserRole');
+
+        Route::get('/customer', 'UserSetupController@Customer');
+
     });
 
     Route::group(['prefix' => 'appsetting'], function () {
@@ -126,6 +131,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/GetExpensesDetailsReportsByDate', 'ReportsController@GetExpensesDetailsReportsByDate');
 
         Route::get('/stockalertreports', 'ReportsController@StockAlertReports');
+    });
+
+    Route::group(['prefix' => 'kitchen'], function () {
+        Route::get('/orderlist', 'KitchenController@OrderList');
+        Route::get('/departmentorder', 'KitchenController@DepartmentOrder');
+
+        Route::post('/GetKitchenOrderDetails', 'KitchenController@GetKitchenOrderDetails');
     });
 
 

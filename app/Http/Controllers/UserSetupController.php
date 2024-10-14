@@ -58,4 +58,16 @@ class UserSetupController extends Controller
         $outletInfo->save();
         return redirect()->to('/usersetup/outletlist');
     }
+
+    public function UserRole()
+    {
+        $outlets = Outlet::all();
+        return view('usersetup.outletlist', compact('outlets'));
+    }
+
+    public function Customer()
+    {
+        $outlets = Outlet::all();
+        return view('usersetup.outletlist', compact('outlets'));
+    }
 }

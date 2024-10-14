@@ -32,7 +32,7 @@
 
     <div id="main-wrapper">
         <div class="nav-header">
-            <a href="index.html" class="brand-logo">
+            <a href="{{url('/admin/dashboard')}}" class="brand-logo">
                 <img class="logo-abbr" src="{{ asset('img') }}/a-logo.png" alt="">
                 <img class="logo-compact" src="{{ asset('img') }}/logo-text.png" alt="">
                 <img class="brand-title" src="{{ asset('img') }}/logo-text.png" alt="">
