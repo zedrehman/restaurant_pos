@@ -79,7 +79,7 @@ class UserSetupController extends Controller
 
     public function AddUserRole(Request $request, $id)
     {
-        $UserRole = UserRoleModel::where('id', $id)->first();        
+        $UserRole = UserRoleModel::where('id', $id)->first();
         return view('usersetup.add_user_role', compact('UserRole'));
     }
 
@@ -98,7 +98,26 @@ class UserSetupController extends Controller
 
     public function Customer(Request $request)
     {
-        $CustomerList=CustomerModel::all();
-        return view('usersetup.user_role', compact('UserRole'));
+        $CustomerList = CustomerModel::with('getOutlet')->get();
+        return view('usersetup.customer', compact('CustomerList'));
+    }
+
+    public function AddCustomer(Request $request, $id)
+    {
+        $Customer = CustomerModel::where('id', $id)->first();
+        $outlets = Outlet::where('active', 1)->get();
+        return view('usersetup.add_customer', compact('Customer', 'outlets'));
+    }
+    public function SaveCustomer(Request $request)
+    {
+        $CustomerModel = $request->except(['_token', 'customer_id']);
+        CustomerModel::updateOrCreate(['id' => $request->customer_id], $CustomerModel);
+        return redirect()->to('/usersetup/customer');
+    }
+
+    public function DeleteCustomer(Request $request, $id)
+    {
+        CustomerModel::where('id', $id)->delete();
+        return redirect()->to('/usersetup/customer');
     }
 }

@@ -17,7 +17,7 @@ class OrderTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('mobile_no');
-            $table->tinyText('address');
+            $table->tinyText('address')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
