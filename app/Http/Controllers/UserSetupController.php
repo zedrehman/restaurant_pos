@@ -8,6 +8,7 @@ use App\Models\OutletDesignation;
 use App\Models\Outlet;
 use App\Models\Brand;
 use App\Models\City;
+use App\Models\CustomerModel;
 use App\Models\User;
 use App\Models\UserRoleModel;
 use App\Models\Master\UserType;
@@ -93,5 +94,11 @@ class UserSetupController extends Controller
     {
         UserRoleModel::where('id', $id)->delete();
         return redirect()->to('/usersetup/userrole');
+    }
+
+    public function Customer(Request $request)
+    {
+        $CustomerList=CustomerModel::all();
+        return view('usersetup.user_role', compact('UserRole'));
     }
 }
