@@ -13,7 +13,7 @@
         </a>
         <ul aria-expanded="false" id="ulUserSetup">
             <li><a href="{{url('/usersetup/outletlist')}}">Outlets</a></li>
-            <li><a href="orders.html">User Role</a></li>
+            <li><a href="{{url('/usersetup/userrole')}}">User Role</a></li>
             <li><a href="{{url('/admin/outlet-user')}}">Users</a></li>
             <li><a href="general-customers.html">Customers</a></li>
         </ul>

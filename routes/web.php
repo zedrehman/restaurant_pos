@@ -37,6 +37,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/editoutlet/{id}', 'UserSetupController@EditOutlet');
         Route::get('/addoutlet', 'UserSetupController@AddOutlet');
         Route::post('/addoutlet', 'UserSetupController@PostAddOutlet');
+
+        Route::get('/userrole', 'UserSetupController@UserRole');
+        Route::get('/adduserrole/{id}', 'UserSetupController@AddUserRole');
+        Route::post('/SaveUserRole', 'UserSetupController@SaveUserRole');
+        Route::get('/DeleteUserRole/{id}', 'UserSetupController@DeleteUserRole');
     });
 
     Route::group(['prefix' => 'appsetting'], function () {
