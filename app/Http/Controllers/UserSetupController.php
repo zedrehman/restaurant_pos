@@ -8,10 +8,13 @@ use App\Models\OutletDesignation;
 use App\Models\Outlet;
 use App\Models\Brand;
 use App\Models\City;
+use App\Models\CustomerModel;
 use App\Models\User;
+use App\Models\UserRoleModel;
 use App\Models\Master\UserType;
 use File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 
 class UserSetupController extends Controller
@@ -59,15 +62,43 @@ class UserSetupController extends Controller
         return redirect()->to('/usersetup/outletlist');
     }
 
-    public function UserRole()
+    public function UserRole(Request $request)
     {
-        $outlets = Outlet::all();
-        return view('usersetup.outletlist', compact('outlets'));
+        $Query = "
+            SELECT 
+                *,
+                (select COUNT(1) FROM users WHERE role_id=ur.id) As total_users
+            FROM 
+                user_role ur             
+            ORDER BY ur.role_name ASC
+        ";
+        $UserRole = DB::select($Query);
+
+        return view('usersetup.user_role', compact('UserRole'));
     }
 
-    public function Customer()
+    public function AddUserRole(Request $request, $id)
     {
-        $outlets = Outlet::all();
-        return view('usersetup.outletlist', compact('outlets'));
+        $UserRole = UserRoleModel::where('id', $id)->first();        
+        return view('usersetup.add_user_role', compact('UserRole'));
+    }
+
+    public function SaveUserRole(Request $request)
+    {
+        $UserRoleModel = $request->except(['_token', 'user_role_id']);
+        UserRoleModel::updateOrCreate(['id' => $request->user_role_id], $UserRoleModel);
+        return redirect()->to('/usersetup/userrole');
+    }
+
+    public function DeleteUserRole(Request $request, $id)
+    {
+        UserRoleModel::where('id', $id)->delete();
+        return redirect()->to('/usersetup/userrole');
+    }
+
+    public function Customer(Request $request)
+    {
+        $CustomerList=CustomerModel::all();
+        return view('usersetup.user_role', compact('UserRole'));
     }
 }

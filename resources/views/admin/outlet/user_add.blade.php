@@ -1,15 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
+@section('dashboard_bar')
+User List
+@endsection
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-dark">
-        <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}"><i class="ti-home menu-icon"></i></a></li>
-        <li class="breadcrumb-item">Configuration</li>
-        <li class="breadcrumb-item"> <a href="{{url('/admin/outlet-user')}}"> user User List</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Add</li>
-    </ol>
-</nav>
+@section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -29,7 +24,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Name <span style="color:red;">*</span> </label>
                                 <input type="text" name="name" class="form-control" placeholder="Name" value="@if(isset($user)){{ $user->name }}@endif" required>
@@ -37,38 +32,39 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
+                                <label>User Type <span style="color:red;">*</span> </label>
+                                <select class="form-control" name="role_id" required>
+                                    <option value=""> -- UserRole -- </option>
+                                    @foreach ($userType as $uType)
+                                    <option value="{{$uType->id}}" @if(isset($user) && $user->role_id == $uType->id) selected @endif >{{ $uType->role_name}}</option>
+                                    @endforeach
+                                </select>
+                                <input type="hidden" name="user_type" value="--">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
                                 <label>Email <span style="color:red;">*</span> </label>
                                 <input type="email" name="email" id="email" class="form-control" placeholder="email" value="@if(isset($user)){{ $user->email }}@endif" required>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Password <span style="color:red;">*</span> </label>
-                                <input type="password" name="password" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" placeholder="password" @if(!isset($user->id)) required @endif>
+                                <input type="password" name="password" class="form-control" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" placeholder="password" @if(!isset($user->id)) required @endif>
                                 @if (isset($user->id))
                                 <span>Leave blank to keep current password</span>
                                 @endif
-
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Contact phone <span style="color:red;">*</span></label>
                                 <input type="text" name="phone_no" class="form-control" placeholder="contact phone" value="@if(isset($user)){{ $user->phone_no }}@endif" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" required>
                             </div>
                         </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label>User Type <span style="color:red;">*</span> </label>
-                                <select class="form-control" name="user_type" required>
-                                    <option value="">Select usertype</option>
-                                    @foreach ($userType as $key => $uType)
-                                    <option value="{{$uType}}" @if(isset($user) && $user->user_type == $uType) selected @endif> {{ $uType}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
+                        
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Address <span style="color:red;">*</span></label>
                                 <textarea name="address" class="form-control" required>@if(isset($user)){{ $user->address }}@endif</textarea>
@@ -80,14 +76,13 @@
                                 <label>City <span style="color:red;">*</span></label>
                                 <select class="form-control" name="city_id" required>
                                     <option value="">Select City</option>
-
                                     @foreach ($cities as $city)
                                     <option value="{{$city->id}}" @if(isset($user) && $user->city_id == $city->id) selected @endif> {{ $city->city_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <label>zip code <span style="color:red;">*</span></label>
                                 <input type="text" name="postal_code" class="form-control" placeholder="" value="@if(isset($user)){{ $user->postal_code }}@endif" required onKeyDown="if(this.value.length==6 && event.keyCode!=8) return false;">
@@ -95,7 +90,6 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <label>&nbsp;</label>
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input type="checkbox" name="active" class="form-check-input" @if(isset($user) && $user->active == 1) checked @endif> Active
@@ -103,7 +97,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6" style="padding-top: 20px;text-align: right;">
+                        <div class="col-sm-2" style="text-align: right;">
                             <button type="submit" class="btn btn-sm btn-success"> Submit</button>
                         </div>
                     </div>

@@ -7,13 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Outlet;
 use App\Models\City;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -26,6 +25,7 @@ class User extends Authenticatable
         'password',
         'phone_no',
         'user_type',
+        'role_id',
         'outlet_id',
         'address',
         'city_id',
@@ -62,6 +62,11 @@ class User extends Authenticatable
     public function getCity()
     {
         return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    public function getRole()
+    {
+        return $this->belongsTo(UserRoleModel::class, 'role_id', 'id');
     }
 
 }

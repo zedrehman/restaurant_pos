@@ -27,7 +27,7 @@ Kitchen Department
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Kitchen Department Name <span style="color:red;">*</span> </label>
-                                <input type="text" name="kitchen_department_name" class="form-control" placeholder="Tax Name" value="@if(isset($dataArray)){{ $dataArray->kitchen_department_name }}@endif" required>
+                                <input type="text" name="kitchen_department_name" class="form-control" placeholder="Department Name" value="@if(isset($dataArray)){{ $dataArray->kitchen_department_name }}@endif" required>
                             </div>
                         </div>
                         <div class="col-sm-3">

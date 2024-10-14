@@ -10,6 +10,7 @@ use App\Models\Brand;
 use App\Models\City;
 use App\Models\User;
 use App\Models\Master\UserType;
+use App\Models\UserRoleModel;
 use File;
 use Illuminate\Support\Facades\Hash;
 
@@ -128,7 +129,7 @@ class OutletController extends Controller
 
     public function outletUserList()
     {
-        $users = User::with(['getOutlet','getCity'])->where('user_type', '!=', 'admin')->get();
+        $users = User::with(['getOutlet','getCity','getRole'])->where('user_type', '!=', 'admin')->get();
         return view('admin.outlet.user_list', compact('users'));
     }
 
@@ -136,7 +137,7 @@ class OutletController extends Controller
     {
         $outlets = Outlet::where('active', 1)->get();
         $cities = City::all();
-        $userType = [ WAITER, MANAGER];
+        $userType = UserRoleModel::all();//[ WAITER, MANAGER];
         return view('admin.outlet.user_add', compact('outlets', 'cities', 'userType'));
     }
 
@@ -159,7 +160,14 @@ class OutletController extends Controller
         $outlets = Outlet::where('active', 1)->get();
         $user = User::where('id', $id)->where('user_type', '!=', 'admin')->first();
         $cities = City::all();
-        $userType = [ WAITER, MANAGER];
+        $userType = UserRoleModel::all();
         return view('admin.outlet.user_add', compact('outlets', 'user', 'cities', 'userType'));
+    }
+
+    public function DeleteUser(Request $request, $id)
+    {
+        
+        User::where('id', $id)->delete();        
+        return redirect()->to('/admin/outlet-user');
     }
 }
