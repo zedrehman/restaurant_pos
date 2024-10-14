@@ -22,6 +22,7 @@ User List
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
+                                <th>Role</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -33,14 +34,18 @@ User List
                                 <td> {{ $user->name }} </td>
                                 <td> {{ $user->email }} </td>
                                 <td> {{ $user->phone_no }} </td>
+                                <td> {{ $user->getRole->role_name }} </td>
                                 <td> @if($user->active==1)
-                                    <div class="badge badge-success badge-pill">Active</div>
+                                    <div class="badge light badge-success">Active</div>
                                     @else
-                                    <div class="badge badge-warning badge-pill">Inactive</div>
+                                    <div class="badge light badge-warning">Inactive</div>
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-warning" href="{{ url('/admin/edit-user/'.$user->id) }}">Edit</a>
+                                    <span>
+                                        <a class="text-warning mr-4" href="{{ url('/admin/edit-user/'.$user->id) }}"><i class="fa fa-pencil color-muted"></i></a>
+                                        <a class="text-danger" href="{{ url('/admin/DeleteUser/'.$user->id) }}"><i class="fa fa-close color-danger"></i></a>
+                                    </span>
                                 </td>
                             </tr>
                             @endforeach

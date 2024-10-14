@@ -158,6 +158,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/add-user', 'Admin\OutletController@getAddUser');
             Route::post('/add-user', 'Admin\OutletController@postAddUser');
             Route::get('/edit-user/{id}', 'Admin\OutletController@getEditUser');
+            Route::get('/DeleteUser/{id}', 'Admin\OutletController@DeleteUser');
 
             Route::get('/product-group-list', 'Admin\MasterController@productGroupList');
             Route::get('/add-product-group', 'Admin\MasterController@getAddProductGroup');
