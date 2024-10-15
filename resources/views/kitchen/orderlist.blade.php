@@ -32,17 +32,16 @@ Order List
                 @endforeach
             </tbody>
         </table>
-
     </div>
-    <div class="col-sm-7">
+    <div class="col-sm-7" style="padding-left: 0px;">
         <div class="card">
             <div class="card-body" style="padding: 0px 5px 0px 5px;">
                 <div class="row">
                     <div class="col-sm-12">
-                        <table class="table-sm">
+                        <table class="table-sm" id="tblBillingMenu" style="width: 100%;">
                             <thead>
                                 <tr>
-                                    <th>Item Name </th>
+                                    <th>Item Name</th>
                                     <th>Qty</th>
                                     <th>Department</th>
                                     <th>Prep Time</th>

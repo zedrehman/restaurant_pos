@@ -140,9 +140,12 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'kitchen'], function () {
         Route::get('/orderlist', 'KitchenController@OrderList');
-        Route::get('/departmentorder', 'KitchenController@DepartmentOrder');
-
         Route::post('/GetKitchenOrderDetails', 'KitchenController@GetKitchenOrderDetails');
+        Route::post('/UpdateItemStatus', 'KitchenController@UpdateItemStatus');
+
+        Route::get('/departmentorder', 'KitchenController@DepartmentOrder');
+        Route::post('/GetDepartmentDetailsByOutlet', 'KitchenController@GetDepartmentDetailsByOutlet');
+        Route::post('/GetDepartmentOrderDetailsId', 'KitchenController@GetDepartmentOrderDetailsId');
     });
 
 
@@ -222,6 +225,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/menu-management/add-menu-catalogues', 'Admin\MeneuManagementController@postAddMenuCatalogues');
             Route::get('/menu-management/edit-menu-catalogues/{id}', 'Admin\MeneuManagementController@getEditMenuCatalogues');
             Route::post('/menu-management/delete-menu-ingredient', 'Admin\MeneuManagementController@DeleteMenuIngredient');
+            Route::post('/GetKitchenDepartmentByOutletId', 'Admin\MeneuManagementController@GetKitchenDepartmentByOutletId');
 
             Route::get('/menu-management/outlet-menu', 'Admin\MeneuManagementController@outletMenuList');
             Route::get('/menu-management/add-outlet-menu', 'Admin\MeneuManagementController@getAddOutletMenu');

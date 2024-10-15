@@ -9,6 +9,7 @@ use App\Models\IngrediantModel;
 use App\Models\IngrediantStockModel;
 use App\Models\ModifierModel;
 use App\Models\ModifiersIngredientModel;
+use App\Models\OrderTableMenuItems;
 use App\Models\UnitMasterModel;
 use Illuminate\Support\Facades\DB;
 
@@ -35,10 +36,15 @@ class KitchenController extends Controller
         $Query = "
             SELECT 
                 om.*,
-                mc.menu_name
+                mc.menu_name,
+                mc.ready_in,
+                kd.kitchen_department_name,
+                ot.created_at
             FROM 
-                order_table_menu_items om
+                order_table ot
+                INNER JOIN order_table_menu_items om ON ot.id=om.order_id
                 INNER JOIN menu_catalogues mc ON mc.id=om.menu_id
+                INNER JOIN kitchen_department kd ON kd.id=mc.kitchen_department_id
             WHERE
                 om.order_id=$request->OrderId
         ";
@@ -46,134 +52,72 @@ class KitchenController extends Controller
         return response()->json($OrderTableMenu, 200);
     }
 
+    public function UpdateItemStatus(Request $request)
+    {
+        OrderTableMenuItems::where('id', $request->id)->update(['item_status' => $request->item_status]);
+        return true;
+    }
+
     public function DepartmentOrder()
+    {
+        $outlets = Outlet::where('active', 1)->get();
+        return view('kitchen.department_order', compact('outlets'));
+    }
+
+    public function GetDepartmentDetailsByOutlet(Request $request)
+    {
+        $kd = "SELECT * FROM `kitchen_department` WHERE outlet_id=$request->outlet_id ORDER BY `kitchen_department_name` ASC ";
+        $kitchen_department = DB::select($kd);
+
+        $Query = "
+            SELECT 
+                om.*,
+                ot.id as order_id,
+                ot.kot,
+                ot.table_id,
+                ot.quick_bill_type,
+                ot.bill_type,
+                mc.menu_name,
+                mc.ready_in,
+                ot.created_at
+            FROM 
+                order_table ot
+                INNER JOIN order_table_menu_items om ON ot.id=om.order_id
+                INNER JOIN menu_catalogues mc ON mc.id=om.menu_id
+            WHERE
+                ot.outlet_id=$request->outlet_id AND mc.kitchen_department_id=" . $kitchen_department[0]->id;
+
+        $order_table_menu_items = DB::select($Query);
+
+        $ResponseArray = [];
+        $ResponseArray['kitchen_department'] = $kitchen_department;
+        $ResponseArray['order_table_menu_items'] = $order_table_menu_items;
+
+        return response()->json($ResponseArray, 200);
+    }
+
+    public function GetDepartmentOrderDetailsId(Request $request)
     {
         $Query = "
             SELECT 
-                i.*,
-                o.outlet_name,
-                u.unit_name,
-                (select SUM(stock_value) FROM ingrediant_stock stock WHERE stock.outlet_id=i.outlet_id AND stock.ingrediant_id=i.id) as total_stock
-            FROM
-                ingrediant i
-                INNER JOIN outlets o ON o.id=i.outlet_id
-                INNER JOIN unit_master u ON u.id=i.unit_id
-            WHERE 
-                i.deleted_at is null
-        ";
-        $IngrediantList = DB::select($Query);
-        $outlets = Outlet::where('active', 1)->get();
-        return view('foodsetup.ingrediant', compact('IngrediantList', 'outlets'));
-    }
+                om.*,
+                ot.id as order_id,
+                ot.kot,
+                ot.table_id,
+                ot.quick_bill_type,
+                ot.bill_type,
+                mc.menu_name,
+                mc.ready_in,
+                ot.created_at
+            FROM 
+                order_table ot
+                INNER JOIN order_table_menu_items om ON ot.id=om.order_id
+                INNER JOIN menu_catalogues mc ON mc.id=om.menu_id
+            WHERE
+                ot.outlet_id=$request->outlet_id AND mc.kitchen_department_id=$request->id";
 
-    public function IngrediantStock(Request $request, $id)
-    {
-        $IngrediantList = IngrediantModel::select('ingrediant.*',  'unit_master.unit_name')
-            ->where('outlet_id', $id)
-            ->join('unit_master', 'unit_master.id', 'ingrediant.unit_id')
-            ->get();
-
-        return view('foodsetup.ingrediantstock', compact('IngrediantList'));
-    }
-
-    public function SaveIngrediantStock(Request $request)
-    {
-        $stock_date = now();
-        $IngrediantStock = $request->IngrediantStock;
-
-        for ($i = 0; $i < count($IngrediantStock); $i++) {
-
-            $outlet_id = $IngrediantStock[$i]['outlet_id'];
-            $ingrediant_id = $IngrediantStock[$i]['ingrediant_id'];
-            $stock_value = $IngrediantStock[$i]['stock_value'];
-            $ingrediant_price = $IngrediantStock[$i]['ingrediant_price'];
-
-
-            IngrediantStockModel::insert([
-                'outlet_id' => $outlet_id,
-                'ingrediant_id' => $ingrediant_id,
-                'stock_value' => $stock_value,
-                'ingrediant_price' => $ingrediant_price,
-                'stock_date' => $stock_date
-            ]);
-        }
-        return redirect()->to('/foodsetup/ingrediant');
-    }
-
-    //Modif
-    public function Modifiers()
-    {
-        $ModifierList = ModifierModel::select('modifiers.*', 'outlets.outlet_name')
-            ->join('outlets', 'outlets.id', 'modifiers.outlet_id')
-            ->get();
-        return view('foodsetup.modifiers', compact('ModifierList'));
-    }
-
-    public function GetIngrediantByOutletId(Request $request)
-    {
-        $Query = "SELECT * FROM ingrediant WHERE outlet_id=$request->outlet_id AND deleted_at is null";
-        $IngrediantList = DB::select($Query);
-        return response()->json($IngrediantList, 200);
-    }
-    public function AddModifiers(Request $request)
-    {
-        $outlets = Outlet::where('active', 1)->get();
-        return view('foodsetup.add_modifiers', compact('outlets'));
-    }
-
-    public function SaveModifiers(Request $request)
-    {
-        /*$IngrediantList = $request->except(['_token', 'IngrediantId']);
-        ModifierModel::updateOrCreate(['id' => $request->IngrediantId], $IngrediantList);
-        return redirect()->to('/foodsetup/modifiers');*/
-        $Id = $request->Id;
-        if ($Id == 0) {
-            $Id = ModifierModel::insertGetId([
-                'outlet_id' => $request->OutletId,
-                'modifier_name' => $request->Modifiername,
-                'created_at' => now()
-            ]);
-        } else {
-            ModifierModel::where('id', $Id)->update(['outlet_id' => $request->OutletId, 'modifier_name' => $request->Modifiername]);
-        }
-
-        $IngrediantItem = $request->IngrediantItem;
-        ModifiersIngredientModel::where('modifiers_id', $Id)->delete();
-
-        for ($i = 0; $i < count($IngrediantItem); $i++) {
-            ModifiersIngredientModel::insert([
-                'modifiers_id' => $Id,
-                'ingrediant_id' => $IngrediantItem[$i]['IngredientId'],
-                'quantity' => $IngrediantItem[$i]['Quantity']
-            ]);
-        }
-        return true;
-    }
-
-    public function EditModifiers(Request $request, $id)
-    {
-        $ModifierList = ModifierModel::where('id', $id)->first();
-        $outlets = Outlet::where('active', 1)->get();
-
-        $ModifiersIngredient = ModifiersIngredientModel::where('modifiers_id', $id)->get();
-
-        $Query = "SELECT * FROM ingrediant WHERE outlet_id=$ModifierList->outlet_id AND deleted_at is null";
-        $IngrediantList = DB::select($Query);
-        $Json_Ingrediant = json_encode($IngrediantList);
-
-        return view('foodsetup.add_modifiers', compact('ModifiersIngredient', 'outlets', 'ModifierList', 'IngrediantList', 'Json_Ingrediant'));
-    }
-
-    public function DeleteModifiers(Request $request, $id)
-    {
-        ModifierModel::where('id', $id)->delete();
-        ModifiersIngredientModel::where('modifiers_id', $id)->delete();
-        return redirect()->to('/foodsetup/modifiers');
-    }
-
-    public function DeleteModifiersIngredient(Request $request)
-    {
-        ModifiersIngredientModel::where('id', $request->Id)->delete();
-        return true;
+        $order_table_menu_items = DB::select($Query);
+        
+        return response()->json($order_table_menu_items, 200);
     }
 }

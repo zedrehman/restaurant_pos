@@ -9,6 +9,7 @@ use App\Models\Menu\MenuCatalogue;
 use App\Models\Menu\OutletMenu;
 use App\Models\Menu\MenuDetail;
 use App\Models\FoodType;
+use App\Models\Master\KitchenDepartment;
 use App\Models\Outlet;
 use File;
 use App\Models\Master\ProductGroup;
@@ -62,7 +63,6 @@ class MeneuManagementController extends Controller
     public function menuCataloguesList(Request $request)
     {
         $dataArray = MenuCatalogue::with('getMenuCategory', 'getFoodType', 'getOutlet')->get();
-        //dd($dataArray);
         return view('admin.menu.menu_catalogues_list', compact('dataArray'));
     }
 
@@ -72,8 +72,8 @@ class MeneuManagementController extends Controller
         $foodType = FoodType::all();
         $outlets = Outlet::where('active', 1)->get();
         $Json_Ingrediant = json_encode([]);
-
-        return view('admin.menu.menu_catalogues_add', compact('menuCategory', 'foodType', 'outlets', 'Json_Ingrediant'));
+        $KitchenDepartment = KitchenDepartment::where('outlet_id', 0)->get();
+        return view('admin.menu.menu_catalogues_add', compact('menuCategory', 'foodType', 'outlets', 'Json_Ingrediant', 'KitchenDepartment'));
     }
 
     public function postAddMenuCatalogues(Request $request)
@@ -125,13 +125,21 @@ class MeneuManagementController extends Controller
         $IngrediantList = DB::select($Query);
         $Json_Ingrediant = json_encode($IngrediantList);
 
-        return view('admin.menu.menu_catalogues_add', compact('dataArray', 'menuCategory', 'foodType', 'outlets', 'MenuIngredient', 'IngrediantList', 'Json_Ingrediant'));
+        $KitchenDepartment = KitchenDepartment::where('outlet_id', $dataArray->outlet_id)->get();
+
+        return view('admin.menu.menu_catalogues_add', compact('dataArray', 'menuCategory', 'foodType', 'outlets', 'MenuIngredient', 'IngrediantList', 'Json_Ingrediant', 'KitchenDepartment'));
     }
 
     public function DeleteMenuIngredient(Request $request)
     {
         MenuIngredientModel::where('id', $request->Id)->delete();
         return true;
+    }
+
+    public function GetKitchenDepartmentByOutletId(Request $request)
+    {
+        $KitchenDepartment = KitchenDepartment::where('outlet_id', $request->outlet_id)->get();
+        return response()->json($KitchenDepartment, 200);
     }
 
     public function outletMenuList(Request $request)

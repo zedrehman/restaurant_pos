@@ -50,20 +50,31 @@ Items
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
+                                <label>Kitchen Department <span style="color:red;">*</span> </label>
+                                <select class="form-control" id="ddlKitchenDepartment" name="kitchen_department_id" required>
+                                    <option value="">-- Select --</option>
+                                    @foreach ($KitchenDepartment as $kd)
+                                    <option value="{{$kd->id}}" @if(isset($dataArray) && $dataArray->kitchen_department_id == $kd->id) selected @endif> {{ $kd->kitchen_department_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
                                 <label>Sale Price<span style="color:red;">*</span> </label>
                                 <input type="number" name="sale_price" class="form-control" placeholder="Sale Price" value="@if(isset($dataArray)){{ $dataArray->sale_price }}@endif" required>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <label>Current Stock</label>
                                 <input type="text" name="current_stock" class="form-control" placeholder="Current Stock" value="@if(isset($dataArray)){{ $dataArray->current_stock }}@endif">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
-                                <label>Ready In</label>
-                                <input type="text" name="ready_in" class="form-control" placeholder="Ready In" value="@if(isset($dataArray)){{ $dataArray->ready_in }}@endif">
+                                <label>Ready In(Min)</label>
+                                <input type="number" name="ready_in" class="form-control" placeholder="Ready In" value="@if(isset($dataArray)){{ $dataArray->ready_in }}@endif">
                             </div>
                         </div>
 

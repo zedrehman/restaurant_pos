@@ -15,6 +15,23 @@ $("#ddlOutlet").change(function () {
                 console.log(errorMsg)
             }
         });
+
+        $.ajax({
+            url: baseUrl + '/admin/GetKitchenDepartmentByOutletId',
+            type: 'post',
+            data: { "_token": _token, outlet_id: outlet_id },
+            success: function (response) {
+                let ddlKitchenDepartmentOP = '<option value="">-- Select --</option>';
+                for (let i = 0; i < response.length; i++) {
+                    ddlKitchenDepartmentOP += '<option value="' + response[i].id + '">' + response[i].kitchen_department_name + '</option>';
+                }
+                $('#ddlKitchenDepartment').html(ddlKitchenDepartmentOP);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                var errorMsg = 'Ajax request get outlet department data failed: ' + xhr.responseText;
+                console.log(errorMsg)
+            }
+        });
     }
 })
 $("#btnAddItem").click(function () {
@@ -80,6 +97,7 @@ $("#btnSubmit").on('click', function (e) {
     let short_code = $("input[name=short_code]").val();
     let menu_name = $("input[name=menu_name]").val();
     let menu_categories_id = $("select[name=menu_categories_id]").val();
+    let kitchen_department_id = $("select[name=kitchen_department_id]").val();
     let sale_price = $("input[name=sale_price]").val();
     let current_stock = $("input[name=current_stock]").val();
     let ready_in = $("input[name=ready_in]").val();
@@ -97,6 +115,7 @@ $("#btnSubmit").on('click', function (e) {
     formData.append('short_code', short_code);
     formData.append('menu_name', menu_name);
     formData.append('menu_categories_id', menu_categories_id);
+    formData.append('kitchen_department_id', kitchen_department_id);
     formData.append('sale_price', sale_price);
     formData.append('current_stock', current_stock);
     formData.append('ready_in', ready_in);
