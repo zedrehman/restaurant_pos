@@ -12,9 +12,13 @@ use App\Models\CustomerModel;
 use App\Models\User;
 use App\Models\UserRoleModel;
 use App\Models\Master\UserType;
+use App\Models\MenuModel;
+use App\Models\SubMenuModel;
+use App\Models\UserMenuRightsModel;
 use File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+
 
 
 class UserSetupController extends Controller
@@ -80,13 +84,36 @@ class UserSetupController extends Controller
     public function AddUserRole(Request $request, $id)
     {
         $UserRole = UserRoleModel::where('id', $id)->first();
-        return view('usersetup.add_user_role', compact('UserRole'));
+
+        $MQuery = "SELECT * FROM menus ORDER BY id ASC";
+        $MenuList = DB::select($MQuery);
+
+        $SQuery = "SELECT * FROM sub_menus ORDER BY id ASC";
+        $SubMenuList = DB::select($SQuery);
+
+
+        $RoleMenuList = UserMenuRightsModel::where('role_id', $id)->pluck('menu_id')->toArray();
+        $RoleSubMenuList = UserMenuRightsModel::where('role_id', $id)->pluck('sub_menu_id')->toArray();
+
+        return view('usersetup.add_user_role', compact('UserRole', 'MenuList', 'SubMenuList', 'RoleMenuList', 'RoleSubMenuList'));
     }
 
     public function SaveUserRole(Request $request)
     {
         $UserRoleModel = $request->except(['_token', 'user_role_id']);
-        UserRoleModel::updateOrCreate(['id' => $request->user_role_id], $UserRoleModel);
+        $RoleInfo = UserRoleModel::updateOrCreate(['id' => $request->user_role_id], $UserRoleModel);
+
+        $MenusItemsList = $request->chkMenus;
+        
+        UserMenuRightsModel::where('role_id', $RoleInfo->id)->delete();
+        for ($i = 0; $i < count($MenusItemsList); $i++) {
+            $MenuItem = explode("_", $MenusItemsList[$i]);
+            UserMenuRightsModel::insert([
+                'role_id' => $RoleInfo->id,
+                'menu_id' => $MenuItem[0],
+                'sub_menu_id' => $MenuItem[1]
+            ]);
+        }
         return redirect()->to('/usersetup/userrole');
     }
 

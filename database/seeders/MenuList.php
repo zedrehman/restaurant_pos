@@ -15,6 +15,7 @@ class MenuList extends Seeder
      */
     public function run()
     {
+
         $MenuData = [
             [
                 'id' => 1,
@@ -28,6 +29,7 @@ class MenuList extends Seeder
                 'id' => 2,
                 'id_name' => 'lnkUserSetup',
                 'menu_name' => 'User Setup',
+                'menu_url' => '',
                 'icon' => 'flaticon-381-user',
                 'is_has_sub_menu' => 1
             ],
@@ -35,6 +37,7 @@ class MenuList extends Seeder
                 'id' => 3,
                 'id_name' => 'lnkAppsSetting',
                 'menu_name' => 'Apps Setting',
+                'menu_url' => '',
                 'icon' => 'flaticon-381-television',
                 'is_has_sub_menu' => 1
             ],
@@ -42,6 +45,7 @@ class MenuList extends Seeder
                 'id' => 4,
                 'id_name' => 'lnkFoodSetup',
                 'menu_name' => 'Food Setup',
+                'menu_url' => '',
                 'icon' => 'flaticon-381-layer-1',
                 'is_has_sub_menu' => 1
             ],
@@ -49,6 +53,7 @@ class MenuList extends Seeder
                 'id' => 5,
                 'id_name' => 'lnkExpenses',
                 'menu_name' => 'Expenses',
+                'menu_url' => '',
                 'icon' => 'fa fa-dollar',
                 'is_has_sub_menu' => 1
             ],
@@ -56,6 +61,7 @@ class MenuList extends Seeder
                 'id' => 6,
                 'id_name' => 'lnkKitchen',
                 'menu_name' => 'Kitchen',
+                'menu_url' => '',
                 'icon' => 'flaticon-381-menu',
                 'is_has_sub_menu' => 1
             ],
@@ -63,6 +69,7 @@ class MenuList extends Seeder
                 'id' => 7,
                 'id_name' => 'lnkReports',
                 'menu_name' => 'Reports',
+                'menu_url' => '',
                 'icon' => 'flaticon-381-network',
                 'is_has_sub_menu' => 1
             ],
@@ -70,11 +77,12 @@ class MenuList extends Seeder
                 'id' => 8,
                 'id_name' => 'lnkPOS',
                 'menu_name' => 'POS',
+                'menu_url' => '/outlet/pos',
                 'icon' => 'flaticon-381-networking',
                 'is_has_sub_menu' => 0
             ]
-
         ];
+        MenuModel::truncate();
         MenuModel::insert($MenuData);
 
         $SubMenuData = [
@@ -216,30 +224,47 @@ class MenuList extends Seeder
             ],
             [
                 'id' => 18,
-                'menu_id' => 2,
+                'menu_id' => 6,
                 'id_name' => '',
-                'menu_name' => '',
-                'menu_url' => '',
+                'menu_name' => 'Order List',
+                'menu_url' => '/kitchen/orderlist',
                 'icon' => ''
             ],
             [
                 'id' => 19,
-                'menu_id' => 2,
+                'menu_id' => 6,
                 'id_name' => '',
-                'menu_name' => '',
-                'menu_url' => '',
+                'menu_name' => 'Department Orders',
+                'menu_url' => '/kitchen/departmentorder',
                 'icon' => ''
             ],
             [
                 'id' => 20,
-                'menu_id' => 2,
+                'menu_id' => 7,
                 'id_name' => '',
-                'menu_name' => '',
-                'menu_url' => '',
+                'menu_name' => 'Overall Reports',
+                'menu_url' => '/reports/overallreports',
+                'icon' => ''
+            ],
+            [
+                'id' => 21,
+                'menu_id' => 7,
+                'id_name' => '',
+                'menu_name' => 'Expense Reports',
+                'menu_url' => '/reports/expensesreports',
+                'icon' => ''
+            ],
+            [
+                'id' => 22,
+                'menu_id' => 7,
+                'id_name' => '',
+                'menu_name' => 'Stock Alert',
+                'menu_url' => '/reports/stockalertreports',
                 'icon' => ''
             ]
-
         ];
+
+        SubMenuModel::truncate();
         SubMenuModel::insert($SubMenuData);
     }
 }
