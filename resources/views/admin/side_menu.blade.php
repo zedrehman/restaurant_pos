@@ -1,3 +1,7 @@
+<?php
+$user_role = session('user_role');
+$RoleMenuList = session('RoleMenuList');
+?>
 <ul class="metismenu" id="menu">
     <li class="mm-active" id="lnkDashboard" data-id="1">
         <a href="{{url('/admin/dashboard')}}" aria-expanded="false">
@@ -83,32 +87,3 @@
         </a>
     </li>
 </ul>
-<!--<ul class="nav">
-    
-    <li class="nav-item" >
-       
-        <div class="collapse" >
-            <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{url('/admin/brand')}}" id="lnkBrands">Brands</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{url('/admin/outlet-designation')}}" id="lnkVedioGallery">Outlet Designation</a></li>
-            </ul>
-        </div>
-    </li>
-    <li class="nav-item" id="lnkMasterConfiguration">
-        <a class="nav-link" data-bs-toggle="collapse" href="#MasterConfiguration" aria-expanded="false" aria-controls="MasterConfiguration">
-            <i class="ti-gallery menu-icon"></i>
-            <span class="menu-title">Master Configuration</span>
-            <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="MasterConfiguration">
-            <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{url('/admin/product-group-list')}}">Product Group</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{url('/admin/outlet-department-list')}}">Outlet Department</a></li>
-                <li class="nav-item"><a class="nav-link" href="">Table Management</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{url('/admin/coupon-list')}}">Coupons</a></li>
-            </ul>
-        </div>
-    </li>
-
-    
-</ul>-->

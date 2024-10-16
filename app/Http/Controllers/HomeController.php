@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserMenuRightsModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,15 +25,30 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $user_role = Auth::user()->user_type;        
+        $user_role = Auth::user()->user_type;
+        $role_id = Auth::user()->role_id;
+
         $request->session()->put('outlet_id', Auth::user()->outlet_id);
+        $request->session()->put('user_role', $user_role);
+        
+        $RoleMenuList = UserMenuRightsModel::where('role_id', $role_id)->get();
+        $request->session()->put('RoleMenuList', $RoleMenuList);
 
         if ($user_role == ADMIN_ROLE) {
             return redirect('admin/dashboard');
-        } elseif ($user_role == WAITER || $user_role == MANAGER) {
-            return redirect('outlet/dashboard');
         } else {
-            return abort(404);
+            $RoleMenuList = UserMenuRightsModel::where('role_id', $role_id)->pluck('menu_id')->toArray();
+            if (count($RoleMenuList) == 0) {
+                return abort(404);
+            } else if (count($RoleMenuList) == 1) {
+                if ($RoleMenuList[0] == 8) {
+                    return redirect()->to('/outlet/order-table');
+                } else {
+                    return redirect('admin/dashboard');
+                }
+            } else {
+                return redirect('admin/dashboard');
+            }
         }
     }
 }
