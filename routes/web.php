@@ -142,14 +142,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/orderlist', 'KitchenController@OrderList');
         Route::post('/GetKitchenOrderDetails', 'KitchenController@GetKitchenOrderDetails');
         Route::post('/UpdateItemStatus', 'KitchenController@UpdateItemStatus');
+        Route::post('/GetOrderListByOutletId', 'KitchenController@GetOrderListByOutletId');
 
         Route::get('/departmentorder', 'KitchenController@DepartmentOrder');
         Route::post('/GetDepartmentDetailsByOutlet', 'KitchenController@GetDepartmentDetailsByOutlet');
         Route::post('/GetDepartmentOrderDetailsId', 'KitchenController@GetDepartmentOrderDetailsId');
     });
 
-
-    // Admin
     Route::group(['prefix' => 'admin'], function () {
         //Route::group(['middleware' => ['admin']], function () {
         Route::get('/dashboard', 'Admin\DashboardController@Index');

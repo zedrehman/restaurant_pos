@@ -29,7 +29,6 @@
             <div class="sk-child sk-bounce3"></div>
         </div>
     </div>
-
     <div id="main-wrapper">
         <div class="nav-header">
             <a href="{{url('/admin/dashboard')}}" class="brand-logo">

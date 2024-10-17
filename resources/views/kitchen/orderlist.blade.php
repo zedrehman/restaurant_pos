@@ -9,36 +9,36 @@ Order List
 @endsection
 
 @section('content')
+<div class="row" style="margin-bottom: 10px;">
+    <div class="col-sm-4">
+        <select class="form-control" id="ddlOutlet">
+            <option value="0">--Outlet--</option>
+            @foreach ($outlets as $outlet)
+            <option value="{{$outlet->id}}"> {{ $outlet->outlet_name}}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
 <div class="row">
     <div class="col-sm-5">
-
         <table class="table border-no order-table dataTablesCard" id="tblOrder">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Bill No</th>
+                    <th>KOT</th>
                     <th>TBL No</th>
                     <th>Type</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($OrderTable as $Item)
-                <tr class="trtable" data-id="{{$Item->id}}">
-                    <td>{{$Item->id}}</td>
-                    <td>{{$Item->kot}}</td>
-                    <td>@if($Item->table_id != 0) {{$Item->table_id}} @else - @endif</td>
-                    <td>@if(isset($Item->quick_bill_type)) {{$Item->quick_bill_type}} @else {{$Item->bill_type}} @endif</td>
-                </tr>
-                @endforeach
-            </tbody>
+            <tbody id="tbodytblOrderList"></tbody>
         </table>
     </div>
-    <div class="col-sm-7" style="padding-left: 0px;">
+    <div class="col-sm-7" style="padding-left: 0px;display: none;" id="divBillItems">
         <div class="card">
             <div class="card-body" style="padding: 0px 5px 0px 5px;">
                 <div class="row">
                     <div class="col-sm-12">
-                        <table class="table-sm" id="tblBillingMenu" style="width: 100%;">
+                        <table class="table-sm" id="tblBillingMenu" style="width: 100%;" data-id="">
                             <thead>
                                 <tr>
                                     <th>Item Name</th>

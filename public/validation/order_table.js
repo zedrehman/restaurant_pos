@@ -129,7 +129,7 @@ function GetMenuList(CategoryId) {
                                         <div class="card-body div-menu-item" style="padding: 10px 1.437rem;" data-id="${response[i].id}" data-name="${response[i].menu_name}" data-price="${response[i].sale_price}">
                                             <h4 style="margin-bottom: 0px;">${response[i].menu_name}</h4>
                                             <small style="float: left;">${response[i].short_code}</small> <small style="float: right;">Rs ${response[i].sale_price}</small><br>
-                                            <small class="badge badge-info">${response[i].ready_in}</small>
+                                            <small class="badge badge-info">${response[i].ready_in} Min</small>
                                         </div>
                                     </div>
                                 </div>`;

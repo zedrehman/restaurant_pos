@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
@@ -345,5 +346,7 @@
     var _token = "{{ csrf_token() }}";
     var outlet_id = "{{$outlet_id}}";
 </script>
+<script src="{{ asset('justdo/vendors/js/vendor.bundle.base.js') }}?version={{config('constant.script_version')}}"></script>
 <script src="{{ asset('validation/order_table.js') }}?version={{config('constant.script_version')}}"></script>
+
 </html>

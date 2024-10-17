@@ -16,19 +16,29 @@ use Illuminate\Support\Facades\DB;
 
 class KitchenController extends Controller
 {
-    // Ingrediant
-    public function OrderList()
+
+    public function OrderList(Request $request)
+    {
+        $outlets = Outlet::where('active', 1)->get();
+        return view('kitchen.orderlist', compact('outlets'));
+    }
+
+    public function GetOrderListByOutletId(Request $request)
     {
         $Query = "
             SELECT 
-                ot.* 
+                ot.*,
+                tm.table_name
             FROM 
                 order_table ot 
-                INNER JOIN outlets o ON ot.outlet_id=o.id
+                INNER JOIN table_management tm ON tm.id=ot.table_id
+            WHERE
+                ot.outlet_id=$request->outlet_id
+                AND ot.id IN (select oti.order_id from order_table_menu_items oti WHERE ot.id=oti.order_id AND IFNULL(oti.item_status,'') NOT IN ('Ready','Cancel'))
             ORDER BY ot.id DESC
         ";
         $OrderTable = DB::select($Query);
-        return view('kitchen.orderlist', compact('OrderTable'));
+        return response()->json($OrderTable, 200);
     }
 
     public function GetKitchenOrderDetails(Request $request)
@@ -117,7 +127,7 @@ class KitchenController extends Controller
                 ot.outlet_id=$request->outlet_id AND mc.kitchen_department_id=$request->id";
 
         $order_table_menu_items = DB::select($Query);
-        
+
         return response()->json($order_table_menu_items, 200);
     }
 }
