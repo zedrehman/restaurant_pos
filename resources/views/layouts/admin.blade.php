@@ -37,7 +37,6 @@
                 <img class="logo-compact" src="{{ asset('img') }}/logo-text.png" alt="">
                 <img class="brand-title" src="{{ asset('img') }}/logo-text.png" alt="">
             </a>
-
             <div class="nav-control">
                 <div class="hamburger">
                     <span class="line"></span><span class="line"></span><span class="line"></span>
@@ -225,7 +224,7 @@
                                 <a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown">
                                     <div class="header-info">
                                         <span class="text-black"><strong>{{ Auth::user()->name }}</strong></span>
-                                        <p class="fs-12 mb-0">Admin</p>
+                                        <p class="fs-12 mb-0">{{ session('UserRoleName') }}</p>
                                     </div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">

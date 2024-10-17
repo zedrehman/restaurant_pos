@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserMenuRightsModel;
+use App\Models\UserRoleModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -30,9 +32,35 @@ class HomeController extends Controller
 
         $request->session()->put('outlet_id', Auth::user()->outlet_id);
         $request->session()->put('user_role', $user_role);
-        
-        $RoleMenuList = UserMenuRightsModel::where('role_id', $role_id)->get();
+        if ($user_role == 'admin') {
+            $role_id = 0;
+            $request->session()->put('UserRoleName', 'Administrator');
+        }else{
+            $UserRole = UserRoleModel::where('id', $role_id)->first();
+            $request->session()->put('UserRoleName', $UserRole->role_name);
+        }
+        $Query = "
+            SELECT 
+                DISTINCT m.* 
+            FROM 
+                `user_menu_rights` umr
+                INNER JOIN menus m ON umr.menu_id=m.id
+            WHERE umr.role_id=$role_id;";
+        $RoleMenuList = DB::select($Query);
         $request->session()->put('RoleMenuList', $RoleMenuList);
+
+        $SBQuery = "
+           SELECT 
+                DISTINCT sm.* 
+            FROM 
+                `user_menu_rights` umr
+                INNER JOIN sub_menus sm ON umr.sub_menu_id=sm.id
+            WHERE umr.role_id=$role_id;";
+
+        $RoleSubMenuList = DB::select($SBQuery);
+        $request->session()->put('RoleSubMenuList', $RoleSubMenuList);
+
+        
 
         if ($user_role == ADMIN_ROLE) {
             return redirect('admin/dashboard');
