@@ -79,7 +79,8 @@ Overall Reports
                             <th style="width: 60%;">Item Name </th>
                             <th style="width: 10%;">Oty</th>
                             <th style="width: 10%;">Price</th>
-                            <th style="width: 20%;">Amount</th>
+                            <th style="width: 10%;">Amount</th>
+                            <th style="width: 10%;">Status</th>
                         </tr>
                     </thead>
                     <tbody id="tbodyBillingMenu"></tbody>

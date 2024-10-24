@@ -3,6 +3,7 @@ let item_status_options = `
     <option value="Processing">Processing</option>
     <option value="Ready">Ready</option>
     <option value="Cancel">Cancel</option>
+    <option value="Served">Served</option>
 `;
 jQuery(document).ready(function () {
     /*if ($('#tblOrder').length > 0) {

@@ -130,6 +130,14 @@ class MeneuManagementController extends Controller
         return view('admin.menu.menu_catalogues_add', compact('dataArray', 'menuCategory', 'foodType', 'outlets', 'MenuIngredient', 'IngrediantList', 'Json_Ingrediant', 'KitchenDepartment'));
     }
 
+    public function DeleteMenuCatalogues(Request $request, $id)
+    {
+        MenuCatalogue::where('id', $id)->delete();
+        MenuIngredientModel::where('menu_id', $id)->delete();
+        
+        return redirect()->to('/admin/menu-management/menu-catalogues');
+    }
+
     public function DeleteMenuIngredient(Request $request)
     {
         MenuIngredientModel::where('id', $request->Id)->delete();

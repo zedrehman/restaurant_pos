@@ -81,9 +81,13 @@ function loadTableMenu(ItemList) {
             statuscolor = 'danger';
             item_status = ItemList[i].item_status;
         }
+        if (ItemList[i].item_status == 'Served') {
+            statuscolor = 'dark';
+            item_status = ItemList[i].item_status;
+        }
 
 
-        let strhtml = `<tr>
+        let strhtml = `<tr id="itemtr_${ItemList[i].id}">
                         <td>${ItemList[i].order_id}</td>
                         <td>${ItemList[i].created_at}</td>
                         <td>${ItemList[i].kot}</td>
@@ -107,6 +111,7 @@ function loadTableMenu(ItemList) {
                                     <a class="dropdown-item lnkStatus" href="javascript:void(0)" data-status="${ItemList[i].item_status}" data-id="${ItemList[i].id}">Processing</a>
                                     <a class="dropdown-item lnkStatus" href="javascript:void(0)" data-status="${ItemList[i].item_status}" data-id="${ItemList[i].id}">Ready</a>
                                     <a class="dropdown-item lnkStatus" href="javascript:void(0)" data-status="${ItemList[i].item_status}" data-id="${ItemList[i].id}">Cancel</a>
+                                    <a class="dropdown-item lnkStatus" href="javascript:void(0)" data-status="${ItemList[i].item_status}" data-id="${ItemList[i].id}">Served</a>
                                 </div>
                             </div>
                         </td>
@@ -118,18 +123,13 @@ function loadTableMenu(ItemList) {
 $("#tbodytblOrderList").on('click', '.lnkStatus', function () {
     let id = $(this).attr('data-id');
     let item_status = $(this).html();
-    let currentstatus = $(this).attr('data-status');
-
-    if (currentstatus == 'Ready') {
-
-    }
-
+    //let currentstatus = $(this).attr('data-status');
     $.ajax({
         url: baseUrl + '/kitchen/UpdateItemStatus',
         type: 'post',
         data: { "_token": _token, id: id, item_status: item_status },
         success: function (response) {
-            if (item_status == '') {
+            if (item_status == 'Processing') {
                 $("#btnLink_" + id).html(`<span class="badge light badge-warning"><i class="fa fa-circle text-warning mr-1"></i>Processing</span>`);
             }
             else if (item_status == 'Ready') {
@@ -137,6 +137,9 @@ $("#tbodytblOrderList").on('click', '.lnkStatus', function () {
             }
             else if (item_status == 'Cancel') {
                 $("#btnLink_" + id).html(`<span class="badge light badge-danger"><i class="fa fa-circle text-danger mr-1"></i>Cancel</span>`);
+            } else if (item_status == 'Served') {
+                //$("#btnLink_" + id).html(`<span class="badge light badge-dark"><i class="fa fa-circle text-dark mr-1"></i>Served</span>`);
+                $("#itemtr_" + id).remove();
             } else {
                 $("#btnLink_" + id).html(`<span class="badge light badge-info"><i class="fa fa-circle text-info mr-1"></i>Waiting</span>`);
             }

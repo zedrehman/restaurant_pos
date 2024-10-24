@@ -161,6 +161,7 @@ Items
                     <div class="row">
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-sm btn-success" id="btnSubmit">Submit</button>
+                            <a type="submit" class="btn btn-sm btn-dark" id="btnSaving" style="display: none;">Saving...</a>
                         </div>
                         <div class="col-sm-6" style="text-align: right;">
                             <button type="button" class="btn btn-sm btn-info" id="btnAddItem">Add Item</button>

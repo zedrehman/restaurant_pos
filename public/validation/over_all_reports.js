@@ -34,7 +34,7 @@ $(".trtable").click(function () {
     $("#lblTotalBillAmount").html('');
     $('html,body').animate({ scrollTop: $("#tbodyBillingMenu").offset().top }, 'slow');
     $.ajax({
-        url: baseUrl + '/outlet/order-details-byid/' + OrderId,
+        url: baseUrl + '/reports/GetOrderDetailsByOrderId/' + OrderId,
         type: 'GET',
         success: function (response) {
 
@@ -52,11 +52,26 @@ $(".trtable").click(function () {
                 let Amount = order_table_menu_items[i].amount;
                 let TotalAmount = order_table_menu_items[i].total;
                 TotalBillAmount += eval(TotalAmount);
+
+                let statuscolor = 'info';
+                if (order_table_menu_items[i].item_status == 'Processing') {
+                    statuscolor = 'warning';
+                }
+                if (order_table_menu_items[i].item_status == 'Ready') {
+                    statuscolor = 'success';
+                }
+                if (order_table_menu_items[i].item_status == 'Cancel') {
+                    statuscolor = 'danger';
+                }
+                if (order_table_menu_items[i].item_status == 'Served') {
+                    statuscolor = 'dark';
+                }
                 let MenuBillItems = `<tr>
                                         <td style="width: 60%;">${order_table_menu_items[i].menu_name}</td>
                                         <td style="text-align: right;">${Quantity}</td>
                                         <td style="text-align: right;">${Amount}</td>
                                         <td style="text-align: right;"><b>${TotalAmount}</b></td>
+                                        <td><span class="badge light badge-${statuscolor}">${order_table_menu_items[i].item_status}</span></td>
                                     </tr>`;
                 $("#tbodyBillingMenu").append(MenuBillItems);
             }

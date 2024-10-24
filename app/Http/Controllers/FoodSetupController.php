@@ -115,7 +115,12 @@ class FoodSetupController extends Controller
     public function AddModifiers(Request $request)
     {
         $outlets = Outlet::where('active', 1)->get();
-        return view('foodsetup.add_modifiers', compact('outlets'));
+
+        //$Query = "SELECT * FROM ingrediant WHERE outlet_id=0 AND deleted_at is null";
+        $IngrediantList = [];
+        $Json_Ingrediant = json_encode($IngrediantList);
+
+        return view('foodsetup.add_modifiers', compact('outlets', 'Json_Ingrediant'));
     }
 
     public function SaveModifiers(Request $request)

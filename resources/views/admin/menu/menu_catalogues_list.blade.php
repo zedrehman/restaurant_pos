@@ -61,7 +61,7 @@ Items
                                 <td>
                                     <span>
                                         <a class="text-warning mr-4" href="{{ url('/admin/menu-management/edit-menu-catalogues/'.$data->id) }}"><i class="fa fa-pencil color-muted"></i></a>
-                                        <a class="text-danger"><i class="fa fa-close color-danger"></i></a>
+                                        <a class="text-danger" href="{{ url('/admin/menu-management/delete-menu-catalogues/'.$data->id) }}"><i class="fa fa-close color-danger"></i></a>
                                     </span>
                                 </td>
                             </tr>

@@ -553,14 +553,18 @@ function BindViewMenuBillItems(OrderId) {
         url: baseUrl + '/outlet/order-table-mneu-details/' + OrderId,
         type: 'GET',
         success: function (response) {
-            console.log(response);
             let TotalBillAmount = 0;
             for (let i = 0; i < response.length; i++) {
                 let Quantity = response[i].quantity;
                 let Amount = response[i].amount;
                 let TotalAmount = response[i].total;
                 TotalBillAmount += eval(TotalAmount);
-                let MenuBillItems = `<tr>
+                                
+                let style = '';
+                if (response[i].item_status == 'Served') {
+                    style = 'style="color: green;"';
+                }
+                let MenuBillItems = `<tr ${style}>
                                         <td style="width: 60%;">${response[i].menu_name}</td>
                                         <td style="text-align: right;width: 10%;">${Quantity}</td>
                                         <td style="text-align: right;width: 30%;"><b>${TotalAmount}</b></td>

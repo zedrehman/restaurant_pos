@@ -22,12 +22,42 @@ class ReportsController extends Controller
             FROM 
                 order_table ot 
                 INNER JOIN outlets o ON ot.outlet_id=o.id
-            WHERE 
-                ot.is_settled=1  
-            ORDER BY ot.id DESC
-        ";
+            ORDER BY ot.id DESC";
         $OrderTable = DB::select($PD_Query);
         return view('reports.over_all_reports', compact(['OrderTable']));
+    }
+
+    public function GetOrderDetailsByOrderId(Request $request, $OrderId)
+    {
+        $TQuery = "
+            SELECT 
+                ot.*,
+                tm.table_name
+            FROM 
+                order_table ot
+                INNER JOIN table_management tm ON ot.table_id=tm.id
+            WHERE
+                ot.id=$OrderId
+        ";
+        $OrderTable = DB::select($TQuery);
+
+        $Query = "
+            SELECT 
+                om.*,
+                mc.menu_name
+            FROM 
+                order_table_menu_items om
+                INNER JOIN menu_catalogues mc ON mc.id=om.menu_id
+            WHERE
+                om.order_id=$OrderId
+        ";
+        $OrderTableMenu = DB::select($Query);
+
+        $ResponseArray = [];
+        $ResponseArray['order_table'] = $OrderTable;
+        $ResponseArray['order_table_menu_items'] = $OrderTableMenu;
+
+        return response()->json($ResponseArray, 200);
     }
 
     public function ExpensesReports(Request $request)

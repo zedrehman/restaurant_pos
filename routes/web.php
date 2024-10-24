@@ -131,6 +131,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'reports'], function () {
         Route::get('/overallreports', 'ReportsController@OverAllReports');
+        Route::get('/GetOrderDetailsByOrderId/{OrderId}', 'ReportsController@GetOrderDetailsByOrderId');
 
         Route::get('/expensesreports', 'ReportsController@ExpensesReports');
         Route::post('/GetExpensesDetailsReportsByDate', 'ReportsController@GetExpensesDetailsReportsByDate');
@@ -223,6 +224,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/menu-management/add-menu-catalogues', 'Admin\MeneuManagementController@getAddMenuCatalogues');
         Route::post('/menu-management/add-menu-catalogues', 'Admin\MeneuManagementController@postAddMenuCatalogues');
         Route::get('/menu-management/edit-menu-catalogues/{id}', 'Admin\MeneuManagementController@getEditMenuCatalogues');
+        Route::get('/menu-management/delete-menu-catalogues/{id}', 'Admin\MeneuManagementController@DeleteMenuCatalogues');
+
         Route::post('/menu-management/delete-menu-ingredient', 'Admin\MeneuManagementController@DeleteMenuIngredient');
         Route::post('/GetKitchenDepartmentByOutletId', 'Admin\MeneuManagementController@GetKitchenDepartmentByOutletId');
 

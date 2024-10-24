@@ -79,6 +79,8 @@ $("#tbodyIngredient").on('click', '.btnDelete', function () {
 });
 
 $("#btnSubmit").on('click', function (e) {
+    $("#btnSubmit").hide();
+    $("#btnSaving").show();
     e.preventDefault();
 
     let IngrediantItem = [];

@@ -95,7 +95,8 @@ class KitchenController extends Controller
                 INNER JOIN order_table_menu_items om ON ot.id=om.order_id
                 INNER JOIN menu_catalogues mc ON mc.id=om.menu_id
             WHERE
-                ot.outlet_id=$request->outlet_id AND mc.kitchen_department_id=" . $kitchen_department[0]->id;
+                om.item_status != 'Served'
+                AND ot.outlet_id=$request->outlet_id AND mc.kitchen_department_id=" . $kitchen_department[0]->id;
 
         $order_table_menu_items = DB::select($Query);
 
@@ -124,7 +125,8 @@ class KitchenController extends Controller
                 INNER JOIN order_table_menu_items om ON ot.id=om.order_id
                 INNER JOIN menu_catalogues mc ON mc.id=om.menu_id
             WHERE
-                ot.outlet_id=$request->outlet_id AND mc.kitchen_department_id=$request->id";
+                om.item_status != 'Served'
+                AND ot.outlet_id=$request->outlet_id AND mc.kitchen_department_id=$request->id";
 
         $order_table_menu_items = DB::select($Query);
 
